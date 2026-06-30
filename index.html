@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UpWeb Gestão de Sinistros — Controle digital para associações de proteção veicular</title>
+  <meta name="description" content="Controle o sinistro do primeiro registro ao desfecho final: documentos, vistoria online, prazos, aprovações, pagamentos e leitura financeira em uma operação rastreável e organizada.">
+  <meta name="theme-color" content="#6F06E4">
+  <meta property="og:title" content="UpWeb Gestão de Sinistros">
+  <meta property="og:description" content="Gestão digital de sinistros para associações de proteção veicular. Rastreabilidade, organização documental e leitura financeira em tempo real.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/hero-poster.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="hero.css">
+  <!-- TODO produção: converter gestao-upweb.png e beneficios.png para WebP < 300KB -->
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" data-header>
+    <span class="header-topline" aria-hidden="true"></span>
+    <nav class="nav wrap" aria-label="Navegação principal">
+      <a class="brand" href="#topo" aria-label="UpWeb — página inicial">
+        <img src="assets/logo-roxo.svg" width="152" height="40" alt="UpWeb">
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Abrir menu">
+        <span class="menu-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+      <div class="nav-menu" id="primary-menu">
+        <a href="#sistema-upweb">Produto</a>
+        <a href="#metodo">Método</a>
+        <a href="#comparativo">Comparativo</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn btn-primary nav-cta" href="#formulario" data-event="cta_demo_click">Agendar demonstração</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <!-- ============ HERO ============ -->
+    <section class="hero-pro" id="topo" aria-labelledby="hero-title">
+      <svg class="hp-net" viewBox="0 0 1680 230" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+        <g stroke="#C9BDF0" stroke-width="1" fill="none" opacity=".7">
+          <path d="M0,60 L180,120 L360,40 L540,140 L720,70 L900,150 L1080,50 L1260,130 L1440,60 L1680,120"/>
+          <path d="M0,160 L210,90 L420,180 L630,100 L840,190 L1050,110 L1260,200 L1470,120 L1680,180"/>
+        </g>
+        <g fill="#8E78D8">
+          <circle cx="180" cy="120" r="3"/><circle cx="540" cy="140" r="3"/><circle cx="900" cy="150" r="3"/>
+          <circle cx="1260" cy="130" r="3"/><circle cx="420" cy="180" r="3"/><circle cx="1050" cy="110" r="3"/>
+        </g>
+      </svg>
+      <span class="hp-spark" style="width:6px;height:6px;top:34%;left:60%" aria-hidden="true"></span>
+      <span class="hp-spark" style="width:9px;height:9px;top:58%;left:50%" aria-hidden="true"></span>
+      <span class="hp-spark" style="width:5px;height:5px;top:70%;left:66%" aria-hidden="true"></span>
+
+      <div class="hp-grid">
+        <div class="hp-left">
+          <span class="hp-badge">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            Gestão inteligente para associações
+          </span>
+          <h1 id="hero-title"><span class="nb">Controle inteligente</span><br><span class="nb">e digital dos <span class="hl">sinistros</span></span><br><span class="nb">da sua <span class="hl">APV</span>.</span></h1>
+          <p class="hp-sub">Do primeiro registro ao desfecho final.<br>Mais controle, menos retrabalho e decisões seguras.</p>
+          <p class="hp-desc">Centralize documentos, vistorias, prazos, aprovações, pagamentos e histórico em uma operação 100% digital, rastreável e segura.</p>
+          <div class="hp-cta">
+            <a class="hpbtn hpbtn-1" href="#formulario" data-event="cta_demo_click">Agendar demonstração <span class="ar">→</span></a>
+            <a class="hpbtn hpbtn-2" href="#sistema-upweb" data-event="como_funciona_click"><span class="play">▶</span> Ver como funciona</a>
+          </div>
+          <div class="hp-trust">
+            <div class="hp-tcard">
+              <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+              <div><h4>Segurança e conformidade</h4><p>Dados protegidos com criptografia, trilha de auditoria e aderência à LGPD.</p></div>
+            </div>
+            <div class="hp-tcard">
+              <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+              <div><h4>Tecnologia confiável</h4><p>Infraestrutura robusta, disponível 24/7 com 99,9% de uptime.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hp-right">
+          <div class="hp-stage">
+            <span class="hp-glow" aria-hidden="true"></span>
+            <div class="hp-monitor" role="img" aria-label="Painel UpWeb de gestão de sinistros com KPIs, quadro Kanban e indicadores em tempo real">
+              <div class="hp-bezel">
+                <span class="hp-cam" aria-hidden="true"></span>
+                <div class="hp-screen">
+                  <aside class="hp-side" aria-hidden="true">
+                    <span class="hp-slogo">up<span>web</span></span>
+                    <span class="hp-sideico on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span>
+                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg></span>
+                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M4 12h4l2 5 4-12 2 7h4"/></svg></span>
+                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/></svg></span>
+                    <span class="hp-rec"><i></i></span>
+                  </aside>
+                  <div class="hp-main">
+                    <div class="hp-topbar">
+                      <div><div class="hp-tt">Painel de Sinistros</div><div class="hp-ts">Visão geral do fluxo de sinistros</div></div>
+                      <div class="hp-topr">
+                        <span class="hp-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg> Buscar veículo, associado, placa...</span>
+                        <span class="hp-bell"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="hp-bdg">3</span></span>
+                        <span class="hp-av"></span>
+                        <span class="hp-new">+ Novo sinistro</span>
+                      </div>
+                    </div>
+                    <div class="hp-kpis">
+                      <div class="hp-kpi k-rec"><div class="kl">Recebido</div><div class="kv">128</div><div class="ks">Total de novos sinistros</div></div>
+                      <div class="hp-kpi k-an"><div class="kl">Em análise</div><div class="kv">42</div><div class="ks">Aguardando análise</div></div>
+                      <div class="hp-kpi k-ag"><div class="kl">Aguardando</div><div class="kv">18</div><div class="ks">Aguardando documentos</div></div>
+                      <div class="hp-kpi k-ex"><div class="kl">Em execução</div><div class="kv">37</div><div class="ks">Vistorias e serviços</div></div>
+                      <div class="hp-kpi k-fi"><div class="kl">Finalizado</div><div class="kv">96</div><div class="ks">Sinistros concluídos</div></div>
+                    </div>
+                    <div class="hp-kanban">
+                      <div class="hp-col c-rec">
+                        <div class="hp-colh"><span class="cn">Recebido</span><span class="cc">128</span></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1045 <span>⤢</span></div><div class="snm">João Ferreira</div><div class="sca">Renault Kwid · 2020</div><div class="stag">Sinistro · Colisão</div><div class="stime">Hoje · 09:15</div></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1046</div><div class="snm">Maria Oliveira</div><div class="sca">Honda Fit · 2019</div><div class="stag">Sinistro · Roubo/Furto</div><div class="stime">Hoje · 08:42</div></div>
+                        <div class="hp-colv">Ver todos</div>
+                      </div>
+                      <div class="hp-col c-an">
+                        <div class="hp-colh"><span class="cn">Em análise</span><span class="cc">42</span></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1047 <span>⋮</span></div><div class="snm">Carlos Barreto</div><div class="sca">VW Virtus · 2022</div><div class="stag">Assoc. Clube União</div><div class="stime">2h</div></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1048 <span>⋮</span></div><div class="snm">Amanda Santos</div><div class="sca">Fiat Siena · 2018</div><div class="stag">Sinistro · Danos Parciais</div><div class="stime">3h</div></div>
+                        <div class="hp-colv">Ver todos</div>
+                      </div>
+                      <div class="hp-col c-ag">
+                        <div class="hp-colh"><span class="cn">Aguardando</span><span class="cc">18</span></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1049 <span>⋮</span></div><div class="snm">Patrícia Andrade</div><div class="sca">Renault Sandero · 2021</div><div class="stag t-ag">Aguardando documentos</div><div class="stime">1d</div></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1050 <span>⋮</span></div><div class="snm">Roberto Mendonça</div><div class="sca">Honda Civic · 2020</div><div class="stag t-ag">Aguardando vistoria</div><div class="stime">1d</div></div>
+                        <div class="hp-colv">Ver todos</div>
+                      </div>
+                      <div class="hp-col c-ex">
+                        <div class="hp-colh"><span class="cn">Em execução</span><span class="cc">37</span></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1051 <span>⋮</span></div><div class="snm">Juliana Ribeiro</div><div class="sca">Jeep Compass · 2022</div><div class="stag t-ex">Em execução</div><div class="stime">2d</div></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1052 <span>⋮</span></div><div class="snm">Gabriel Costa</div><div class="sca">Chevrolet Tracker · 2023</div><div class="stag t-ex">Funilaria e Pintura</div><div class="stime">3d</div></div>
+                        <div class="hp-colv">Ver todos</div>
+                      </div>
+                      <div class="hp-col c-fi">
+                        <div class="hp-colh"><span class="cn">Finalizado</span><span class="cc">96</span></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1053 <span>⤢</span></div><div class="snm">Fernando Lima</div><div class="sca">Toyota Corolla · 2021</div><div class="stag t-fi">Finalizado</div><div class="stime">5d</div></div>
+                        <div class="hp-scard"><div class="sid">SN-2024-1054 <span>⋮</span></div><div class="snm">Beatriz Silva</div><div class="sca">Hyundai HB20 · 2020</div><div class="stag t-fi">Pago</div><div class="stime">7d</div></div>
+                        <div class="hp-colv">Ver todos</div>
+                      </div>
+                    </div>
+                    <div class="hp-benefits">
+                      <div class="hp-bcard"><span class="bi"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><h5>Rastreabilidade total</h5><p>Cada etapa registrada com transparência.</p></div>
+                      <div class="hp-bcard"><span class="bi"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg></span><h5>Organização documental</h5><p>Todos os documentos centralizados e seguros.</p></div>
+                      <div class="hp-bcard is-hover"><span class="bi"><svg viewBox="0 0 24 24"><path d="M4 16l5-5 3 3 6-7"/></svg></span><h5>Leitura financeira em tempo real</h5><p>Indicadores atualizados para decisões mais rápidas.</p>
+                        <svg class="hp-cursor" viewBox="0 0 24 24" fill="#1F1646" stroke="#fff" stroke-width="1.2" aria-hidden="true"><path d="M5 3l14 7-6 2-2 6z"/></svg>
+                      </div>
+                      <div class="hp-bcard"><span class="bi"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><h5>Segurança e conformidade</h5><p>Dados protegidos com criptografia, trilha de auditoria e LGPD.</p></div>
+                    </div>
+                    <div class="hp-proofs">
+                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2"/></svg></span><div><div class="pv">+120 associações</div><div class="pk">atendem com UpWeb</div></div></div>
+                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span><div><div class="pv">+250 mil sinistros</div><div class="pk">gerenciados</div></div></div>
+                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><div class="pv">99,9% uptime</div><div class="pk">e alta disponibilidade</div></div></div>
+                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.2-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg></span><div><div class="pv">Suporte especialista</div><div class="pk">e time dedicado</div></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="hp-stand"></div>
+              <div class="hp-foot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAIXA DE ASSOCIAÇÕES ============ -->
+    <section class="clients" aria-label="Associações que confiam na UpWeb">
+      <div class="wrap">
+        <p class="clients-title">Associações que confiam na UpWeb</p>
+      </div>
+      <div class="marquee" data-marquee>
+        <div class="marquee-track">
+          <span class="client-logo">Protege+</span>
+          <span class="client-logo">Clube FORTE</span>
+          <span class="client-logo">União Proteção</span>
+          <span class="client-logo">PROTEG</span>
+          <span class="client-logo">Rota Proteção</span>
+          <span class="client-logo">Mais Veicular</span>
+          <span class="client-logo">ProtegeMax</span>
+          <span class="client-logo">VeicularSeguro</span>
+          <span class="client-logo">AssociaPlus</span>
+          <!-- duplicado para loop contínuo -->
+          <span class="client-logo" aria-hidden="true">Protege+</span>
+          <span class="client-logo" aria-hidden="true">Clube FORTE</span>
+          <span class="client-logo" aria-hidden="true">União Proteção</span>
+          <span class="client-logo" aria-hidden="true">PROTEG</span>
+          <span class="client-logo" aria-hidden="true">Rota Proteção</span>
+          <span class="client-logo" aria-hidden="true">Mais Veicular</span>
+          <span class="client-logo" aria-hidden="true">ProtegeMax</span>
+          <span class="client-logo" aria-hidden="true">VeicularSeguro</span>
+          <span class="client-logo" aria-hidden="true">AssociaPlus</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SISTEMA UPWEB — PRODUTO + FLUXO ============ -->
+    <section class="system" id="sistema-upweb" aria-labelledby="system-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Produto</p>
+          <h2 id="system-title">Do registro ao desfecho: tudo em um <span>fluxo único</span>.</h2>
+          <p>Controle abertura, triagem, documentos, vistoria, análise, jurídico, pagamentos e relatórios em uma operação digital, rastreável e organizada.</p>
+        </div>
+
+        <!-- 9.1 bloco de virada -->
+        <div class="turn-block reveal">
+          <span class="turn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div class="turn-text">
+            <p class="turn-main">Sinistro é onde a promessa da associação encontra a realidade da operação.</p>
+            <p class="turn-sub">Processo, organização e dados transformam esforço em resultado e confiança em reputação.</p>
+          </div>
+        </div>
+
+        <!-- 9.2 três cards -->
+        <div class="product-cards">
+          <article class="product-card reveal">
+            <header><span class="pc-num">01</span><h3>Kanban de Sinistros</h3></header>
+            <p>Visão clara do fluxo e do status de cada sinistro.</p>
+            <div class="pc-shot"><img src="assets/dashboard.png" width="640" height="360" loading="lazy" decoding="async" alt="Quadro Kanban de sinistros da UpWeb por status"></div>
+          </article>
+          <article class="product-card reveal">
+            <header><span class="pc-num">02</span><h3>Ficha do Sinistro</h3></header>
+            <p>Todas as informações, documentos e ocorrências em um só lugar.</p>
+            <div class="pc-shot pc-shot--mock">
+              <div class="ficha-mock" aria-hidden="true">
+                <div class="fm-head">
+                  <span class="fm-id">Sinistro #2024-0481</span>
+                  <span class="fm-status">Em análise</span>
+                </div>
+                <div class="fm-meta">
+                  <span class="fm-avatar"></span>
+                  <span class="fm-meta-lines"><i class="fm-line w60"></i><i class="fm-line w40"></i></span>
+                </div>
+                <div class="fm-rows">
+                  <div class="fm-row"><span class="fm-doc"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span><i class="fm-line w70"></i><span class="fm-check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span></div>
+                  <div class="fm-row"><span class="fm-doc"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span><i class="fm-line w85"></i><span class="fm-check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span></div>
+                  <div class="fm-row"><span class="fm-doc fm-doc--pend"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><i class="fm-line w55"></i></div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="product-card reveal">
+            <header><span class="pc-num">03</span><h3>Linha do Tempo</h3></header>
+            <p>Histórico completo de cada movimentação.</p>
+            <div class="pc-shot"><img src="assets/timeline.png" width="640" height="360" loading="lazy" decoding="async" alt="Linha do tempo com o histórico de movimentações do sinistro"></div>
+          </article>
+        </div>
+
+        <!-- 9.3 fluxo completo -->
+        <div class="flow reveal">
+          <p class="flow-title">Fluxo completo do sinistro</p>
+          <ol class="flow-steps">
+            <li class="flow-step"><span class="flow-dot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="flow-label">Abertura do Sinistro</span></li>
+            <li class="flow-step"><span class="flow-dot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M7 12h10M10 18h4"/></svg></span><span class="flow-label">Triagem e Distribuição</span></li>
+            <li class="flow-step"><span class="flow-dot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span><span class="flow-label">Documentos e Evidências</span></li>
+            <li class="flow-step is-active"><span class="flow-dot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><span class="flow-label">Vistoria Online</span></li>
+            <li class="flow-step"><span class="flow-dot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h4l2 5 4-12 2 7h4"/></svg></span><span class="flow-label">Análise e Decisão</span></li>
+            <li class="flow-step"><span class="flow-dot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="17.5" cy="17.5" r="1.5"/></svg></span><span class="flow-label">Jurídico e Pagamentos</span></li>
+            <li class="flow-step"><span class="flow-dot"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><span class="flow-label">Finalização e Relatórios</span></li>
+          </ol>
+        </div>
+
+        <!-- 9.4 módulos operacionais -->
+        <div class="modules">
+          <article class="module-card reveal">
+            <div class="module-text">
+              <h3>Vistoria 100% Online</h3>
+              <p>Envio de fotos, vídeos e documentos direto pelo celular, com segurança, histórico e rastreabilidade.</p>
+              <a class="text-link" href="#formulario">Saiba mais →</a>
+            </div>
+            <div class="module-visual">
+              <div class="phone-mock">
+                <span class="phone-notch" aria-hidden="true"></span>
+                <img src="assets/vistoria-online.png" width="320" height="560" loading="lazy" decoding="async" alt="Tela de vistoria online no celular com envio de fotos do veículo">
+              </div>
+            </div>
+          </article>
+          <article class="module-card reveal">
+            <div class="module-text">
+              <h3>Envio Jurídico e Pagamentos</h3>
+              <p>Integração com o jurídico, emissão de pagamentos e acompanhamento de aprovações com rastreabilidade total.</p>
+              <a class="text-link" href="#formulario">Saiba mais →</a>
+            </div>
+            <div class="module-visual">
+              <ul class="mini-flow">
+                <li><span class="mf-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4Z"/></svg></span>Envio ao Jurídico</li>
+                <li><span class="mf-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>Análise</li>
+                <li><span class="mf-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Aprovação</li>
+                <li><span class="mf-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></span>Pagamento</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- 9.5 faixa de benefícios -->
+        <div class="benefits-strip reveal">
+          <p class="bs-title">Todos os benefícios que sua associação precisa em um só lugar.</p>
+          <ul class="bs-list">
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Mais controle e visibilidade</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Redução de retrabalho</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Decisões com segurança</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Economia de tempo e custos</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Conformidade e segurança jurídica</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LEITURA FINANCEIRA ============ -->
+    <section class="finance" id="financeiro" aria-labelledby="finance-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Leitura financeira</p>
+          <h2 id="finance-title">Leitura financeira em <span>tempo real</span></h2>
+          <p>Veja custos previstos, aprovados, pagos, prazos, pendências e SLA em uma visão clara para a gestão.</p>
+        </div>
+        <div class="kpi-row reveal">
+          <div class="kpi-card"><span class="kpi-label">Valor Previsto</span><strong class="kpi-value">R$ 1.248.750,00</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Valor Aprovado</span><strong class="kpi-value">R$ 875.420,00</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Valor Pago</span><strong class="kpi-value">R$ 642.300,00</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Custo Médio</span><strong class="kpi-value">R$ 2.145,33</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Prazo Médio</span><strong class="kpi-value">7,6 dias</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Pendências</span><strong class="kpi-value">23</strong></div>
+          <div class="kpi-card kpi-accent"><span class="kpi-label">SLA Cumprido</span><strong class="kpi-value">92%</strong></div>
+        </div>
+        <div class="finance-foot reveal">
+          <p>Filtros por período, categoria, oficina, responsável e status.</p>
+          <a class="text-link" href="#formulario">Ver relatório completo →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REGULAÇÃO E GOVERNANÇA ============ -->
+    <section class="governance" aria-labelledby="gov-title">
+      <div class="wrap split">
+        <div class="reveal">
+          <p class="eyebrow">Regulação e Governança</p>
+          <h2 id="gov-title">Apoio à organização operacional e documental para uma gestão mais segura.</h2>
+          <p>A UpWeb ajuda sua associação a manter histórico, documentos, prazos e decisões organizados em um ambiente único, reduzindo falhas operacionais e aumentando a rastreabilidade do processo.</p>
+          <p class="gov-note"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> O sistema não substitui obrigações legais, contábeis ou regulatórias perante órgãos competentes.</p>
+        </div>
+        <div class="gov-visual reveal" aria-hidden="true">
+          <div class="gov-shield">
+            <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div class="gov-chip gov-chip-1"><svg class="ico" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg> Documentos</div>
+          <div class="gov-chip gov-chip-2"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> Acessos</div>
+          <div class="gov-chip gov-chip-3"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Prazos</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MÉTODO UPWEB ============ -->
+    <section class="method" id="metodo" aria-labelledby="method-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Método UpWeb</p>
+          <h2 id="method-title">Nosso método em <span>5 etapas</span></h2>
+        </div>
+        <ol class="method-steps">
+          <li class="method-step reveal"><span class="ms-num">1</span><h3>Mapear</h3><p>Entendemos seu fluxo atual e identificamos oportunidades.</p></li>
+          <li class="method-step reveal"><span class="ms-num">2</span><h3>Organizar</h3><p>Estruturamos processos, documentos, responsáveis e etapas.</p></li>
+          <li class="method-step reveal"><span class="ms-num">3</span><h3>Implantar</h3><p>Configuramos o sistema e treinamos sua equipe.</p></li>
+          <li class="method-step reveal"><span class="ms-num">4</span><h3>Acompanhar</h3><p>Monitoramos indicadores e apoiamos a evolução operacional.</p></li>
+          <li class="method-step reveal"><span class="ms-num">5</span><h3>Evoluir</h3><p>Ajustamos o processo conforme a maturidade da associação.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ AUTORIDADE HUMANA ============ -->
+    <section class="authority" aria-labelledby="authority-title">
+      <div class="wrap split">
+        <div class="authority-photo reveal" aria-hidden="true">
+          <div class="photo-frame"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow light">Autoridade</p>
+          <h2 id="authority-title">Tecnologia criada por quem entende a realidade da operação.</h2>
+          <p>A UpWeb desenvolve soluções para gestão de sinistros com foco em clareza, controle e resultado real para associações de proteção veicular.</p>
+          <div class="stats" data-stats>
+            <div class="stat"><strong data-counter="10" data-prefix="+">+0</strong><span>anos no setor</span></div>
+            <div class="stat"><strong data-counter="45" data-prefix="+">+0</strong><span>associações atendidas</span></div>
+            <div class="stat"><strong data-counter="1" data-prefix="+" data-suffix="M">+0M</strong><span>sinistros gerenciados</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROVA SOCIAL ============ -->
+    <section class="social" aria-labelledby="social-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Prova social</p>
+          <h2 id="social-title">Quem usa, <span>recomenda</span></h2>
+        </div>
+        <div class="social-grid">
+          <article class="social-stat reveal">
+            <div class="social-shot"><img src="assets/dashboard.png" width="520" height="320" loading="lazy" decoding="async" alt="Painel UpWeb com sinistros gerenciados"></div>
+            <p><strong>Mais de 1.000.000</strong> de sinistros gerenciados. Tecnologia e método para a operação.</p>
+          </article>
+          <article class="testimonial reveal">
+            <span class="quote-mark" aria-hidden="true">”</span>
+            <span class="stars" aria-label="5 de 5 estrelas">★★★★★</span>
+            <p>A UpWeb trouxe ordem para o que antes era descentralizado. Hoje temos histórico, prazos e documentos no mesmo lugar — e muito mais segurança para decidir.</p>
+            <div class="testimonial-author">
+              <span class="avatar" aria-hidden="true">RM</span>
+              <span class="ta-meta">
+                <strong>Ricardo Menezes</strong>
+                <span class="ta-role">Presidente · Associação Protege+</span>
+              </span>
+            </div>
+          </article>
+          <article class="social-logos reveal">
+            <span class="client-logo">Protege+</span>
+            <span class="client-logo">Clube FORTE</span>
+            <span class="client-logo">União Proteção</span>
+            <span class="client-logo">PROTEG</span>
+            <span class="client-logo">Rota Proteção</span>
+            <span class="client-logo">Mais Veicular</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMPARATIVO ============ -->
+    <section class="compare" id="comparativo" aria-labelledby="compare-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Comparativo</p>
+          <h2 id="compare-title">WhatsApp e planilhas não foram feitos para <span>gerir sinistros</span>.</h2>
+        </div>
+        <div class="compare-grid">
+          <article class="compare-col compare-bad reveal">
+            <h3>WhatsApp / Planilhas</h3>
+            <ul>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> Informações espalhadas</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> Prazos esquecidos</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> Decisões sem histórico</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> Custos ocultos</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> Retrabalho constante</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> Alto risco operacional</li>
+            </ul>
+          </article>
+          <article class="compare-col compare-good reveal">
+            <h3>UpWeb Sinistros</h3>
+            <ul>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Tudo organizado em um só lugar</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Prazos com responsáveis e alertas</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Histórico completo para decisão</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Leitura financeira em tempo real</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Processos padronizados</li>
+              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Rastreabilidade e evidências</li>
+            </ul>
+          </article>
+          <article class="compare-col compare-result reveal">
+            <h3>O resultado</h3>
+            <p>Mais controle, menos retrabalho, melhores decisões e mais segurança para a associação.</p>
+            <a class="btn btn-primary" href="#formulario" data-event="cta_demo_click">Agendar demonstração →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FORMULÁRIO ============ -->
+    <section class="form-section" id="formulario" aria-labelledby="form-title">
+      <div class="wrap split">
+        <div class="reveal">
+          <p class="eyebrow">Demonstração</p>
+          <h2 id="form-title">Agende uma demonstração personalizada</h2>
+          <p>Entenda como a UpWeb pode transformar a gestão de sinistros da sua associação.</p>
+          <ul class="form-badges">
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Atendimento consultivo e sem compromisso</li>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Resposta em até 24h</li>
+          </ul>
+        </div>
+        <form class="lead-form reveal" novalidate data-lead-form>
+          <label>Nome
+            <input name="nome" autocomplete="name" required>
+            <span class="field-error" data-error></span>
+          </label>
+          <label>E-mail
+            <input name="email" type="email" autocomplete="email" required>
+            <span class="field-error" data-error></span>
+          </label>
+          <label>WhatsApp
+            <input name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required>
+            <span class="field-error" data-error></span>
+          </label>
+          <label>Associação
+            <input name="associacao" required>
+            <span class="field-error" data-error></span>
+          </label>
+          <label class="field-full">Sinistros por mês
+            <select name="sinistros" required>
+              <option value="" selected disabled>Selecione</option>
+              <option>Menos de 50</option>
+              <option>50–200</option>
+              <option>200–500</option>
+              <option>+500</option>
+            </select>
+            <span class="field-error" data-error></span>
+          </label>
+          <button class="btn btn-primary btn-lg field-full" type="submit" data-event="form_submit">Agendar demonstração</button>
+          <p class="form-message" aria-live="polite" data-form-message></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Perguntas frequentes</h2>
+        </div>
+        <div class="faq-list" data-faq>
+          <details class="reveal"><summary>O sistema substitui o WhatsApp?</summary><p>Ele reduz a dependência do WhatsApp como ferramenta principal de gestão. O WhatsApp pode continuar como canal de comunicação, mas o controle, o histórico e os documentos ficam centralizados no sistema.</p></details>
+          <details class="reveal"><summary>É difícil implantar?</summary><p>A implantação é conduzida com orientação, configuração inicial e treinamento da equipe.</p></details>
+          <details class="reveal"><summary>Meus dados estão seguros?</summary><p>O sistema organiza acessos, documentos e histórico em ambiente controlado, reduzindo a dispersão de informações.</p></details>
+          <details class="reveal"><summary>Funciona para associações de qualquer tamanho?</summary><p>Sim. A solução pode ser ajustada conforme volume de sinistros, equipe e maturidade operacional.</p></details>
+          <details class="reveal"><summary>O sistema atende exigências da SUSEP?</summary><p>O sistema apoia organização, rastreabilidade e gestão documental, mas não substitui obrigações legais, regulatórias, contábeis ou jurídicas.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA FINAL ============ -->
+    <section class="final-cta" aria-labelledby="final-title">
+      <div class="wrap final-grid">
+        <div class="reveal">
+          <h2 id="final-title">Transforme a gestão de sinistros da sua associação hoje.</h2>
+          <p>Mais controle, menos retrabalho, rastreabilidade e decisões com segurança.</p>
+        </div>
+        <div class="final-actions reveal">
+          <a class="btn btn-light btn-lg" href="#" data-whatsapp data-event="cta_whatsapp_click">Falar com especialista</a>
+          <a class="btn btn-outline-light btn-lg" href="#formulario" data-event="cta_demo_click">Agendar demonstração</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="assets/logo-branca.svg" width="140" height="38" loading="lazy" alt="UpWeb">
+        <p>Gestão de sinistros 100% on-line para associações de proteção veicular.</p>
+      </div>
+      <nav class="footer-col" aria-label="Soluções">
+        <h4>Soluções</h4>
+        <a href="#sistema-upweb">Gestão de Sinistros</a>
+        <a href="#sistema-upweb">Vistoria Online</a>
+        <a href="#sistema-upweb">Envio Jurídico</a>
+        <a href="#financeiro">Relatórios e BI</a>
+      </nav>
+      <nav class="footer-col" aria-label="Empresa">
+        <h4>Empresa</h4>
+        <a href="#">Sobre a UpWeb</a>
+        <a href="#">Clientes</a>
+        <a href="#">Blog</a>
+        <a href="#formulario">Contato</a>
+      </nav>
+      <nav class="footer-col" aria-label="Suporte">
+        <h4>Suporte</h4>
+        <a href="#">Central de Ajuda</a>
+        <a href="#">Treinamentos</a>
+        <a href="#" data-whatsapp>Fale Conosco</a>
+      </nav>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <a href="#" data-whatsapp>WhatsApp</a>
+        <a href="mailto:comercial@upweb.com.br">comercial@upweb.com.br</a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© <span data-year>2026</span> UpWeb. Todos os direitos reservados.</span>
+      <nav aria-label="Legal">
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Uso</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ============ FIXOS ============ -->
+  <a class="whatsapp-float" href="#" data-whatsapp data-event="cta_whatsapp_click" aria-label="Falar com um especialista pelo WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.2-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+  </a>
+  <div class="mobile-bar">
+    <a class="btn btn-primary" href="#formulario" data-event="cta_demo_click">Agendar demonstração</a>
+  </div>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"UpWeb Gestão de Sinistros","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"Plataforma on-line para gestão de sinistros em associações de proteção veicular: rastreabilidade, vistoria online, organização documental e leitura financeira."}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"O sistema substitui o WhatsApp?","acceptedAnswer":{"@type":"Answer","text":"Ele reduz a dependência do WhatsApp como ferramenta principal de gestão. O controle, o histórico e os documentos ficam centralizados no sistema."}},
+    {"@type":"Question","name":"É difícil implantar?","acceptedAnswer":{"@type":"Answer","text":"A implantação é conduzida com orientação, configuração inicial e treinamento da equipe."}},
+    {"@type":"Question","name":"Meus dados estão seguros?","acceptedAnswer":{"@type":"Answer","text":"O sistema organiza acessos, documentos e histórico em ambiente controlado, reduzindo a dispersão de informações."}},
+    {"@type":"Question","name":"Funciona para associações de qualquer tamanho?","acceptedAnswer":{"@type":"Answer","text":"Sim. A solução pode ser ajustada conforme volume de sinistros, equipe e maturidade operacional."}},
+    {"@type":"Question","name":"O sistema atende exigências da SUSEP?","acceptedAnswer":{"@type":"Answer","text":"O sistema apoia organização, rastreabilidade e gestão documental, mas não substitui obrigações legais, regulatórias, contábeis ou jurídicas."}}
+  ]}
+  </script>
+  <script src="main.js" defer></script>
+</body>
+</html>

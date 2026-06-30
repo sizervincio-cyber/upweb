@@ -1,0 +1,9 @@
+# Pacote zip de backup
+Command execution.zip
+
+# Configuração local do Claude Code
+.claude/
+
+# Sistema
+Thumbs.db
+.DS_Store
