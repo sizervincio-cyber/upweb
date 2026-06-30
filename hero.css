@@ -33,14 +33,67 @@
 .hero-pro .hp-desc{font-size:clamp(1rem,1vw + .6rem,1.1rem);line-height:1.65;color:var(--gray);max-width:40ch;margin:0 0 34px}
 
 .hero-pro .hp-cta{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:40px}
-.hero-pro .hpbtn{display:inline-flex;align-items:center;gap:11px;padding:18px 32px;border-radius:16px;font-weight:700;
-  font-size:1.06rem;cursor:pointer;text-decoration:none;transition:transform .25s,box-shadow .25s}
-.hero-pro .hpbtn-1{background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;
-  box-shadow:0 18px 38px rgba(91,22,214,.42),inset 0 1px 0 rgba(255,255,255,.4)}
-.hero-pro .hpbtn-1:hover{transform:translateY(-3px);box-shadow:0 24px 50px rgba(91,22,214,.52),inset 0 1px 0 rgba(255,255,255,.4)}
-.hero-pro .hpbtn-2{background:#fff;color:var(--p1);border:1.5px solid #D9CEF7;box-shadow:0 10px 26px rgba(31,22,70,.08)}
-.hero-pro .hpbtn-2:hover{transform:translateY(-3px);border-color:var(--p2)}
-.hero-pro .hpbtn-2 .play{width:26px;height:26px;border-radius:50%;background:var(--lilac);display:grid;place-items:center;font-size:.62rem}
+.hero-pro .hpbtn{display:inline-flex;align-items:center;gap:11px;padding:18px 36px;border-radius:20px;font-weight:700;
+  font-size:1.06rem;cursor:pointer;text-decoration:none;transition:all .3s cubic-bezier(.25,.8,.25,1);letter-spacing:.02em}
+
+/* ── Neumorphism escuro: botão primário ── */
+.hero-pro .hpbtn-1{
+  color:#fff;
+  background: linear-gradient(145deg,#6d28d9,#4c1d95);
+  box-shadow:
+    6px 6px 16px rgba(0,0,0,.55),
+    -4px -4px 10px rgba(139,92,246,.18),
+    inset 0 1px 0 rgba(255,255,255,.15),
+    inset 0 -1px 0 rgba(0,0,0,.25);
+  border:1px solid rgba(139,92,246,.35);
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.hero-pro .hpbtn-1:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    8px 10px 22px rgba(0,0,0,.65),
+    -5px -5px 14px rgba(167,139,250,.22),
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -1px 0 rgba(0,0,0,.3);
+  border-color:rgba(167,139,250,.5);
+}
+.hero-pro .hpbtn-1:active{
+  transform:translateY(1px);
+  box-shadow:
+    inset 4px 4px 10px rgba(0,0,0,.5),
+    inset -2px -2px 6px rgba(139,92,246,.15);
+}
+
+/* ── Neumorphism escuro: botão secundário ── */
+.hero-pro .hpbtn-2{
+  color:rgba(233,224,255,.92);
+  background:rgba(255,255,255,.04);
+  box-shadow:
+    5px 5px 14px rgba(0,0,0,.45),
+    -4px -4px 10px rgba(255,255,255,.04),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -1px 0 rgba(0,0,0,.2);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(8px);
+}
+.hero-pro .hpbtn-2:hover{
+  transform:translateY(-2px);
+  color:#fff;
+  background:rgba(255,255,255,.07);
+  box-shadow:
+    7px 8px 18px rgba(0,0,0,.5),
+    -4px -4px 12px rgba(255,255,255,.06),
+    inset 0 1px 0 rgba(255,255,255,.12),
+    inset 0 -1px 0 rgba(0,0,0,.25);
+  border-color:rgba(167,139,250,.3);
+}
+.hero-pro .hpbtn-2:active{
+  transform:translateY(1px);
+  box-shadow:
+    inset 4px 4px 10px rgba(0,0,0,.4),
+    inset -2px -2px 6px rgba(255,255,255,.04);
+}
+.hero-pro .hpbtn-2 .play{width:26px;height:26px;border-radius:50%;background:rgba(139,92,246,.25);display:grid;place-items:center;font-size:.62rem;border:1px solid rgba(139,92,246,.3)}
 
 .hero-pro .hp-trust{display:flex;gap:16px;flex-wrap:wrap}
 .hero-pro .hp-tcard{display:flex;gap:13px;align-items:flex-start;padding:16px 18px;border-radius:16px;max-width:262px;

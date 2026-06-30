@@ -16,6 +16,154 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="hero.css">
   <!-- TODO produção: converter gestao-upweb.png e beneficios.png para WebP < 300KB -->
+
+<style id="hero-context-css">
+/* ============================================================
+   UPWEB — Hero com troca de contexto (3 pilares)
+   ============================================================ */
+.hero{
+  --ease:cubic-bezier(.22,.61,.36,1);
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:92vh;display:flex;flex-direction:column;
+  --fg:#fff;--fg-soft:rgba(255,255,255,.84);
+  --accent:#C9A6FF;--hint:rgba(255,255,255,.66);
+  --tshadow:0 2px 28px rgba(18,8,46,.45);
+}
+.hero[data-theme="roxa"]  {--fg:#fff;--fg-soft:rgba(255,255,255,.88);--accent:#D9BCFF;--hint:rgba(255,255,255,.72);--tshadow:0 2px 30px rgba(30,8,72,.55);}
+.hero[data-theme="azul"]  {--fg:#fff;--fg-soft:rgba(255,255,255,.88);--accent:#A6CCFF;--hint:rgba(255,255,255,.72);--tshadow:0 2px 30px rgba(4,16,58,.55);}
+.hero[data-theme="branca"]{--fg:#171334;--fg-soft:#4b4768;--accent:#6D28D9;--hint:#7c7898;--tshadow:none;}
+
+.hero__bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.hero__layer{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .55s var(--ease);will-change:opacity;}
+.hero__layer.is-active{opacity:1;}
+.hero__layer--default{background-color:#1b1234;background-image:linear-gradient(108deg,rgba(18,8,46,.55) 0%,rgba(60,20,120,.28) 52%,rgba(18,8,46,.62) 100%),url('assets/upweb-hero-default.png');background-size:cover;background-position:center right;}
+.hero__layer--roxa{background-color:#2a0f52;background-image:linear-gradient(108deg,rgba(18,8,46,.55) 0%,rgba(60,20,120,.28) 52%,rgba(18,8,46,.62) 100%),url('assets/upweb-hero-default.png');background-size:cover;background-position:center right;}
+.hero__layer--azul{background-color:#0a1640;background-image:linear-gradient(108deg,rgba(7,18,66,.88) 0%,rgba(30,64,175,.5) 52%,rgba(59,130,246,.22) 100%),url('assets/educacao.webp');background-size:cover;}
+.hero__layer--branca{background-color:#eceef5;background-image:linear-gradient(108deg,rgba(243,245,251,.92) 0%,rgba(232,235,246,.66) 55%,rgba(124,58,237,.10) 100%),url('assets/lc213.webp');background-size:cover;}
+
+.hero__inner{position:relative;z-index:2;width:min(100% - 64px,1340px);margin:0 auto;display:flex;flex-direction:column;padding:clamp(64px,9vh,110px) 0 clamp(40px,5vh,64px);min-height:92vh;}
+
+.hero__copy{max-width:70ch;transition:opacity .18s var(--ease),transform .18s var(--ease);}
+.hero__copy.is-swapping{opacity:0;transform:translateY(8px);}
+
+.hero__eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.82rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+.hero__eyebrow::before{content:"";width:26px;height:2px;background:currentColor;border-radius:2px;}
+
+.hero__title{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(2rem,.8rem + 3.1vw,3.3rem);line-height:1.1;letter-spacing:-.02em;color:var(--fg);text-shadow:var(--tshadow);margin:0 0 22px;white-space:normal;}
+.hero__title .hl{color:var(--accent);}
+.hero__subtitle{font-size:clamp(1rem,.9rem + .4vw,1.18rem);line-height:1.62;color:var(--fg-soft);margin:0 0 32px;max-width:54ch;}
+
+.hero__actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+.hero__hint{font-size:.84rem;color:var(--hint);font-weight:500;width:100%;margin-top:6px;}
+
+/* Botões hero — neumorphism elegante, legível em todos os temas */
+.hero .hpbtn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:14px;font-weight:700;font-size:.95rem;cursor:pointer;text-decoration:none;transition:all .3s cubic-bezier(.25,.8,.25,1);letter-spacing:.02em;position:relative;overflow:hidden;white-space:nowrap;height:48px;}
+.hero .hpbtn::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .3s;}
+
+/* Primário — roxo profundo legível em todos os temas */
+.hero .hpbtn-1{
+  color:#fff;
+  background:linear-gradient(145deg,#7c3aed,#5b16d6);
+  box-shadow:
+    6px 6px 18px rgba(0,0,0,.5),
+    -3px -3px 10px rgba(167,139,250,.2),
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -1px 0 rgba(0,0,0,.28);
+  border:1px solid rgba(167,139,250,.4);
+  text-shadow:0 1px 4px rgba(0,0,0,.35);
+}
+.hero .hpbtn-1::before{background:linear-gradient(145deg,rgba(255,255,255,.08),transparent);}
+.hero .hpbtn-1:hover{transform:translateY(-2px);box-shadow:8px 12px 24px rgba(0,0,0,.6),-4px -4px 12px rgba(167,139,250,.25),inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(0,0,0,.32);border-color:rgba(192,168,255,.55);}
+.hero .hpbtn-1:hover::before{opacity:1;}
+.hero .hpbtn-1:active{transform:translateY(1px);box-shadow:inset 4px 4px 12px rgba(0,0,0,.5),inset -2px -2px 8px rgba(139,92,246,.18);}
+
+/* Secundário — glassmorphism adaptativo */
+.hero .hpbtn-2{
+  color:rgba(245,240,255,.95);
+  background:rgba(255,255,255,.08);
+  box-shadow:
+    5px 5px 16px rgba(0,0,0,.42),
+    -3px -3px 10px rgba(255,255,255,.05),
+    inset 0 1px 0 rgba(255,255,255,.12),
+    inset 0 -1px 0 rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(10px);
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+}
+.hero .hpbtn-2:hover{transform:translateY(-2px);color:#fff;background:rgba(255,255,255,.13);box-shadow:7px 10px 20px rgba(0,0,0,.5),-4px -4px 12px rgba(255,255,255,.07),inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(0,0,0,.22);border-color:rgba(255,255,255,.28);}
+.hero .hpbtn-2:active{transform:translateY(1px);box-shadow:inset 4px 4px 10px rgba(0,0,0,.38),inset -2px -2px 6px rgba(255,255,255,.05);}
+.hero .hpbtn-2 .play{width:28px;height:28px;border-radius:50%;background:rgba(167,139,250,.3);display:grid;place-items:center;font-size:.64rem;border:1px solid rgba(167,139,250,.4);flex-shrink:0;}
+
+/* Tema claro (branca) — ajuste contraste */
+.hero[data-theme="branca"] .hpbtn-2{color:#2d1a6e;background:rgba(109,40,217,.1);border-color:rgba(109,40,217,.3);text-shadow:none;box-shadow:5px 5px 14px rgba(109,40,217,.15),-3px -3px 8px rgba(255,255,255,.7),inset 0 1px 0 rgba(255,255,255,.8);}
+.hero[data-theme="branca"] .hpbtn-2:hover{color:#1a0d46;background:rgba(109,40,217,.15);border-color:rgba(109,40,217,.45);}
+.hero[data-theme="branca"] .hpbtn-2 .play{background:rgba(109,40,217,.18);border-color:rgba(109,40,217,.3);}
+
+/* Cards dos pilares */
+.hero__cards{margin-top:auto;padding-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.card{--c:#A855F7;position:relative;overflow:hidden;display:flex;flex-direction:column;padding:22px 24px 20px 26px;border-radius:16px;
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(12px) saturate(140%);
+  -webkit-backdrop-filter:blur(12px) saturate(140%);
+  border:1px solid rgba(255,255,255,0.14);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 8px 32px rgba(0,0,0,0.25);
+  color:#fff;cursor:pointer;text-decoration:none;transition:transform .28s var(--ease),border-color .28s,box-shadow .28s,background .28s;}
+.card[data-theme="roxa"]{--c:#A855F7;}
+.card[data-theme="azul"]{--c:#3B82F6;}
+.card[data-theme="branca"]{--c:#E3B23C;}
+.card__bar{position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:4px;background:var(--c);opacity:.85;transition:opacity .28s,top .28s,bottom .28s;}
+.card__kicker{font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c);}
+.card__title{font-family:'Sora',sans-serif;font-weight:700;font-size:1.18rem;margin:8px 0 6px;color:#fff;}
+.card__desc{font-size:.92rem;line-height:1.45;color:rgba(255,255,255,.7);flex:1;}
+.card__cta{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:.9rem;font-weight:600;color:#fff;}
+.card__cta svg{width:16px;height:16px;color:var(--c);transition:transform .25s var(--ease);}
+.card:hover,.card.is-active,.card:focus-visible{transform:translateY(-5px);border-color:color-mix(in srgb,var(--c) 58%,transparent);box-shadow:0 22px 54px -16px color-mix(in srgb,var(--c) 40%,transparent),inset 0 1px 0 rgba(255,255,255,0.18),0 8px 32px rgba(0,0,0,0.3);background:rgba(255,255,255,0.11);}
+.card:hover .card__bar,.card.is-active .card__bar{opacity:1;top:0;bottom:0;}
+.card:hover .card__cta svg,.card.is-active .card__cta svg{transform:translateX(4px);}
+.card:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+
+/* Tema claro — cards com texto escuro para legibilidade */
+.hero[data-theme="branca"] .card{
+  background:rgba(255,255,255,0.55);
+  border-color:rgba(109,40,217,0.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 32px rgba(109,40,217,0.1);
+}
+.hero[data-theme="branca"] .card__title{ color:#1a0d46; }
+.hero[data-theme="branca"] .card__desc{ color:#3d2a70; }
+.hero[data-theme="branca"] .card__cta{ color:#2d1a5e; }
+.hero[data-theme="branca"] .card:hover,
+.hero[data-theme="branca"] .card.is-active{
+  background:rgba(255,255,255,0.72);
+  box-shadow:0 22px 54px -16px color-mix(in srgb,var(--c) 30%,transparent),inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+/* Selo de conformidade — transição para tema branca (regulamentação) */
+#upweb-seal{
+  transition:
+    bottom .55s cubic-bezier(.22,.61,.36,1),
+    right .55s cubic-bezier(.22,.61,.36,1),
+    left .55s cubic-bezier(.22,.61,.36,1),
+    top .55s cubic-bezier(.22,.61,.36,1),
+    width .55s cubic-bezier(.22,.61,.36,1),
+    height .55s cubic-bezier(.22,.61,.36,1),
+    transform .55s cubic-bezier(.22,.61,.36,1) !important;
+}
+.hero[data-theme="branca"] #upweb-seal{
+  bottom:auto !important;
+  right:auto !important;
+  left:75% !important;
+  top:36% !important;
+  transform:translateX(-50%) !important;
+  width:320px !important;
+  height:320px !important;
+}
+.hero__chsp-float{position:absolute;left:75%;transform:translateX(-50%);top:calc(36% - 38px);width:clamp(380px,36vw,560px);opacity:0;pointer-events:none;z-index:3;transition:opacity .5s var(--ease);filter:drop-shadow(0 0 40px rgba(255,107,0,.35)) drop-shadow(0 8px 32px rgba(0,0,0,.6)) drop-shadow(0 2px 8px rgba(0,0,0,.8));}
+.hero[data-theme="azul"] .hero__chsp-float{opacity:1;pointer-events:auto;}
+
+@media(max-width:900px){.hero__inner{padding:48px 0 32px;}.hero__cards{grid-template-columns:1fr;gap:14px;padding-top:32px;}.hero__chsp-float{display:none;}}
+@media(prefers-reduced-motion:reduce){.hero__layer,.hero__copy,.card{transition:none!important;}}
+</style>
+
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
@@ -25,7 +173,7 @@
     <span class="header-topline" aria-hidden="true"></span>
     <nav class="nav wrap" aria-label="Navegação principal">
       <a class="brand" href="#topo" aria-label="UpWeb — página inicial">
-        <img src="assets/logo-roxo.svg" width="152" height="40" alt="UpWeb">
+        <img src="assets/logo-upweb-color.png" width="172" height="auto" alt="UpWeb">
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Abrir menu">
         <span class="menu-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -41,136 +189,209 @@
   </header>
 
   <main id="conteudo">
-    <!-- ============ HERO ============ -->
-    <section class="hero-pro" id="topo" aria-labelledby="hero-title">
-      <svg class="hp-net" viewBox="0 0 1680 230" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
-        <g stroke="#C9BDF0" stroke-width="1" fill="none" opacity=".7">
-          <path d="M0,60 L180,120 L360,40 L540,140 L720,70 L900,150 L1080,50 L1260,130 L1440,60 L1680,120"/>
-          <path d="M0,160 L210,90 L420,180 L630,100 L840,190 L1050,110 L1260,200 L1470,120 L1680,180"/>
-        </g>
-        <g fill="#8E78D8">
-          <circle cx="180" cy="120" r="3"/><circle cx="540" cy="140" r="3"/><circle cx="900" cy="150" r="3"/>
-          <circle cx="1260" cy="130" r="3"/><circle cx="420" cy="180" r="3"/><circle cx="1050" cy="110" r="3"/>
-        </g>
-      </svg>
-      <span class="hp-spark" style="width:6px;height:6px;top:34%;left:60%" aria-hidden="true"></span>
-      <span class="hp-spark" style="width:9px;height:9px;top:58%;left:50%" aria-hidden="true"></span>
-      <span class="hp-spark" style="width:5px;height:5px;top:70%;left:66%" aria-hidden="true"></span>
+        <!-- ============ HERO ============ -->
+    <section class="hero" id="topo" data-theme="default" aria-label="Soluções UPWEB para Associações de Proteção Veicular">
 
-      <div class="hp-grid">
-        <div class="hp-left">
-          <span class="hp-badge">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
-            Gestão inteligente para associações
-          </span>
-          <h1 id="hero-title"><span class="nb">Controle inteligente</span><br><span class="nb">e digital dos <span class="hl">sinistros</span></span><br><span class="nb">da sua <span class="hl">APV</span>.</span></h1>
-          <p class="hp-sub">Do primeiro registro ao desfecho final.<br>Mais controle, menos retrabalho e decisões seguras.</p>
-          <p class="hp-desc">Centralize documentos, vistorias, prazos, aprovações, pagamentos e histórico em uma operação 100% digital, rastreável e segura.</p>
-          <div class="hp-cta">
-            <a class="hpbtn hpbtn-1" href="#formulario" data-event="cta_demo_click">Agendar demonstração <span class="ar">→</span></a>
-            <a class="hpbtn hpbtn-2" href="#sistema-upweb" data-event="como_funciona_click"><span class="play">▶</span> Ver como funciona</a>
-          </div>
-          <div class="hp-trust">
-            <div class="hp-tcard">
-              <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
-              <div><h4>Segurança e conformidade</h4><p>Dados protegidos com criptografia, trilha de auditoria e aderência à LGPD.</p></div>
-            </div>
-            <div class="hp-tcard">
-              <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
-              <div><h4>Tecnologia confiável</h4><p>Infraestrutura robusta, disponível 24/7 com 99,9% de uptime.</p></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="hp-right">
-          <div class="hp-stage">
-            <span class="hp-glow" aria-hidden="true"></span>
-            <div class="hp-monitor" role="img" aria-label="Painel UpWeb de gestão de sinistros com KPIs, quadro Kanban e indicadores em tempo real">
-              <div class="hp-bezel">
-                <span class="hp-cam" aria-hidden="true"></span>
-                <div class="hp-screen">
-                  <aside class="hp-side" aria-hidden="true">
-                    <span class="hp-slogo">up<span>web</span></span>
-                    <span class="hp-sideico on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
-                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span>
-                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg></span>
-                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
-                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M4 12h4l2 5 4-12 2 7h4"/></svg></span>
-                    <span class="hp-sideico"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/></svg></span>
-                    <span class="hp-rec"><i></i></span>
-                  </aside>
-                  <div class="hp-main">
-                    <div class="hp-topbar">
-                      <div><div class="hp-tt">Painel de Sinistros</div><div class="hp-ts">Visão geral do fluxo de sinistros</div></div>
-                      <div class="hp-topr">
-                        <span class="hp-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg> Buscar veículo, associado, placa...</span>
-                        <span class="hp-bell"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="hp-bdg">3</span></span>
-                        <span class="hp-av"></span>
-                        <span class="hp-new">+ Novo sinistro</span>
-                      </div>
-                    </div>
-                    <div class="hp-kpis">
-                      <div class="hp-kpi k-rec"><div class="kl">Recebido</div><div class="kv">128</div><div class="ks">Total de novos sinistros</div></div>
-                      <div class="hp-kpi k-an"><div class="kl">Em análise</div><div class="kv">42</div><div class="ks">Aguardando análise</div></div>
-                      <div class="hp-kpi k-ag"><div class="kl">Aguardando</div><div class="kv">18</div><div class="ks">Aguardando documentos</div></div>
-                      <div class="hp-kpi k-ex"><div class="kl">Em execução</div><div class="kv">37</div><div class="ks">Vistorias e serviços</div></div>
-                      <div class="hp-kpi k-fi"><div class="kl">Finalizado</div><div class="kv">96</div><div class="ks">Sinistros concluídos</div></div>
-                    </div>
-                    <div class="hp-kanban">
-                      <div class="hp-col c-rec">
-                        <div class="hp-colh"><span class="cn">Recebido</span><span class="cc">128</span></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1045 <span>⤢</span></div><div class="snm">João Ferreira</div><div class="sca">Renault Kwid · 2020</div><div class="stag">Sinistro · Colisão</div><div class="stime">Hoje · 09:15</div></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1046</div><div class="snm">Maria Oliveira</div><div class="sca">Honda Fit · 2019</div><div class="stag">Sinistro · Roubo/Furto</div><div class="stime">Hoje · 08:42</div></div>
-                        <div class="hp-colv">Ver todos</div>
-                      </div>
-                      <div class="hp-col c-an">
-                        <div class="hp-colh"><span class="cn">Em análise</span><span class="cc">42</span></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1047 <span>⋮</span></div><div class="snm">Carlos Barreto</div><div class="sca">VW Virtus · 2022</div><div class="stag">Assoc. Clube União</div><div class="stime">2h</div></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1048 <span>⋮</span></div><div class="snm">Amanda Santos</div><div class="sca">Fiat Siena · 2018</div><div class="stag">Sinistro · Danos Parciais</div><div class="stime">3h</div></div>
-                        <div class="hp-colv">Ver todos</div>
-                      </div>
-                      <div class="hp-col c-ag">
-                        <div class="hp-colh"><span class="cn">Aguardando</span><span class="cc">18</span></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1049 <span>⋮</span></div><div class="snm">Patrícia Andrade</div><div class="sca">Renault Sandero · 2021</div><div class="stag t-ag">Aguardando documentos</div><div class="stime">1d</div></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1050 <span>⋮</span></div><div class="snm">Roberto Mendonça</div><div class="sca">Honda Civic · 2020</div><div class="stag t-ag">Aguardando vistoria</div><div class="stime">1d</div></div>
-                        <div class="hp-colv">Ver todos</div>
-                      </div>
-                      <div class="hp-col c-ex">
-                        <div class="hp-colh"><span class="cn">Em execução</span><span class="cc">37</span></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1051 <span>⋮</span></div><div class="snm">Juliana Ribeiro</div><div class="sca">Jeep Compass · 2022</div><div class="stag t-ex">Em execução</div><div class="stime">2d</div></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1052 <span>⋮</span></div><div class="snm">Gabriel Costa</div><div class="sca">Chevrolet Tracker · 2023</div><div class="stag t-ex">Funilaria e Pintura</div><div class="stime">3d</div></div>
-                        <div class="hp-colv">Ver todos</div>
-                      </div>
-                      <div class="hp-col c-fi">
-                        <div class="hp-colh"><span class="cn">Finalizado</span><span class="cc">96</span></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1053 <span>⤢</span></div><div class="snm">Fernando Lima</div><div class="sca">Toyota Corolla · 2021</div><div class="stag t-fi">Finalizado</div><div class="stime">5d</div></div>
-                        <div class="hp-scard"><div class="sid">SN-2024-1054 <span>⋮</span></div><div class="snm">Beatriz Silva</div><div class="sca">Hyundai HB20 · 2020</div><div class="stag t-fi">Pago</div><div class="stime">7d</div></div>
-                        <div class="hp-colv">Ver todos</div>
-                      </div>
-                    </div>
-                    <div class="hp-benefits">
-                      <div class="hp-bcard"><span class="bi"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><h5>Rastreabilidade total</h5><p>Cada etapa registrada com transparência.</p></div>
-                      <div class="hp-bcard"><span class="bi"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg></span><h5>Organização documental</h5><p>Todos os documentos centralizados e seguros.</p></div>
-                      <div class="hp-bcard is-hover"><span class="bi"><svg viewBox="0 0 24 24"><path d="M4 16l5-5 3 3 6-7"/></svg></span><h5>Leitura financeira em tempo real</h5><p>Indicadores atualizados para decisões mais rápidas.</p>
-                        <svg class="hp-cursor" viewBox="0 0 24 24" fill="#1F1646" stroke="#fff" stroke-width="1.2" aria-hidden="true"><path d="M5 3l14 7-6 2-2 6z"/></svg>
-                      </div>
-                      <div class="hp-bcard"><span class="bi"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><h5>Segurança e conformidade</h5><p>Dados protegidos com criptografia, trilha de auditoria e LGPD.</p></div>
-                    </div>
-                    <div class="hp-proofs">
-                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2"/></svg></span><div><div class="pv">+120 associações</div><div class="pk">atendem com UpWeb</div></div></div>
-                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span><div><div class="pv">+250 mil sinistros</div><div class="pk">gerenciados</div></div></div>
-                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><div class="pv">99,9% uptime</div><div class="pk">e alta disponibilidade</div></div></div>
-                      <div class="hp-pcard"><span class="pi"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.2-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg></span><div><div class="pv">Suporte especialista</div><div class="pk">e time dedicado</div></div></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="hp-stand"></div>
-              <div class="hp-foot"></div>
-            </div>
-          </div>
-        </div>
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__layer hero__layer--default is-active"></div>
+        <div class="hero__layer hero__layer--roxa"></div>
+        <div class="hero__layer hero__layer--azul"></div>
+        <div class="hero__layer hero__layer--branca"></div>
       </div>
+
+      <div class="hero__inner">
+
+        <div class="hero__copy" id="hero-copy">
+          <span class="hero__eyebrow" id="hero-eyebrow" style="display:none;"></span>
+          <h1 class="hero__title" id="hero-title">
+            Gestão <span class="hl">Inteligente</span><br>
+            e <span class="hl">digital</span> dos sinistros de sua<br>
+            <span class="hl" style="white-space:nowrap;">Associação de Proteção Veicular</span>
+          </h1>
+          <p class="hero__subtitle" id="hero-subtitle">Centralize documentos, vistorias, prazos, aprovações, pagamentos e histórico em uma operação 100% digital, rastreável e segura.</p>
+          <div class="hero__actions">
+            <a class="hpbtn hpbtn-1" id="hero-cta" href="#formulario" data-event="cta_demo_click">Agendar demonstração <span class="ar">→</span></a>
+            <a class="hpbtn hpbtn-2" id="hero-cta2" href="#sistema-upweb" data-event="como_funciona_click"><span class="play">▶</span> Ver como funciona</a>
+            <span class="hero__hint" id="hero-hint">Passe o mouse nos pilares abaixo para explorar</span>
+          </div>
+        </div>
+
+        <div class="hero__cards" role="list">
+          <a class="card" data-theme="roxa" href="#sistema-upweb" role="listitem" aria-label="UPSIN — Gestão de Sinistros">
+            <span class="card__bar" aria-hidden="true"></span>
+            <span class="card__kicker">UPSIN</span>
+            <span class="card__title">Gestão de Sinistros</span>
+            <span class="card__desc">Do primeiro registro ao desfecho final, 100% digital.</span>
+            <span class="card__cta">Tenho interesse
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </span>
+          </a>
+          <a class="card" data-theme="azul" href="https://metodo-chsp.lovable.app" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Educação de Gestão — Treinamentos">
+            <span class="card__bar" aria-hidden="true"></span>
+            <span class="card__kicker">Educação de Gestão</span>
+            <span class="card__title">Treinamentos &amp; Evolução</span>
+            <span class="card__desc">Times de alta performance com o Método CHSP.</span>
+            <span class="card__cta">Quero evoluir
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </span>
+          </a>
+          <a class="card" data-theme="branca" href="#formulario" role="listitem" aria-label="LC 213/2025 — Conformidade">
+            <span class="card__bar" aria-hidden="true"></span>
+            <span class="card__kicker">LC 213/2025</span>
+            <span class="card__title">Regulamentação</span>
+            <span class="card__desc">Sua associação dentro da nova lei.</span>
+            <span class="card__cta">Verificar conformidade
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Logo CHSP flutuante (tema Educação) -->
+      <a class="hero__chsp-float" href="https://metodo-chsp.lovable.app" target="_blank" rel="noopener noreferrer" aria-label="Método CHSP — Conhecer">
+        <img src="assets/logo-chsp.png" alt="Método CHSP" style="width:100%;display:block;">
+      </a>
+
+      <!-- ============ SELO DE CONFORMIDADE ============ -->
+      <a id="upweb-seal"
+         href="https://upwebsinistros.com.br"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Selo de Conformidade UPWEB - Gestão de Sinistro - Seu primeiro passo pra adequação LC 213/2025."
+         style="position:absolute;bottom:32px;right:48px;width:160px;height:160px;display:block;border-radius:50%;cursor:pointer;user-select:none;z-index:20;text-decoration:none;">
+        <style>
+          @keyframes sealGlint1 { 0%,100%{transform:rotate(0deg)}  50%{transform:rotate(10deg)} }
+          @keyframes sealGlint2 { 0%,100%{transform:rotate(20deg)} 50%{transform:rotate(30deg)} }
+          @keyframes sealGlint3 { 0%,100%{transform:rotate(40deg)} 50%{transform:rotate(50deg)} }
+          @keyframes sealGlint4 { 0%,100%{transform:rotate(60deg)} 50%{transform:rotate(70deg)} }
+          @keyframes sealGlint5 { 0%,100%{transform:rotate(80deg)} 50%{transform:rotate(90deg)} }
+          #upweb-seal-inner { transition: transform 200ms ease-out; }
+          #upweb-seal:hover #upweb-seal-inner img { filter: brightness(1.12); }
+        </style>
+        <div id="upweb-seal-inner" style="position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;filter:drop-shadow(0 16px 32px rgba(23,14,68,0.45));">
+          <img src="assets/upweb_selo_conformidade_round.png"
+               alt="Selo de Conformidade UPWEB"
+               draggable="false"
+               style="position:relative;z-index:10;width:100%;height:100%;border-radius:50%;object-fit:contain;transition:filter 300ms;">
+
+          <!-- Glints cromados -->
+          <div style="pointer-events:none;position:absolute;inset:0;z-index:20;border-radius:50%;opacity:0.5;mix-blend-mode:screen;">
+            <span style="position:absolute;left:50%;top:50%;width:18%;height:160%;margin-left:-9%;margin-top:-80%;border-radius:50%;background:hsl(206,100%,52%);filter:blur(10px);transform-origin:center center;animation:sealGlint1 5s infinite;"></span>
+            <span style="position:absolute;left:50%;top:50%;width:18%;height:160%;margin-left:-9%;margin-top:-80%;border-radius:50%;background:hsl(261,88%,60%);filter:blur(10px);transform-origin:center center;animation:sealGlint2 5s infinite;"></span>
+            <span style="position:absolute;left:50%;top:50%;width:18%;height:160%;margin-left:-9%;margin-top:-80%;border-radius:50%;background:hsl(288,84%,58%);filter:blur(10px);transform-origin:center center;animation:sealGlint3 5s infinite;"></span>
+            <span style="position:absolute;left:50%;top:50%;width:18%;height:160%;margin-left:-9%;margin-top:-80%;border-radius:50%;background:white;filter:blur(10px);transform-origin:center center;animation:sealGlint4 5s infinite;"></span>
+            <span style="position:absolute;left:50%;top:50%;width:18%;height:160%;margin-left:-9%;margin-top:-80%;border-radius:50%;background:hsl(183,100%,48%);filter:blur(10px);transform-origin:center center;animation:sealGlint5 5s infinite;"></span>
+          </div>
+
+          <!-- Ring gloss -->
+          <span style="pointer-events:none;position:absolute;inset:3%;z-index:30;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35);"></span>
+          <!-- Top-left shimmer -->
+          <span style="pointer-events:none;position:absolute;left:17%;top:12%;z-index:30;width:16%;height:16%;border-radius:50%;background:rgba(255,255,255,0.45);filter:blur(8px);"></span>
+          <!-- Bright glint dots -->
+          <span style="pointer-events:none;position:absolute;right:11%;top:22%;z-index:30;width:3%;height:3%;border-radius:50%;background:white;box-shadow:0 0 26px 10px rgba(255,255,255,0.85);"></span>
+          <span style="pointer-events:none;position:absolute;bottom:13%;left:19%;z-index:30;width:2.4%;height:2.4%;border-radius:50%;background:white;box-shadow:0 0 22px 8px rgba(255,255,255,0.72);"></span>
+        </div>
+      </a>
+
+      <script>
+      (function(){
+        var seal = document.getElementById('upweb-seal');
+        var inner = document.getElementById('upweb-seal-inner');
+        var glints = inner.querySelectorAll('span[style*="animation"]');
+        var identityMatrix = '1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1';
+        var maxRotate = 0.25, minRotate = -0.25, maxScale = 1, minScale = 0.965;
+        var isTimeoutFinished = false;
+        var currentMatrix = identityMatrix;
+        var matrix = identityMatrix;
+        var firstPos = 0;
+        var enterT, leaveT1, leaveT2, leaveT3;
+
+        function clearT(t){ if(t) clearTimeout(t); }
+
+        function getRect(){
+          var r = seal.getBoundingClientRect();
+          return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+        }
+
+        function getMatrix(cx, cy){
+          var d = getRect();
+          var w = Math.max(d.right - d.left, 1), h = Math.max(d.bottom - d.top, 1);
+          var xc = d.left + w/2, yc = d.top + h/2;
+          var s0 = maxScale - (maxScale-minScale)*Math.abs(xc-cx)/(w/2);
+          var s1 = maxScale - (maxScale-minScale)*Math.abs(yc-cy)/(h/2);
+          var s2 = maxScale - (maxScale-minScale)*(Math.abs(xc-cx)+Math.abs(yc-cy))/((w+h)/2);
+          var x1 = 0.25*((yc-cy)/h - (xc-cx)/w);
+          var x2 = maxRotate - (maxRotate-minRotate)*Math.abs(d.right-cx)/w;
+          var y2 = maxRotate - (maxRotate-minRotate)*(d.top-cy)/(d.top-d.bottom);
+          var z0 = -(maxRotate - (maxRotate-minRotate)*Math.abs(d.right-cx)/w);
+          var z1 = 0.2 - (0.2+0.6)*(d.top-cy)/(d.top-d.bottom);
+          return s0+','+z0+',0,0,'+x1+','+s1+','+z1+',0,'+x2+','+y2+','+s2+',0,0,0,0,1';
+        }
+
+        function getOppositeMatrix(m, cy, onEnter){
+          var d = getRect();
+          var oppositeY = d.bottom - cy + d.top;
+          var weak = onEnter ? 0.7 : 4, mult = onEnter ? -1 : 1;
+          return m.split(',').map(function(v,i){
+            if(i===2||i===4||i===8) return ''+((-parseFloat(v)*mult)/weak);
+            if(i===0||i===5||i===10) return '1';
+            if(i===6) return ''+(mult*(maxRotate-(maxRotate-minRotate)*(d.top-oppositeY)/(d.top-d.bottom))/weak);
+            if(i===9) return ''+((maxRotate-(maxRotate-minRotate)*(d.top-oppositeY)/(d.top-d.bottom))/weak);
+            return v;
+          }).join(',');
+        }
+
+        function applyMatrix(m){
+          inner.style.transform = 'perspective(800px) matrix3d('+m+')';
+        }
+
+        seal.addEventListener('mouseenter', function(e){
+          clearT(leaveT1); clearT(leaveT2); clearT(leaveT3);
+          glints.forEach(function(g){ g.style.animation='none'; });
+          var d = getRect();
+          var xc = (d.left+d.right)/2, yc = (d.top+d.bottom)/2;
+          firstPos = (Math.abs(xc-e.clientX)+Math.abs(yc-e.clientY))/1.5;
+          glints.forEach(function(g,i){ g.style.transform='rotate('+(firstPos+i*10)+'deg)'; });
+          var nm = getMatrix(e.clientX, e.clientY);
+          var om = getOppositeMatrix(nm, e.clientY, true);
+          matrix = om; applyMatrix(om);
+          isTimeoutFinished = false;
+          enterT = setTimeout(function(){ isTimeoutFinished = true; }, 200);
+        });
+
+        seal.addEventListener('mousemove', function(e){
+          var d = getRect();
+          var xc = (d.left+d.right)/2, yc = (d.top+d.bottom)/2;
+          setTimeout(function(){
+            firstPos = (Math.abs(xc-e.clientX)+Math.abs(yc-e.clientY))/1.5;
+            glints.forEach(function(g,i){ g.style.transform='rotate('+(firstPos+i*10)+'deg)'; });
+          }, 150);
+          if(isTimeoutFinished){
+            currentMatrix = getMatrix(e.clientX, e.clientY);
+            matrix = currentMatrix; applyMatrix(currentMatrix);
+          }
+        });
+
+        seal.addEventListener('mouseleave', function(e){
+          clearT(enterT);
+          var om = getOppositeMatrix(matrix, e.clientY, false);
+          applyMatrix(om);
+          setTimeout(function(){ applyMatrix(identityMatrix); }, 200);
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){
+            leaveT1 = setTimeout(function(){ firstPos = -firstPos/4; glints.forEach(function(g,i){ g.style.transform='rotate('+(firstPos+i*10)+'deg)'; }); }, 150);
+            leaveT2 = setTimeout(function(){ firstPos=0; glints.forEach(function(g,i){ g.style.transform='rotate('+(i*10)+'deg)'; }); }, 300);
+            leaveT3 = setTimeout(function(){
+              glints.forEach(function(g,i){
+                var names=['sealGlint1','sealGlint2','sealGlint3','sealGlint4','sealGlint5'];
+                g.style.animation=names[i%5]+' 5s infinite';
+              });
+            }, 500);
+          }); });
+        });
+      })();
+      </script>
+    </section>
     </section>
 
     <!-- ============ FAIXA DE ASSOCIAÇÕES ============ -->
@@ -226,12 +447,12 @@
         <!-- 9.2 três cards -->
         <div class="product-cards">
           <article class="product-card reveal">
-            <header><span class="pc-num">01</span><h3>Kanban de Sinistros</h3></header>
+            <header><span class="pc-num">01</span><h3>Dashboards Dinâmicos</h3></header>
             <p>Visão clara do fluxo e do status de cada sinistro.</p>
             <div class="pc-shot"><img src="assets/dashboard.png" width="640" height="360" loading="lazy" decoding="async" alt="Quadro Kanban de sinistros da UpWeb por status"></div>
           </article>
           <article class="product-card reveal">
-            <header><span class="pc-num">02</span><h3>Ficha do Sinistro</h3></header>
+            <header><span class="pc-num">02</span><h3>Fichas de Sinistro</h3></header>
             <p>Todas as informações, documentos e ocorrências em um só lugar.</p>
             <div class="pc-shot pc-shot--mock">
               <div class="ficha-mock" aria-hidden="true">
@@ -252,7 +473,7 @@
             </div>
           </article>
           <article class="product-card reveal">
-            <header><span class="pc-num">03</span><h3>Linha do Tempo</h3></header>
+            <header><span class="pc-num">03</span><h3>Fluxo em Kanban</h3></header>
             <p>Histórico completo de cada movimentação.</p>
             <div class="pc-shot"><img src="assets/timeline.png" width="640" height="360" loading="lazy" decoding="async" alt="Linha do tempo com o histórico de movimentações do sinistro"></div>
           </article>
@@ -274,17 +495,23 @@
 
         <!-- 9.4 módulos operacionais -->
         <div class="modules">
-          <article class="module-card reveal">
+          <article class="module-card module-card--vistoria reveal">
             <div class="module-text">
-              <h3>Vistoria 100% Online</h3>
-              <p>Envio de fotos, vídeos e documentos direto pelo celular, com segurança, histórico e rastreabilidade.</p>
-              <a class="text-link" href="#formulario">Saiba mais →</a>
-            </div>
-            <div class="module-visual">
-              <div class="phone-mock">
-                <span class="phone-notch" aria-hidden="true"></span>
-                <img src="assets/vistoria-online.png" width="320" height="560" loading="lazy" decoding="async" alt="Tela de vistoria online no celular com envio de fotos do veículo">
+              <p class="module-eyebrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+                Vistoria Digital
+              </p>
+              <h3>Vistoria digital,<br>segura e <span style="color:#6F06E4;">rastreável</span></h3>
+              <p>Envie fotos, vídeos e documentos do veículo com controle, histórico e evidências organizadas.</p>
+              <div class="module-pills">
+                <span class="mpill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> Fotos e vídeos</span>
+                <span class="mpill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Histórico</span>
+                <span class="mpill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/></svg> Aprovação segura</span>
               </div>
+              <a class="text-link module-link" href="#formulario">Ver como funciona →</a>
+            </div>
+            <div class="module-visual module-visual--phone">
+              <img src="assets/vistoria-mockup.png" alt="App UPWEB — tela de vistoria digital com checklist e aprovação" loading="lazy" decoding="async" style="width:100%;max-width:280px;display:block;margin:0 auto;filter:drop-shadow(0 12px 32px rgba(109,40,217,.15));transform:translateY(0);">
             </div>
           </article>
           <article class="module-card reveal">
@@ -326,19 +553,134 @@
           <h2 id="finance-title">Leitura financeira em <span>tempo real</span></h2>
           <p>Veja custos previstos, aprovados, pagos, prazos, pendências e SLA em uma visão clara para a gestão.</p>
         </div>
-        <div class="kpi-row reveal">
-          <div class="kpi-card"><span class="kpi-label">Valor Previsto</span><strong class="kpi-value">R$ 1.248.750,00</strong></div>
-          <div class="kpi-card"><span class="kpi-label">Valor Aprovado</span><strong class="kpi-value">R$ 875.420,00</strong></div>
-          <div class="kpi-card"><span class="kpi-label">Valor Pago</span><strong class="kpi-value">R$ 642.300,00</strong></div>
-          <div class="kpi-card"><span class="kpi-label">Custo Médio</span><strong class="kpi-value">R$ 2.145,33</strong></div>
-          <div class="kpi-card"><span class="kpi-label">Prazo Médio</span><strong class="kpi-value">7,6 dias</strong></div>
-          <div class="kpi-card"><span class="kpi-label">Pendências</span><strong class="kpi-value">23</strong></div>
-          <div class="kpi-card kpi-accent"><span class="kpi-label">SLA Cumprido</span><strong class="kpi-value">92%</strong></div>
+        <div class="kpi-row reveal" id="kpi-row">
+          <div class="kpi-card"><span class="kpi-label">Valor Previsto</span><strong class="kpi-value" data-target="1248750" data-prefix="R$ " data-decimals="2" data-suffix="">R$ 1.248.750,00</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Valor Aprovado</span><strong class="kpi-value" data-target="875420" data-prefix="R$ " data-decimals="2" data-suffix="">R$ 875.420,00</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Valor Pago</span><strong class="kpi-value" data-target="642300" data-prefix="R$ " data-decimals="2" data-suffix="">R$ 642.300,00</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Custo Médio</span><strong class="kpi-value" data-target="2145.33" data-prefix="R$ " data-decimals="2" data-suffix="">R$ 2.145,33</strong></div>
+          <div class="kpi-card" id="kpi-prazo"><span class="kpi-label">Prazo Médio</span><strong class="kpi-value" id="kpi-prazo-val" data-target="7.6" data-prefix="" data-decimals="1" data-suffix=" dias">7,6 dias</strong></div>
+          <div class="kpi-card"><span class="kpi-label">Pendências</span><strong class="kpi-value" data-target="23" data-prefix="" data-decimals="0" data-suffix="">23</strong></div>
+          <div class="kpi-card kpi-accent" id="kpi-sla-card"><span class="kpi-label">SLA Cumprido</span><strong class="kpi-value" id="kpi-sla-val" data-target="92" data-prefix="" data-decimals="0" data-suffix="%">92%</strong></div>
         </div>
         <div class="finance-foot reveal">
           <p>Filtros por período, categoria, oficina, responsável e status.</p>
           <a class="text-link" href="#formulario">Ver relatório completo →</a>
         </div>
+
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+          .kpi-value{
+            font-family:'Share Tech Mono','Courier New',monospace!important;
+            font-variant-numeric:tabular-nums;
+            letter-spacing:.04em;
+            white-space:nowrap;
+          }
+          /* SLA card — estado bom (verde) */
+          .kpi-accent{
+            background:linear-gradient(135deg,#16a34a,#22c55e)!important;
+            border-color:#16a34a!important;
+            transition:background .6s ease,border-color .6s ease;
+          }
+          .kpi-accent .kpi-value,.kpi-accent .kpi-label{color:#fff!important;}
+          /* SLA card — estado ruim (vermelho) */
+          .kpi-accent.kpi-danger{
+            background:linear-gradient(135deg,#b91c1c,#ef4444)!important;
+            border-color:#b91c1c!important;
+          }
+          /* Efeito cursor piscando durante animação */
+          .kpi-counting::after{content:'_';animation:kpiCursor .5s step-end infinite;}
+          @keyframes kpiCursor{0%,100%{opacity:1}50%{opacity:0}}
+        </style>
+
+        <script>
+        (function(){
+          var row = document.getElementById('kpi-row');
+          if(!row) return;
+
+          /* --- Formata número como BR --- */
+          function fmt(val, decimals, prefix, suffix){
+            var n = parseFloat(val);
+            var s = n.toLocaleString('pt-BR',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+            return (prefix||'') + s + (suffix||'');
+          }
+
+          /* --- Anima contagem de 0 até target --- */
+          function countUp(el, from, to, decimals, prefix, suffix, duration, onDone){
+            var start = null;
+            el.classList.add('kpi-counting');
+            function step(ts){
+              if(!start) start = ts;
+              var p = Math.min((ts - start)/duration, 1);
+              var ease = 1 - Math.pow(1-p,3);
+              var cur = from + (to - from)*ease;
+              el.textContent = fmt(cur, decimals, prefix, suffix);
+              if(p < 1){ requestAnimationFrame(step); }
+              else {
+                el.textContent = fmt(to, decimals, prefix, suffix);
+                el.classList.remove('kpi-counting');
+                if(onDone) onDone();
+              }
+            }
+            requestAnimationFrame(step);
+          }
+
+          /* --- Anima todos os cards estáticos (uma vez) --- */
+          var staticDone = false;
+          function animateStatic(){
+            if(staticDone) return; staticDone = true;
+            row.querySelectorAll('.kpi-value[data-target]').forEach(function(el){
+              var id = el.id;
+              if(id === 'kpi-prazo-val' || id === 'kpi-sla-val') return; // controlados separado
+              var target = parseFloat(el.dataset.target);
+              var decimals = parseInt(el.dataset.decimals)||0;
+              var prefix = el.dataset.prefix||'';
+              var suffix = el.dataset.suffix||'';
+              countUp(el, 0, target, decimals, prefix, suffix, 1400);
+            });
+          }
+
+          /* --- Rodadas do Prazo+SLA --- */
+          var rounds = [
+            {prazo:7.6,  prazoSuffix:'\u00a0dias', sla:92, good:true},
+            {prazo:95,   prazoSuffix:'\u00a0dias', sla:5,  good:false},
+          ];
+          var roundIdx = 0;
+          var prazoEl  = document.getElementById('kpi-prazo-val');
+          var slaEl    = document.getElementById('kpi-sla-val');
+          var slaCard  = document.getElementById('kpi-sla-card');
+
+          function runRound(r){
+            var round = rounds[r];
+            /* Prazo */
+            var fromPrazo = r===0 ? 0 : rounds[r-1].prazo;
+            countUp(prazoEl, fromPrazo, round.prazo, round.prazo%1===0?0:1, '', round.prazoSuffix, 1200);
+            /* SLA */
+            var fromSla = r===0 ? 0 : rounds[r-1].sla;
+            slaCard.classList.remove('kpi-danger');
+            countUp(slaEl, fromSla, round.sla, 0, '', '%', 1200, function(){
+              if(!round.good){ slaCard.classList.add('kpi-danger'); }
+            });
+          }
+
+          function cycle(){
+            runRound(roundIdx);
+            roundIdx = (roundIdx + 1) % rounds.length;
+            setTimeout(cycle, 4000);
+          }
+
+          /* --- IntersectionObserver --- */
+          var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+              if(e.isIntersecting){
+                animateStatic();
+                setTimeout(cycle, 200);
+                io.disconnect();
+              }
+            });
+          },{threshold:0.4});
+          io.observe(row);
+        })();
+        </script>
       </div>
     </section>
 
@@ -351,14 +693,277 @@
           <p>A UpWeb ajuda sua associação a manter histórico, documentos, prazos e decisões organizados em um ambiente único, reduzindo falhas operacionais e aumentando a rastreabilidade do processo.</p>
           <p class="gov-note"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> O sistema não substitui obrigações legais, contábeis ou regulatórias perante órgãos competentes.</p>
         </div>
-        <div class="gov-visual reveal" aria-hidden="true">
-          <div class="gov-shield">
-            <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <div class="gov-visual reveal" id="gov-visual" aria-hidden="true">
+
+          <!-- Selo desce ao entrar na tela -->
+          <div class="gov-seal" id="gov-seal">
+            <img src="assets/upweb_selo_conformidade_round.png" alt="Selo UPWEB">
           </div>
-          <div class="gov-chip gov-chip-1"><svg class="ico" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg> Documentos</div>
-          <div class="gov-chip gov-chip-2"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> Acessos</div>
-          <div class="gov-chip gov-chip-3"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Prazos</div>
+
+          <!-- Card: Documentos -->
+          <div class="gov-card gov-card-top" style="transition-delay:.1s">
+            <div class="gov-card-head">
+              <div class="gov-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></div>
+              <span class="gov-card-title">Documentos</span>
+            </div>
+            <div class="gov-card-row"><span class="gov-card-label">Estatuto Social</span><span class="gov-card-val ok">✓ OK</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">Ata 2024</span><span class="gov-card-val ok">✓ OK</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">Balanço</span><span class="gov-card-val warn">⏳ Pendente</span></div>
+          </div>
+
+          <!-- Card: Acessos -->
+          <div class="gov-card gov-card-right" style="transition-delay:.2s">
+            <div class="gov-card-head">
+              <div class="gov-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+              <span class="gov-card-title">Acessos</span>
+            </div>
+            <div class="gov-card-row"><span class="gov-card-label">Administrador</span><span class="gov-card-val purple"><span class="gov-card-pulse"></span>Ativo</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">Analista</span><span class="gov-card-val purple"><span class="gov-card-pulse"></span>Ativo</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">Usuários</span><span class="gov-card-val">8 total</span></div>
+          </div>
+
+          <!-- Card: Prazos -->
+          <div class="gov-card gov-card-bottom" style="transition-delay:.3s">
+            <div class="gov-card-head">
+              <div class="gov-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+              <span class="gov-card-title">Prazos</span>
+            </div>
+            <div class="gov-card-row"><span class="gov-card-label">Assembleia</span><span class="gov-card-val warn">12 dias</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">Prestação</span><span class="gov-card-val ok">Concluído</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">SLA médio</span><span class="gov-card-val purple">7,6 dias</span></div>
+          </div>
+
+          <!-- Card: Governança -->
+          <div class="gov-card gov-card-br" style="transition-delay:.4s">
+            <div class="gov-card-head">
+              <div class="gov-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+              <span class="gov-card-title">Governança</span>
+            </div>
+            <div class="gov-card-row"><span class="gov-card-label">Conformidade</span><span class="gov-card-val ok">92%</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">Processos</span><span class="gov-card-val">3 ativos</span></div>
+            <div class="gov-card-row"><span class="gov-card-label">Auditoria</span><span class="gov-card-val ok">✓ Rastreada</span></div>
+          </div>
+
         </div>
+
+        <script>
+        (function(){
+          var seal = document.getElementById('gov-seal');
+          var visual = document.getElementById('gov-visual');
+          var cards = visual ? visual.querySelectorAll('.gov-card') : [];
+          if(!seal||!visual) return;
+          var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+              if(e.isIntersecting){
+                seal.classList.add('is-visible');
+                cards.forEach(function(c){ c.classList.add('is-visible'); });
+                io.disconnect();
+              }
+            });
+          },{threshold:0.3});
+          io.observe(visual);
+        })();
+        </script>
+      </div>
+    </section>
+
+    </section>
+
+    <!-- ============ DOIS TIPOS DE ACESSO ============ -->
+    <section id="tipos-acesso" aria-labelledby="acesso-title" style="background:#F8F7FF;padding:clamp(64px,8vw,112px) 0;position:relative;overflow:hidden;">
+      <style>
+        #tipos-acesso .wrap-ac{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:start;}
+        #tipos-acesso .ac-head{margin-bottom:40px;}
+        #tipos-acesso .ac-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#6F22FF;display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+        #tipos-acesso .ac-eyebrow::before{content:'';display:block;width:28px;height:2px;background:#6F22FF;border-radius:2px;}
+        #tipos-acesso h2{font-family:Sora,Poppins,sans-serif;font-size:clamp(1.8rem,2.6vw,2.6rem);font-weight:800;line-height:1.12;color:#111124;letter-spacing:-.02em;margin:0 0 12px;}
+        #tipos-acesso h2 .hl-purple{background:linear-gradient(135deg,#6F22FF,#9B5CFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        #tipos-acesso .ac-sub{font-size:1.05rem;color:#5B5870;line-height:1.65;max-width:52ch;margin:0;}
+
+        /* Cards esquerda */
+        #tipos-acesso .ac-cards{display:flex;flex-direction:column;gap:20px;}
+        #tipos-acesso .ac-card{
+          background:#fff;border:1px solid rgba(111,34,255,.1);border-radius:20px;
+          padding:28px 28px 28px 28px;
+          box-shadow:0 4px 24px rgba(111,34,255,.06),0 1px 3px rgba(0,0,0,.04);
+          transition:transform .25s ease,box-shadow .25s ease;
+          position:relative;overflow:hidden;
+        }
+        #tipos-acesso .ac-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6F22FF,#9B5CFF,#38bdf8);border-radius:3px 3px 0 0;}
+        #tipos-acesso .ac-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(111,34,255,.12),0 2px 8px rgba(0,0,0,.06);}
+        #tipos-acesso .ac-card-inner{display:grid;grid-template-columns:160px 1fr 48px;gap:24px;align-items:center;}
+        #tipos-acesso .ac-img-circle{
+          width:160px;height:160px;border-radius:50%;overflow:hidden;flex-shrink:0;
+          border:4px solid rgba(111,34,255,.12);
+          box-shadow:0 8px 28px rgba(111,34,255,.15);
+          background:#f0ebff;
+        }
+        #tipos-acesso .ac-img-circle img{
+          width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;
+          transition:transform .35s ease;
+        }
+        #tipos-acesso .ac-card:hover .ac-img-circle img{transform:scale(1.06);}
+        #tipos-acesso .ac-arrow{
+          width:48px;height:48px;border-radius:50%;flex-shrink:0;
+          display:flex;align-items:center;justify-content:center;
+          background:rgba(111,34,255,.08);border:1px solid rgba(111,34,255,.18);
+          color:#6F22FF;text-decoration:none;
+          transition:background .2s,transform .2s,box-shadow .2s;
+        }
+        #tipos-acesso .ac-arrow:hover{
+          background:#6F22FF;color:#fff;
+          transform:translateX(3px);
+          box-shadow:0 6px 18px rgba(111,34,255,.3);
+        }
+        #tipos-acesso .ac-arrow svg{width:18px;height:18px;}
+        #tipos-acesso .ac-card-body{min-width:0;}
+        #tipos-acesso .ac-line{width:32px;height:3px;background:linear-gradient(90deg,#6F22FF,#9B5CFF);border-radius:2px;margin:6px 0 10px;}
+        #tipos-acesso .ac-card h3{font-family:Sora,Poppins,sans-serif;font-weight:700;font-size:1.15rem;color:#111124;margin:0 0 10px;line-height:1.2;}
+        #tipos-acesso .ac-card p{font-size:.92rem;color:#5B5870;line-height:1.6;margin:0 0 16px;}
+        #tipos-acesso .ac-tags{display:flex;flex-wrap:wrap;gap:7px;}
+        #tipos-acesso .ac-tag{font-size:.72rem;font-weight:600;padding:4px 12px;border-radius:999px;background:rgba(111,34,255,.07);color:#6F22FF;border:1px solid rgba(111,34,255,.14);}
+
+        /* Painel direita */
+        #tipos-acesso .ac-panel{
+          background:#fff;border:1px solid rgba(111,34,255,.1);border-radius:24px;
+          padding:32px 28px;position:sticky;top:100px;
+          box-shadow:0 8px 40px rgba(111,34,255,.08),0 2px 8px rgba(0,0,0,.04);
+          overflow:hidden;
+        }
+        #tipos-acesso .ac-panel::after{
+          content:'';position:absolute;bottom:-60px;right:-60px;
+          width:200px;height:200px;border-radius:50%;
+          background:radial-gradient(circle,rgba(111,34,255,.08),transparent 70%);
+          pointer-events:none;
+        }
+        #tipos-acesso .ac-panel-title{font-family:Sora,Poppins,sans-serif;font-size:1.05rem;font-weight:700;color:#111124;margin:0 0 6px;}
+        #tipos-acesso .ac-panel-sub{font-size:.85rem;color:#5B5870;line-height:1.55;margin:0 0 24px;}
+        #tipos-acesso .ac-mini-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+        #tipos-acesso .ac-mini{background:#F8F7FF;border:1px solid rgba(111,34,255,.1);border-radius:14px;padding:16px 18px;}
+        #tipos-acesso .ac-mini-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+        #tipos-acesso .ac-mini-name{font-size:.85rem;font-weight:700;color:#111124;}
+        #tipos-acesso .ac-mini-status{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:999px;background:#dcfce7;color:#16a34a;}
+        #tipos-acesso .ac-mini-row{display:flex;justify-content:space-between;font-size:.78rem;margin-top:6px;}
+        #tipos-acesso .ac-card-img{display:none;}
+        #tipos-acesso .ac-panel-quote{
+          background:linear-gradient(135deg,#6F22FF,#9B5CFF);
+          border-radius:14px;padding:16px 18px;
+          font-size:.84rem;font-weight:600;color:#fff;line-height:1.5;
+          font-style:italic;text-align:center;
+        }
+
+        /* Pattern molecular sutil */
+        #tipos-acesso .ac-pattern{
+          position:absolute;top:-40px;right:-40px;
+          width:280px;height:280px;opacity:.04;pointer-events:none;
+        }
+
+        @media(max-width:960px){
+          #tipos-acesso .wrap-ac{grid-template-columns:1fr;gap:32px;}
+          #tipos-acesso .ac-panel{position:static;}
+        }
+        @media(max-width:640px){
+          #tipos-acesso .wrap-ac{padding:0 20px;}
+          #tipos-acesso .ac-card-inner{grid-template-columns:1fr;}
+        }
+      </style>
+
+      <!-- Pattern sutil -->
+      <svg class="ac-pattern" aria-hidden="true" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="80" cy="60" r="20" fill="#6F22FF"/><circle cx="160" cy="40" r="10" fill="#6F22FF"/>
+        <circle cx="220" cy="100" r="14" fill="#6F22FF"/><circle cx="140" cy="130" r="8" fill="#6F22FF"/>
+        <circle cx="60" cy="160" r="12" fill="#6F22FF"/><circle cx="200" cy="190" r="18" fill="#6F22FF"/>
+        <line x1="80" y1="60" x2="160" y2="40" stroke="#6F22FF" stroke-width="1.5"/>
+        <line x1="160" y1="40" x2="220" y2="100" stroke="#6F22FF" stroke-width="1.5"/>
+        <line x1="220" y1="100" x2="140" y2="130" stroke="#6F22FF" stroke-width="1.5"/>
+        <line x1="140" y1="130" x2="60" y2="160" stroke="#6F22FF" stroke-width="1.5"/>
+        <line x1="140" y1="130" x2="200" y2="190" stroke="#6F22FF" stroke-width="1.5"/>
+      </svg>
+
+      <div class="wrap-ac">
+        <!-- Esquerda: cabeçalho + cards -->
+        <div>
+          <div class="ac-head">
+            <p class="ac-eyebrow">Sistema com dois tipos de acesso</p>
+            <h2 id="acesso-title">Tipos de <span class="hl-purple">acesso</span></h2>
+            <p class="ac-sub">Dois ambientes integrados para garantir clareza, transparência e uma experiência segmentada para cada perfil.</p>
+          </div>
+
+          <div class="ac-cards">
+            <!-- Card 1 -->
+            <article class="ac-card reveal">
+              <div class="ac-card-inner">
+                <div class="ac-img-circle">
+                  <img src="assets/acesso-associacao.png" alt="Interface da Associação">
+                </div>
+                <div class="ac-card-body">
+                  <h3>Interface da Associação</h3>
+                  <div class="ac-line"></div>
+                  <p>Abertura do evento 100% online, controle das fases do evento, encaminhamento ao jurídico, solicitação de vistorias em tempo real, inserção de informações, documentos e fotos.</p>
+                  <div class="ac-tags">
+                    <span class="ac-tag">Abertura online</span>
+                    <span class="ac-tag">Documentos</span>
+                    <span class="ac-tag">Vistorias</span>
+                  </div>
+                </div>
+                <a href="#formulario" class="ac-arrow" aria-label="Saiba mais">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="ac-card reveal">
+              <div class="ac-card-inner">
+                <div class="ac-img-circle">
+                  <img src="assets/acesso-associados.png" alt="Área de Associados">
+                </div>
+                <div class="ac-card-body">
+                  <h3>Área de Associados/Terceiros</h3>
+                  <div class="ac-line"></div>
+                  <p>Acompanhamento em tempo real da situação/status do evento, reunindo todas as informações relevantes, garantindo transparência e reduzindo ligações e cobranças de associados e terceiros.</p>
+                  <div class="ac-tags">
+                    <span class="ac-tag">Acompanhamento</span>
+                    <span class="ac-tag">Transparência</span>
+                    <span class="ac-tag">Status em tempo real</span>
+                  </div>
+                </div>
+                <a href="#formulario" class="ac-arrow" aria-label="Saiba mais">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Direita: painel segmentado -->
+        <aside class="ac-panel reveal">
+          <h3 class="ac-panel-title">Experiência segmentada para cada perfil</h3>
+          <p class="ac-panel-sub">Cada ambiente foi criado para entregar clareza, segurança e eficiência no que realmente importa para você.</p>
+
+          <div class="ac-mini-cards">
+            <div class="ac-mini">
+              <div class="ac-mini-head">
+                <span class="ac-mini-name">Interface Associação</span>
+                <span class="ac-mini-status">Ativo</span>
+              </div>
+              <div class="ac-mini-row"><span class="ac-mini-label">Eventos abertos</span><span class="ac-mini-val">12</span></div>
+              <div class="ac-mini-row"><span class="ac-mini-label">Vistorias em andamento</span><span class="ac-mini-val">5</span></div>
+            </div>
+            <div class="ac-mini">
+              <div class="ac-mini-head">
+                <span class="ac-mini-name">Área de Associados/Terceiros</span>
+                <span class="ac-mini-status">Ativo</span>
+              </div>
+              <div class="ac-mini-row"><span class="ac-mini-label">Acompanhamentos</span><span class="ac-mini-val">28</span></div>
+              <div class="ac-mini-row"><span class="ac-mini-label">Atualizações hoje</span><span class="ac-mini-val">14</span></div>
+            </div>
+          </div>
+
+          <div class="ac-panel-quote">
+            "Dois acessos. Um só propósito: entregar a melhor experiência para cada perfil."
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -379,23 +984,179 @@
       </div>
     </section>
 
-    <!-- ============ AUTORIDADE HUMANA ============ -->
-    <section class="authority" aria-labelledby="authority-title">
-      <div class="wrap split">
-        <div class="authority-photo reveal" aria-hidden="true">
-          <div class="photo-frame"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+    <!-- ============ CEO / MÉTODO CHSP ============ -->
+    <section id="ceo-chsp" aria-labelledby="ceo-title" style="position:relative;overflow:hidden;background:linear-gradient(135deg,#0d0820 0%,#1a0f3c 30%,#220d4a 55%,#160830 80%,#090515 100%);padding:96px 0;">
+
+      <!-- Radial light -->
+      <div aria-hidden="true" style="pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 65% 50%,rgba(120,60,255,0.18) 0%,transparent 70%),radial-gradient(ellipse 40% 50% at 20% 40%,rgba(60,120,255,0.12) 0%,transparent 65%);"></div>
+
+      <!-- Neural network SVG pattern -->
+      <svg aria-hidden="true" style="pointer-events:none;position:absolute;inset:0;width:100%;height:100%;opacity:0.13;" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1440 600">
+        <g stroke="#a78bfa" stroke-width="0.8" fill="none">
+          <line x1="120" y1="80"  x2="340" y2="200"/><line x1="340" y1="200" x2="580" y2="120"/>
+          <line x1="580" y1="120" x2="820" y2="280"/><line x1="820" y1="280" x2="1060" y2="160"/>
+          <line x1="1060" y1="160" x2="1260" y2="320"/><line x1="1260" y1="320" x2="1420" y2="200"/>
+          <line x1="200" y1="400" x2="460" y2="320"/><line x1="460" y1="320" x2="700" y2="460"/>
+          <line x1="700" y1="460" x2="940" y2="380"/><line x1="940" y1="380" x2="1180" y2="500"/>
+          <line x1="340" y1="200" x2="460" y2="320"/><line x1="580" y1="120" x2="700" y2="460"/>
+          <line x1="820" y1="280" x2="940" y2="380"/><line x1="1060" y1="160" x2="1180" y2="500"/>
+        </g>
+        <g fill="#c4b5fd">
+          <circle cx="120" cy="80" r="3"/><circle cx="340" cy="200" r="3.5"/><circle cx="580" cy="120" r="3"/>
+          <circle cx="820" cy="280" r="4"/><circle cx="1060" cy="160" r="3"/><circle cx="1260" cy="320" r="3.5"/>
+          <circle cx="200" cy="400" r="3"/><circle cx="460" cy="320" r="4"/><circle cx="700" cy="460" r="3"/>
+          <circle cx="940" cy="380" r="3.5"/><circle cx="1180" cy="500" r="3"/>
+        </g>
+      </svg>
+
+      <style>
+        #ceo-chsp .ceo-wrap { max-width:1240px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:380px 1fr;gap:72px;align-items:center; }
+        #ceo-chsp .ceo-photo-col { display:flex;flex-direction:column;gap:20px; }
+        #ceo-chsp .ceo-photo-frame {
+          position:relative;width:100%;aspect-ratio:4/5;border-radius:20px;overflow:hidden;
+          box-shadow:0 0 0 1px rgba(167,139,250,0.3),0 0 40px rgba(120,60,255,0.25),0 24px 64px rgba(0,0,0,0.6);
+          transition:box-shadow 0.4s ease;
+        }
+        #ceo-chsp .ceo-photo-frame:hover {
+          box-shadow:0 0 0 1.5px rgba(167,139,250,0.6),0 0 80px rgba(120,60,255,0.4),0 24px 64px rgba(0,0,0,0.7);
+        }
+        #ceo-chsp .ceo-photo-frame img { width:100%;height:100%;object-fit:cover;display:block; }
+        #ceo-chsp .ceo-photo-frame::after {
+          content:'';position:absolute;inset:0;
+          background:linear-gradient(180deg,transparent 55%,rgba(13,8,32,0.85) 100%);
+          pointer-events:none;
+        }
+        #ceo-chsp .ceo-photo-quote {
+          position:absolute;bottom:20px;left:16px;right:16px;z-index:2;
+          font-size:0.95rem;font-weight:600;color:#e2d9ff;font-style:italic;line-height:1.5;
+          text-shadow:0 2px 12px rgba(0,0,0,0.8);
+          text-align:center;
+        }
+        #ceo-chsp .ceo-photo-quote::before { content:'\201C';font-size:2rem;line-height:0;vertical-align:-0.5rem;margin-right:4px;color:#a78bfa; }
+        #ceo-chsp .ceo-chsp-logo { display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(167,139,250,0.15); }
+        #ceo-chsp .ceo-chsp-logo img { height:36px;width:auto;filter:drop-shadow(0 0 8px rgba(251,146,60,0.4)); }
+
+        #ceo-chsp .ceo-content { display:flex;flex-direction:column;gap:28px; }
+        #ceo-chsp .ceo-eyebrow { font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:10px; }
+        #ceo-chsp .ceo-eyebrow::before { content:'';display:block;width:32px;height:1px;background:#a78bfa; }
+        #ceo-chsp .ceo-h2 { font-size:clamp(1.9rem,2.8vw,2.6rem);font-weight:800;line-height:1.18;color:#fff;letter-spacing:-0.02em;margin:0; }
+        #ceo-chsp .ceo-lead { font-size:1.05rem;line-height:1.7;color:rgba(220,210,255,0.8);margin:0; }
+        #ceo-chsp .ceo-method-card {
+          padding:24px 28px;border-radius:16px;
+          background:rgba(255,255,255,0.04);
+          border:1px solid rgba(167,139,250,0.2);
+          backdrop-filter:blur(8px);
+          position:relative;overflow:hidden;
+        }
+        #ceo-chsp .ceo-method-card::before {
+          content:'';position:absolute;top:0;left:0;right:0;height:2px;
+          background:linear-gradient(90deg,transparent,#7c3aed,#a78bfa,#38bdf8,transparent);
+        }
+        #ceo-chsp .ceo-method-card p { font-size:0.95rem;line-height:1.7;color:rgba(220,210,255,0.85);margin:0; }
+        #ceo-chsp .ceo-method-card strong { color:#fff; }
+
+        #ceo-chsp .ceo-id { display:flex;flex-direction:column;gap:3px; }
+        #ceo-chsp .ceo-name { font-size:1.15rem;font-weight:700;color:#fff; }
+        #ceo-chsp .ceo-roles { font-size:0.82rem;color:rgba(180,160,255,0.75);line-height:1.6; }
+
+        #ceo-chsp .ceo-kpis { display:flex;gap:32px; }
+        #ceo-chsp .ceo-kpi strong { display:block;font-size:1.9rem;font-weight:800;color:#fff;line-height:1; background:linear-gradient(135deg,#c4b5fd,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+        #ceo-chsp .ceo-kpi span { font-size:0.78rem;color:rgba(180,160,255,0.7);line-height:1.4;display:block;margin-top:4px; }
+
+        #ceo-chsp .ceo-btns { display:flex;flex-wrap:wrap;gap:10px; }
+        #ceo-chsp .ceo-btn {
+          display:inline-flex;align-items:center;gap:8px;
+          padding:10px 20px;border-radius:10px;font-size:0.84rem;font-weight:600;
+          text-decoration:none;transition:all 0.2s;border:1px solid transparent;
+        }
+        #ceo-chsp .ceo-btn-ghost { background:rgba(255,255,255,0.06);color:rgba(220,210,255,0.9);border-color:rgba(167,139,250,0.2); }
+        #ceo-chsp .ceo-btn-ghost:hover { background:rgba(255,255,255,0.12);border-color:rgba(167,139,250,0.45); }
+        #ceo-chsp .ceo-btn-wa { background:rgba(37,211,102,0.1);color:#86efac;border-color:rgba(37,211,102,0.25); }
+        #ceo-chsp .ceo-btn-wa:hover { background:rgba(37,211,102,0.18);border-color:rgba(37,211,102,0.5); }
+        #ceo-chsp .ceo-btn-chsp { background:linear-gradient(135deg,rgba(251,146,60,0.15),rgba(234,88,12,0.1));color:#fdba74;border-color:rgba(251,146,60,0.3); }
+        #ceo-chsp .ceo-btn-chsp:hover { background:linear-gradient(135deg,rgba(251,146,60,0.25),rgba(234,88,12,0.18));border-color:rgba(251,146,60,0.55); }
+
+        /* Mouse-reactive border glow */
+        #ceo-chsp .ceo-mouse-glow {
+          position:absolute;pointer-events:none;width:600px;height:600px;
+          border-radius:50%;background:radial-gradient(circle,rgba(120,60,255,0.1) 0%,transparent 70%);
+          transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0;
+        }
+      </style>
+
+      <!-- Mouse glow element -->
+      <div class="ceo-mouse-glow" id="ceo-glow" aria-hidden="true"></div>
+
+      <div class="ceo-wrap">
+
+        <!-- LEFT: photo column -->
+        <div class="ceo-photo-col">
+          <div class="ceo-photo-frame">
+            <img src="assets/autoridade.png" alt="Carlos Henrique de Paula — CEO UpWeb">
+            <p class="ceo-photo-quote">Foco em <strong style="font-weight:800;color:#7c3aed;">RESULTADOS</strong><br>reais e <strong style="font-weight:800;color:#7c3aed;">SUSTENTÁVEIS</strong></p>
+          </div>
+
         </div>
-        <div class="reveal">
-          <p class="eyebrow light">Autoridade</p>
-          <h2 id="authority-title">Tecnologia criada por quem entende a realidade da operação.</h2>
-          <p>A UpWeb desenvolve soluções para gestão de sinistros com foco em clareza, controle e resultado real para associações de proteção veicular.</p>
-          <div class="stats" data-stats>
-            <div class="stat"><strong data-counter="10" data-prefix="+">+0</strong><span>anos no setor</span></div>
-            <div class="stat"><strong data-counter="45" data-prefix="+">+0</strong><span>associações atendidas</span></div>
-            <div class="stat"><strong data-counter="1" data-prefix="+" data-suffix="M">+0M</strong><span>sinistros gerenciados</span></div>
+
+        <!-- RIGHT: content column -->
+        <div class="ceo-content">
+          <p class="ceo-eyebrow">Autoridade Operacional</p>
+
+          <h2 class="ceo-h2" id="ceo-title">Tecnologia criada por quem entende a realidade da operação.</h2>
+
+          <p class="ceo-lead">Carlos Henrique de Paula apresenta uma visão prática para transformar associações de proteção veicular em operações mais profissionais, inteligentes e preparadas para o futuro.</p>
+
+          <div class="ceo-method-card">
+            <p>O <strong>Método CHSP</strong> transforma associações de proteção veicular em organizações profissionais, inteligentes e preparadas para o futuro — com treinamento prático, consultoria estratégica e IA aplicada à operação.</p>
+          </div>
+
+          <div class="ceo-id">
+            <span class="ceo-name">Carlos Henrique de Paula</span>
+            <span class="ceo-roles">CEO UPWEB &nbsp;•&nbsp; Criador do Método CHSP &nbsp;•&nbsp; Diretor Executivo StiloWeb Soluções Digitais</span>
+          </div>
+
+          <div class="ceo-kpis">
+            <div class="ceo-kpi"><strong data-counter="10" data-prefix="+">+10</strong><span>anos no setor</span></div>
+            <div class="ceo-kpi"><strong data-counter="45" data-prefix="+">+45</strong><span>associações atendidas</span></div>
+            <div class="ceo-kpi"><strong data-counter="1" data-prefix="+" data-suffix="M">+1M</strong><span>sinistros gerenciados</span></div>
+          </div>
+
+          <div class="ceo-btns">
+            <a href="https://www.linkedin.com/in/carloshsdepaula" target="_blank" rel="noopener noreferrer" class="ceo-btn ceo-btn-ghost" aria-label="LinkedIn de Carlos Henrique de Paula">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://www.instagram.com/carloshsdepaula/" target="_blank" rel="noopener noreferrer" class="ceo-btn ceo-btn-ghost" aria-label="Instagram de Carlos Henrique de Paula">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+              Instagram
+            </a>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" class="ceo-btn ceo-btn-wa" aria-label="WhatsApp de Carlos Henrique de Paula">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+              WhatsApp
+            </a>
+            <a href="https://metodo-chsp.lovable.app" target="_blank" rel="noopener noreferrer" aria-label="Landing Page Método CHSP" style="display:inline-flex;align-items:center;padding:6px 10px;border-radius:10px;border:1px solid rgba(251,146,60,0.25);background:rgba(251,146,60,0.08);transition:all 0.2s;" onmouseover="this.style.background='rgba(251,146,60,0.18)';this.style.borderColor='rgba(251,146,60,0.5)'" onmouseout="this.style.background='rgba(251,146,60,0.08)';this.style.borderColor='rgba(251,146,60,0.25)'">
+              <img src="assets/logo-chsp.png" alt="Método CHSP" style="height:32px;width:auto;filter:drop-shadow(0 0 8px rgba(251,146,60,0.45));">
+            </a>
+
           </div>
         </div>
       </div>
+
+      <script>
+      (function(){
+        var sec = document.getElementById('ceo-chsp');
+        var glow = document.getElementById('ceo-glow');
+        sec.addEventListener('mousemove', function(e){
+          var r = sec.getBoundingClientRect();
+          glow.style.left = (e.clientX - r.left) + 'px';
+          glow.style.top  = (e.clientY - r.top)  + 'px';
+          glow.style.opacity = '1';
+        });
+        sec.addEventListener('mouseleave', function(){
+          glow.style.opacity = '0';
+        });
+      })();
+      </script>
     </section>
 
     <!-- ============ PROVA SOCIAL ============ -->
@@ -585,6 +1346,10 @@
     </div>
     <div class="wrap footer-bottom">
       <span>© <span data-year>2026</span> UpWeb. Todos os direitos reservados.</span>
+      <a href="https://stiloweb.com.br/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;text-decoration:none;opacity:0.7;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+        <span style="font-size:0.78rem;color:rgba(255,255,255,0.6);font-weight:500;white-space:nowrap;">Design by</span>
+        <img src="assets/logo-stiloweb.png" alt="StiloWeb" style="height:66px;width:auto;filter:brightness(0) invert(1);">
+      </a>
       <nav aria-label="Legal">
         <a href="#">Política de Privacidade</a>
         <a href="#">Termos de Uso</a>
@@ -613,5 +1378,86 @@
   ]}
   </script>
   <script src="main.js" defer></script>
+
+  <script id="hero-context-js">
+  /* ============================================================
+     UPWEB — Lógica de troca de contexto do hero
+     Desktop: hover preview + mouseleave restaura; Mobile: toque trava
+     ============================================================ */
+  (function(){
+    var hero = document.querySelector('.hero');
+    if(!hero) return;
+    var copy  = document.getElementById('hero-copy');
+    var eEye  = document.getElementById('hero-eyebrow');
+    var eTitle= document.getElementById('hero-title');
+    var eSub  = document.getElementById('hero-subtitle');
+    var eCta  = document.getElementById('hero-cta');
+    var eCta2 = document.getElementById('hero-cta2');
+    if(!copy||!eEye||!eTitle||!eSub||!eCta) return;
+
+    var layers = {
+      default: hero.querySelector('.hero__layer--default'),
+      roxa:    hero.querySelector('.hero__layer--roxa'),
+      azul:    hero.querySelector('.hero__layer--azul'),
+      branca:  hero.querySelector('.hero__layer--branca'),
+    };
+    var cards = Array.from(hero.querySelectorAll('.card'));
+    var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+    var CONTENT = {
+      default:{eyebrow:'Plataforma completa para Associações de Proteção Veicular',title:'Gestão <span class="hl">Inteligente</span><br>e <span class="hl">digital</span> dos sinistros de sua<br><span class="hl">Associação de Proteção Veicular</span>',subtitle:'Centralize documentos, vistorias, prazos, aprovações, pagamentos e histórico em uma operação 100% digital, rastreável e segura.',ctaText:'Agendar demonstração →',href:'#formulario',cta2Href:'#sistema-upweb'},
+      roxa:{eyebrow:'UPSIN · Gestão de Sinistros',title:'Gestão <span class="hl">inteligente e digital</span><br>dos sinistros da sua Associação.',subtitle:'Centralize documentos, vistorias, prazos, aprovações, pagamentos e histórico em uma operação 100% digital, rastreável e segura.',ctaText:'Conhecer o UPSIN →',href:'#sistema-upweb',cta2Href:'#sistema-upweb'},
+      azul:{eyebrow:'Educação de Gestão · Alta Performance',title:'Treinamentos e <span style="background:linear-gradient(135deg,#FF6B00,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal;">Evolução</span><br><span style="background:linear-gradient(135deg,#FF6B00,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Contínua</span> do seu time.',subtitle:'Fazemos parte da evolução do seu time com o Método CHSP, formando equipes de alta performance na gestão de sinistros.',ctaText:'Conhecer os treinamentos →',href:'https://metodo-chsp.lovable.app',cta2Href:'#ceo-chsp'},
+      branca:{eyebrow:'LC 213/2025 · Conformidade',title:'A sua associação está<br><span class="hl">preparada para a nova lei?</span>',subtitle:'Regras de rateio, gestão de pagamentos, cadastro de fornecedores e operação dentro do prazo legal. Coloque sua associação em conformidade.',ctaText:'Avaliar minha conformidade →',href:'#formulario',cta2Href:'#sistema-upweb'},
+    };
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var canHover     = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    var locked = 'default';
+    var swapTimer = null;
+
+    function writeText(name){
+      var c = CONTENT[name];
+      eEye.textContent   = c.eyebrow;
+      eTitle.innerHTML   = c.title;
+      eSub.textContent   = c.subtitle;
+      eCta.innerHTML     = c.ctaText + ' ' + ARROW;
+      eCta.setAttribute('href', c.href);
+      if(eCta2){ eCta2.setAttribute('href', c.cta2Href || '#sistema-upweb'); }
+    }
+    function setText(name){
+      if(reduceMotion){ writeText(name); return; }
+      clearTimeout(swapTimer);
+      copy.classList.add('is-swapping');
+      swapTimer = setTimeout(function(){ writeText(name); copy.classList.remove('is-swapping'); }, 160);
+    }
+    function setActiveCard(name){
+      cards.forEach(function(c){ var on = c.dataset.theme===name; c.classList.toggle('is-active',on); if(on) c.setAttribute('aria-current','true'); else c.removeAttribute('aria-current'); });
+    }
+    function applyTheme(name){
+      hero.dataset.theme = name;
+      Object.keys(layers).forEach(function(k){ layers[k] && layers[k].classList.toggle('is-active', k===name); });
+      setText(name);
+      setActiveCard(name);
+    }
+    applyTheme('default');
+
+    cards.forEach(function(card){
+      var theme = card.dataset.theme;
+      if(canHover){
+        card.addEventListener('mouseenter', function(){ applyTheme(theme); });
+        card.addEventListener('mouseleave', function(){ applyTheme(locked); });
+      }
+      card.addEventListener('focus', function(){ applyTheme(theme); });
+      card.addEventListener('blur',  function(){ applyTheme(locked); });
+      card.addEventListener('click', function(e){
+        e.preventDefault();
+        locked = theme;
+        applyTheme(theme);
+      });
+    });
+  })();
+  </script>
+
 </body>
 </html>
