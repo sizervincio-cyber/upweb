@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpWeb - Status</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #6F06E4;
+            margin-top: 0;
+        }
+        .status {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+            text-align: left;
+        }
+        .info-box {
+            background: #f0f0f0;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .port {
+            font-weight: bold;
+            color: #6F06E4;
+            font-size: 18px;
+        }
+        a {
+            color: #6F06E4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ UpWeb está rodando!</h1>
+        
+        <div class="status">
+            <strong>🚀 Servidor ativo</strong><br>
+            O servidor HTTP está respondendo normalmente na porta <span class="port">3000</span>
+        </div>
+        
+        <div class="info-box">
+            <strong>📍 Como acessar:</strong><br><br>
+            Se você estiver usando <strong>Claude Code Desktop</strong> ou <strong>Claude Code Web</strong>, 
+            o servidor pode estar automaticamente acessível através de um tunnel interno.<br><br>
+            
+            Tente acessar:<br>
+            <code style="background: #eee; padding: 4px 8px; border-radius: 4px;">http://localhost:3000</code>
+        </div>
+        
+        <div class="info-box">
+            <strong>🔗 Alternativas:</strong><br><br>
+            1. <strong>Port Forwarding SSH:</strong><br>
+            <code style="background: #eee; padding: 4px 8px; border-radius: 4px; display: block; margin-top: 8px;">
+                ssh -L 3000:127.0.0.1:3000 seu-servidor
+            </code><br>
+            
+            2. <strong>Arquivo compartilhado:</strong><br>
+            O site completo está em <code style="background: #eee; padding: 4px 8px; border-radius: 4px;">/home/user/upweb</code><br>
+            você pode fazer download e abrir localmente.
+        </div>
+        
+        <p style="color: #666; margin-top: 30px; font-size: 14px;">
+            ⏱️ O servidor continuará rodando enquanto esta sessão estiver ativa.
+        </p>
+    </div>
+</body>
+</html>
