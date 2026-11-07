@@ -37,6 +37,7 @@ python scripts/enriquecer_contatos.py --uf GO MT TO # sites oficiais
 python scripts/normalizar_dados.py
 python scripts/exportar_resultados.py --uf GO MT TO --nome piloto
 python scripts/validar_susep.py fila --uf GO MT TO
+python scripts/gerar_dashboard.py                   # painel HTML único, funciona offline
 python -m unittest discover -s tests -v
 ```
 

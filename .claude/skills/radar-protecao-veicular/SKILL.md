@@ -34,6 +34,7 @@ competência mais nova (o download avisa), atualize antes de responder sobre "si
 | "Presença em Goiânia e Anápolis com canais verificáveis" | `python scripts/consultar.py --municipio GOIANIA ANAPOLIS --com-contato` |
 | "Quais têm situação SUSEP confirmada e quais exigem conferência?" | `python scripts/consultar.py --susep` e `python scripts/validar_susep.py fila` |
 | "Gere XLSX das verificadas, separadas por UF, com dicionário" | `python scripts/exportar_resultados.py --classes 1 2 --nome verificadas` |
+| "Crie um dashboard / painel HTML com os dados" | `python scripts/gerar_dashboard.py` → `out/radar_dashboard.html` (arquivo único, offline) |
 | Pergunta analítica livre | `python scripts/consultar.py --sql "select ... from base ..."` (colunas em `references/dicionario-dados.md`) |
 
 ## 3. Enriquecer contatos (antes de falar em "contato confirmado")

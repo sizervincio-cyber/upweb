@@ -8,3 +8,7 @@ Command execution.zip
 # Sistema
 Thumbs.db
 .DS_Store
+
+# Saídas com dados de dirigentes (LGPD): não versionar
+*-dashboard.html
+radar_dashboard.html

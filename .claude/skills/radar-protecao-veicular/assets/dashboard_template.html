@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar Proteção Veicular</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4f4f2; --surface:#fcfcfb; --surface-2:#f0efec; --line:#e4e3df; --line-strong:#cfcec8;
+  --text:#0b0b0b; --text-2:#52514e; --text-3:#7a7974;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --neutral:#a9a8a2;
+  --o1:#184f95; --o2:#2a78d6; --o3:#5598e7; --o4:#86b6ef;
+  --good:#0ca30c; --accent:#2a78d6; --focus:#2a78d6;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121211; --surface:#1a1a19; --surface-2:#232321; --line:#2e2e2b; --line-strong:#41413d;
+    --text:#f0efec; --text-2:#c3c2b7; --text-3:#94938b;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --neutral:#6b6a64;
+    --o1:#9ec5f4; --o2:#5598e7; --o3:#256abf; --o4:#184f95;
+    --accent:#3987e5; --focus:#86b6ef; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121211; --surface:#1a1a19; --surface-2:#232321; --line:#2e2e2b; --line-strong:#41413d;
+  --text:#f0efec; --text-2:#c3c2b7; --text-3:#94938b;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --neutral:#6b6a64;
+  --o1:#9ec5f4; --o2:#5598e7; --o3:#256abf; --o4:#184f95;
+  --accent:#3987e5; --focus:#86b6ef; --shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 16px}
+header.top{padding:28px 16px 18px;display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);font-weight:600}
+h1{font-size:28px;line-height:1.15;margin:4px 0 6px;letter-spacing:-.02em}
+.sub{color:var(--text-2);margin:0;max-width:760px}
+.btn{appearance:none;border:1px solid var(--line-strong);background:var(--surface);color:var(--text);border-radius:8px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer}
+.btn:hover{background:var(--surface-2)}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.chip:focus-visible,tr:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.filters{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 0}
+.filters .wrap{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fgroup{display:flex;gap:6px;align-items:center}
+.flabel{font-size:12px;color:var(--text-3)}
+select,input[type=search]{font:inherit;font-size:13px;background:var(--surface);color:var(--text);border:1px solid var(--line-strong);border-radius:8px;padding:6px 10px;min-height:34px}
+input[type=search]{min-width:220px}
+.chip{border:1px solid var(--line-strong);background:var(--surface);color:var(--text-2);border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;min-height:32px}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--surface);border-color:var(--text)}
+.dot{width:9px;height:9px;border-radius:3px;display:inline-block;flex:none}
+.count{margin-left:auto;font-size:12.5px;color:var(--text-2)}
+main{padding:18px 0 40px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.kpi{padding:14px 16px}
+.kpi .k{font-size:12.5px;color:var(--text-2);display:flex;gap:6px;align-items:center}
+.kpi .v{font-size:28px;font-weight:650;letter-spacing:-.02em;line-height:1.15;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12px;color:var(--text-3);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+.panel{padding:16px 16px 12px;min-width:0}
+.panel h2{font-size:15px;margin:0;letter-spacing:-.01em}
+.panel .ph{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.panel .hint{font-size:12px;color:var(--text-3);margin:2px 0 0}
+.c8{grid-column:span 8}.c4{grid-column:span 4}.c6{grid-column:span 6}.c12{grid-column:span 12}.c5{grid-column:span 5}.c7{grid-column:span 7}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--text-2)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+svg{display:block;max-width:100%;overflow:visible}
+svg text{fill:var(--text-2);font-size:11.5px}
+svg .lbl{fill:var(--text);font-size:12px}
+svg .val{fill:var(--text-2);font-variant-numeric:tabular-nums}
+svg .grid line{stroke:var(--line)}
+.hit{fill:transparent;cursor:pointer}
+.hit:hover + .hl, .rowg:hover .hl{fill:var(--surface-2)}
+.tooltip{position:fixed;pointer-events:none;z-index:50;background:var(--surface);color:var(--text);border:1px solid var(--line-strong);border-radius:10px;padding:8px 10px;font-size:12.5px;box-shadow:0 6px 24px rgba(0,0,0,.14);opacity:0;transition:opacity .08s;max-width:280px}
+.tooltip b{font-weight:650}
+.tooltip .tr{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.tooltip .tr span:last-child{font-variant-numeric:tabular-nums;color:var(--text)}
+.seg{display:flex;height:34px;border-radius:6px;overflow:hidden;gap:2px;background:var(--surface)}
+.seg div{height:100%;min-width:2px}
+.segleg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;margin-top:12px;font-size:12.5px}
+.segleg .r{display:flex;gap:8px;align-items:baseline}
+.segleg .r b{font-variant-numeric:tabular-nums}
+.segleg .r small{color:var(--text-3)}
+.insight{border-left:3px solid var(--accent);background:var(--surface-2);padding:10px 12px;border-radius:0 8px 8px 0;font-size:13px;color:var(--text-2);margin-top:12px}
+.insight b{color:var(--text)}
+.pilot{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.pc{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface);cursor:pointer;text-align:left;font:inherit;color:inherit}
+.pc:hover{border-color:var(--line-strong);background:var(--surface-2)}
+.pc .n{font-weight:620;font-size:13.5px;line-height:1.3}
+.pc .m{font-size:12px;color:var(--text-3);margin:2px 0 8px}
+.tag{display:inline-flex;gap:5px;align-items:center;font-size:11.5px;border:1px solid var(--line-strong);border-radius:999px;padding:2px 8px;color:var(--text-2);margin:0 4px 4px 0;white-space:nowrap}
+.tag.ok{border-color:color-mix(in srgb,var(--good) 55%,var(--line))}
+.tag.ok::before{content:"✓";color:var(--good);font-weight:700}
+.tbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:1080px;font-size:13px}
+th:nth-child(1),td:nth-child(1){min-width:260px}
+th:nth-child(3),td:nth-child(3){min-width:150px}
+th:nth-child(6),td:nth-child(6){min-width:120px}
+.dir1{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:240px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:var(--surface-2);font-size:12px;color:var(--text-2);font-weight:600;cursor:pointer;user-select:none;white-space:nowrap}
+th[aria-sort="ascending"]::after{content:" ↑"}th[aria-sort="descending"]::after{content:" ↓"}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--surface-2)}
+td.num{font-variant-numeric:tabular-nums;text-align:right}
+.ename{font-weight:600;line-height:1.3}
+.efan{color:var(--text-3);font-size:12px}
+.badge{display:inline-flex;gap:6px;align-items:center;font-size:12px;white-space:nowrap}
+.muted{color:var(--text-3)}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px;font-size:12.5px;color:var(--text-2)}
+dialog{border:none;border-radius:16px;padding:0;max-width:720px;width:calc(100% - 32px);background:var(--surface);color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.dh{padding:18px 20px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.dh h3{margin:0;font-size:17px;line-height:1.3}
+.db{padding:14px 20px 20px;max-height:70vh;overflow:auto}
+.kv{display:grid;grid-template-columns:180px 1fr;gap:6px 14px;font-size:13px}
+.kv dt{color:var(--text-3)}
+.kv dd{margin:0;word-break:break-word}
+.notes{font-size:13px;color:var(--text-2)}
+.notes h3{font-size:14px;color:var(--text);margin:0 0 6px}
+.notes ul{margin:6px 0 0;padding-left:18px}
+.foot{font-size:12px;color:var(--text-3);padding:16px 16px 32px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:1000px){.c8,.c4,.c6,.c5,.c7{grid-column:span 12}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.filters{position:static}h1{font-size:22px}.kpi .v{font-size:23px}input[type=search]{min-width:0;width:100%}.fgroup{flex-wrap:wrap}.kv{grid-template-columns:1fr}.segleg{grid-template-columns:1fr}.count{margin-left:0}}
+@media print{.filters,.btn{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <div>
+    <div class="eyebrow">Radar Nacional · Proteção Veicular e Patrimonial Mutualista</div>
+    <h1>Mapa das associações de proteção veicular no Brasil</h1>
+    <p class="sub" id="subtitle"></p>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="btn" id="themeBtn" type="button" aria-label="Alternar tema claro/escuro">◐ Tema</button>
+    <button class="btn" id="printBtn" type="button">Imprimir / PDF</button>
+  </div>
+</header>
+
+<div class="filters" role="region" aria-label="Filtros">
+  <div class="wrap">
+    <div class="fgroup"><label class="flabel" for="fUF">UF</label><select id="fUF"></select></div>
+    <div class="fgroup" role="group" aria-label="Classe" id="fClasse"></div>
+    <div class="fgroup"><label class="flabel" for="fContato">Contato</label>
+      <select id="fContato">
+        <option value="">Todos</option>
+        <option value="validado">Validado no site (confirmado + provável)</option>
+        <option value="confirmado_site_cita_cnpj">Confirmado (site cita CNPJ)</option>
+        <option value="somente_declarado_receita">Só declarado à Receita</option>
+        <option value="sem_contato_publico">Sem contato público</option>
+      </select></div>
+    <div class="fgroup"><input type="search" id="fBusca" placeholder="Buscar nome, CNPJ, município, dirigente…" aria-label="Buscar"></div>
+    <button class="btn" id="fReset" type="button">Limpar</button>
+    <span class="count" id="fCount" aria-live="polite"></span>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="kpis" id="kpis" aria-label="Indicadores"></section>
+
+  <section class="grid">
+    <div class="card panel c8">
+      <div class="ph"><div><h2>Entidades por UF</h2><p class="hint">Clique em uma UF para filtrar o painel inteiro.</p></div>
+        <div class="legend" id="legUF"></div></div>
+      <div id="chUF"></div>
+    </div>
+    <div class="card panel c4">
+      <div class="ph"><div><h2>Funil de qualificação</h2><p class="hint">Do universo filtrado ao contato validado.</p></div></div>
+      <div id="chFunil"></div>
+      <div class="insight" id="insFunil"></div>
+    </div>
+
+    <div class="card panel c5">
+      <div class="ph"><div><h2>Qualidade do contato</h2><p class="hint">Origem e grau de validação do canal comercial.</p></div></div>
+      <div id="chContato"></div>
+      <div class="insight"><b>Atenção:</b> contato "só Receita" pode ser do escritório contábil. Use os validados para abordagem e o restante como pista.</div>
+    </div>
+    <div class="card panel c7">
+      <div class="ph"><div><h2>Gestoras e escritórios por trás das associações</h2><p class="hint">Mesmo domínio de e-mail cadastral em várias entidades (indício de gestão comum).</p></div></div>
+      <div id="chGest"></div>
+      <div class="insight" id="insGest"></div>
+    </div>
+
+    <div class="card panel c6">
+      <div class="ph"><div><h2>Principais municípios</h2><p class="hint">Entidades com matriz no município, conforme filtro.</p></div></div>
+      <div id="chMun"></div>
+    </div>
+    <div class="card panel c6">
+      <div class="ph"><div><h2>Ano de abertura das entidades</h2><p class="hint">Data de início de atividade no CNPJ.</p></div></div>
+      <div id="chAno"></div>
+      <div class="insight" id="insAno"></div>
+    </div>
+
+    <div class="card panel c12">
+      <div class="ph"><div><h2>Piloto GO · MT · TO: sites oficiais lidos</h2><p class="hint">Somente leitura, robots.txt respeitado. "Confirmado" = o site exibe o CNPJ da entidade. Clique para ver a ficha.</p></div></div>
+      <div class="pilot" id="pilot"></div>
+    </div>
+
+    <div class="card panel c12">
+      <div class="tbar">
+        <div><h2 style="margin:0;font-size:15px">Base de entidades</h2><p class="hint" style="margin:2px 0 0">Uma linha por entidade (raiz do CNPJ). Clique na linha para a ficha completa com dirigentes e fontes.</p></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label class="flabel" for="tOrd">Ordenar</label>
+          <select id="tOrd"><option value="prioScore">Prioridade comercial</option><option value="score">Score de confiança</option><option value="estab">Nº de estabelecimentos</option><option value="razao">Nome (A-Z)</option></select>
+          <button class="btn" id="csvBtn" type="button">Exportar CSV filtrado</button>
+        </div>
+      </div>
+      <div class="tablewrap"><table id="tbl"><caption class="sr">Entidades filtradas</caption>
+        <thead><tr><th>Entidade</th><th>CNPJ</th><th>UF · Município</th><th>Classe</th><th class="num">Score</th><th>Contato</th><th>Telefone / WhatsApp</th><th>Dirigentes (QSA)</th><th>Prioridade</th></tr></thead>
+        <tbody></tbody></table></div>
+      <div class="pager"><button class="btn" id="pPrev" type="button">← Anterior</button><span id="pInfo"></span><button class="btn" id="pNext" type="button">Próxima →</button></div>
+    </div>
+
+    <div class="card panel c12 notes">
+      <h3>Metodologia e limitações</h3>
+      <ul id="notes"></ul>
+    </div>
+  </section>
+</main>
+<footer class="wrap foot" id="foot"></footer>
+
+<div class="tooltip" id="tt" role="status"></div>
+<dialog id="dlg" aria-labelledby="dlgT"><div class="dh"><h3 id="dlgT"></h3><button class="btn" id="dlgX" type="button" aria-label="Fechar">✕</button></div><div class="db" id="dlgB"></div></dialog>
+
+<script>
+const DATA = __DATA__;
+const C = DATA.cols, M = DATA.meta;
+const R = DATA.rows.map(r => Object.fromEntries(C.map((c, i) => [c, r[i]])));
+const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
+const CLS = {1:{n:"Confirmada",d:"Confirmada como atuante em proteção veicular",v:"--s1"},2:{n:"Provável",d:"Provável associação de proteção veicular",v:"--s1"},3:{n:"Patrimonial",d:"Proteção patrimonial sem confirmação do segmento veicular",v:"--s2"},5:{n:"Pendente",d:"Pendente de verificação",v:"--neutral"}};
+// Séries: veicular (classes 1+2), patrimonial (3), pendente (5). Cor segue a entidade, nunca a posição.
+const SER = [{k:"veic",n:"Veicular (confirmada ou provável)",v:"--s1",f:r=>r.classe<=2},{k:"patr",n:"Patrimonial s/ confirmação veicular",v:"--s2",f:r=>r.classe===3},{k:"pend",n:"Pendente de verificação",v:"--neutral",f:r=>r.classe===5}];
+const CONT = {confirmado_site_cita_cnpj:{n:"Confirmado no site (cita CNPJ)",s:"Confirmado",v:"--o1"},provavel_site_dominio_cadastral:{n:"Provável (site do domínio cadastral)",s:"Provável (site)",v:"--o2"},somente_declarado_receita:{n:"Só declarado à Receita",s:"Só Receita",v:"--o3"},sem_contato_publico:{n:"Sem contato público",s:"Sem contato",v:"--neutral"}};
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => n.toLocaleString("pt-BR");
+const pct = (a, b) => b ? (100 * a / b).toLocaleString("pt-BR", {maximumFractionDigits: 1}) + "%" : "–";
+const esc = s => s == null ? "" : String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm = s => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase();
+R.forEach(r => r._q = norm([r.razao, r.fantasia, r.cnpj, r.mun, r.dirig, r.email, r.site].join(" ")));
+
+// ---------------- estado e filtros
+const st = {uf: "", cls: new Set([1, 2, 3, 5]), cont: "", q: "", ord: "prioScore", page: 0};
+const fUF = document.getElementById("fUF");
+fUF.innerHTML = `<option value="">Brasil (todas)</option>` + UFS.map(u => `<option>${u}</option>`).join("");
+const fClasse = document.getElementById("fClasse");
+fClasse.innerHTML = `<span class="flabel">Classe</span>` + [1, 2, 3, 5].map(c => `<button class="chip" type="button" data-c="${c}" aria-pressed="true" title="${CLS[c].d}"><span class="dot" style="background:var(${CLS[c].v})"></span>${c} · ${CLS[c].n}</button>`).join("");
+fClasse.addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; const c = +b.dataset.c;
+  if (st.cls.has(c) && st.cls.size > 1) st.cls.delete(c); else st.cls.add(c);
+  b.setAttribute("aria-pressed", st.cls.has(c)); st.page = 0; render(); });
+fUF.onchange = () => { st.uf = fUF.value; st.page = 0; render(); };
+document.getElementById("fContato").onchange = e => { st.cont = e.target.value; st.page = 0; render(); };
+let qt; document.getElementById("fBusca").oninput = e => { clearTimeout(qt); qt = setTimeout(() => { st.q = norm(e.target.value.trim()); st.page = 0; render(); }, 150); };
+document.getElementById("tOrd").onchange = e => { st.ord = e.target.value; st.page = 0; renderTable(cur); };
+document.getElementById("fReset").onclick = () => { Object.assign(st, {uf: "", cls: new Set([1, 2, 3, 5]), cont: "", q: "", page: 0}); fUF.value = ""; document.getElementById("fContato").value = ""; document.getElementById("fBusca").value = ""; fClasse.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", "true")); render(); };
+const validado = r => r.contato === "confirmado_site_cita_cnpj" || r.contato === "provavel_site_dominio_cadastral";
+function filt(ignoreUF) {
+  return R.filter(r => (ignoreUF || !st.uf || r.uf === st.uf) && st.cls.has(r.classe) &&
+    (!st.cont || (st.cont === "validado" ? validado(r) : r.contato === st.cont)) && (!st.q || r._q.includes(st.q)));
+}
+
+// ---------------- tooltip
+const tt = document.getElementById("tt");
+function tip(e, html) { tt.innerHTML = html; tt.style.opacity = 1; const w = tt.offsetWidth, h = tt.offsetHeight;
+  let x = e.clientX + 14, y = e.clientY + 14; if (x + w > innerWidth - 8) x = e.clientX - w - 14; if (y + h > innerHeight - 8) y = e.clientY - h - 14;
+  tt.style.left = x + "px"; tt.style.top = y + "px"; }
+const untip = () => tt.style.opacity = 0;
+const trow = (v, n, val) => `<div class="tr"><span style="display:inline-flex;gap:6px;align-items:center"><span class="dot" style="background:var(${v})"></span>${n}</span><span>${val}</span></div>`;
+
+// ---------------- gráfico de barras horizontais (empilhadas ou simples)
+function hbars(el, items, series, opt = {}) {
+  const W = el.clientWidth || 600, lw = opt.labelW || 46, rw = 54, bh = opt.bh || 14, gap = opt.gap || 8;
+  const H = items.length * (bh + gap) + 22, max = Math.max(1, ...items.map(d => d.total));
+  const x = v => (W - lw - rw) * v / max;
+  const ticks = niceTicks(max, W < 420 ? 3 : 5);
+  let s = `<svg width="${W}" height="${H}" role="img" aria-label="${esc(opt.aria || "")}"><g class="grid">`;
+  ticks.forEach(t => { s += `<line x1="${lw + x(t)}" x2="${lw + x(t)}" y1="0" y2="${H - 18}"/><text x="${lw + x(t)}" y="${H - 4}" text-anchor="middle">${fmt(t)}</text>`; });
+  s += `</g>`;
+  items.forEach((d, i) => {
+    const y = i * (bh + gap) + 2; let x0 = lw;
+    s += `<g class="rowg" data-i="${i}"><rect class="hl" x="0" y="${y - gap / 2}" width="${W}" height="${bh + gap}" fill="transparent" rx="4"/>`;
+    s += `<text class="lbl" x="${lw - 8}" y="${y + bh / 2 + 4}" text-anchor="end" ${d.dim ? 'style="opacity:.45"' : ""}>${esc(d.label)}</text>`;
+    const segs = series.map(sr => ({sr, v: d.v[sr.k] || 0})).filter(z => z.v > 0);
+    segs.forEach((z, j) => { const w = Math.max(1, x(z.v) - (j < segs.length - 1 ? 2 : 0)); const last = j === segs.length - 1;
+      s += `<path d="${bar(x0, y, w, bh, last ? 4 : 0)}" fill="var(${z.sr.v})" ${d.dim ? 'opacity=".28"' : ""}/>`; x0 += x(z.v); });
+    s += `<text class="val" x="${x0 + 6}" y="${y + bh / 2 + 4}">${fmt(d.total)}${d.extra ? " " + esc(d.extra) : ""}</text>`;
+    s += `<rect class="hit" x="0" y="${y - gap / 2}" width="${W}" height="${bh + gap}"/></g>`;
+  });
+  el.innerHTML = s + `</svg>`;
+  el.querySelectorAll(".rowg").forEach(g => { const d = items[+g.dataset.i];
+    g.addEventListener("mousemove", e => tip(e, `<b>${esc(d.title || d.label)}</b>` + series.map(sr => d.v[sr.k] != null ? trow(sr.v, sr.n, fmt(d.v[sr.k] || 0)) : "").join("") + (d.note ? `<div class="muted" style="margin-top:4px">${esc(d.note)}</div>` : "")));
+    g.addEventListener("mouseleave", untip);
+    if (opt.onClick) { g.style.cursor = "pointer"; g.addEventListener("click", () => opt.onClick(d)); }
+  });
+}
+// barra com apenas a ponta de dados arredondada (4px), ancorada na linha de base
+function bar(x, y, w, h, r) { r = Math.min(r, w, h / 2); if (!r) return `M${x},${y}h${w}v${h}h${-w}z`;
+  return `M${x},${y}h${w - r}a${r},${r} 0 0 1 ${r},${r}v${h - 2 * r}a${r},${r} 0 0 1 ${-r},${r}h${-(w - r)}z`; }
+function niceTicks(max, n) { const raw = max / n, p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p;
+  const step = (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p; const t = []; for (let v = 0; v <= max + 1e-9; v += step) t.push(Math.round(v)); return t; }
+
+// ---------------- colunas verticais (série temporal discreta)
+function vcols(el, items, opt) {
+  const W = el.clientWidth || 600, H = 200, pl = 36, pb = 22, pt = 8, max = Math.max(1, ...items.map(d => d.v));
+  const bw = (W - pl) / items.length, y = v => (H - pb - pt) * v / max;
+  let s = `<svg width="${W}" height="${H}" role="img" aria-label="${esc(opt.aria)}"><g class="grid">`;
+  niceTicks(max, 4).forEach(t => { const yy = H - pb - y(t); s += `<line x1="${pl}" x2="${W}" y1="${yy}" y2="${yy}"/><text x="${pl - 6}" y="${yy + 4}" text-anchor="end">${fmt(t)}</text>`; });
+  s += `</g>`;
+  const every = Math.ceil(items.length / (W < 480 ? 6 : 12));
+  items.forEach((d, i) => { const x = pl + i * bw + 1, w = Math.max(2, bw - 2), h = y(d.v);
+    s += `<g class="col" data-i="${i}"><rect class="hl" x="${pl + i * bw}" y="${pt}" width="${bw}" height="${H - pb - pt}" fill="transparent"/>`;
+    if (h > 0) s += `<path d="M${x},${H - pb}v${-(h - Math.min(4, h))}a${Math.min(4, w / 2)},${Math.min(4, w / 2)} 0 0 1 ${Math.min(4, w / 2)},${-Math.min(4, h)}h${w - 2 * Math.min(4, w / 2)}a${Math.min(4, w / 2)},${Math.min(4, w / 2)} 0 0 1 ${Math.min(4, w / 2)},${Math.min(4, h)}v${h - Math.min(4, h)}z" fill="var(${d.c || "--s1"})"/>`;
+    if (i % every === 0 || (i === items.length - 1 && i % every >= every / 2)) s += `<text x="${pl + i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${d.label}</text>`;
+    s += `<rect class="hit" x="${pl + i * bw}" y="${pt}" width="${bw}" height="${H - pb - pt}"/></g>`; });
+  el.innerHTML = s + `</svg>`;
+  el.querySelectorAll(".col").forEach(g => { const d = items[+g.dataset.i];
+    g.addEventListener("mousemove", e => tip(e, `<b>${d.label}</b>` + trow(d.c || "--s1", "Entidades abertas", fmt(d.v))));
+    g.addEventListener("mouseleave", untip); });
+}
+
+// ---------------- render
+let cur = [];
+function render() {
+  cur = filt(false);
+  const all = filt(true);
+  document.getElementById("fCount").textContent = `${fmt(cur.length)} entidades no filtro`;
+  kpis(cur); chartUF(all); funil(cur); contato(cur); gestoras(cur); municipios(cur); anos(cur); pilot(cur);
+  renderTable(cur);
+}
+function kpis(rs) {
+  const n = rs.length, c = k => rs.filter(r => r.classe === k).length, v = rs.filter(validado).length, conf = rs.filter(r => r.contato === "confirmado_site_cita_cnpj").length;
+  const dir = rs.filter(r => r.nDir > 0).length, est = rs.reduce((a, r) => a + r.estab, 0);
+  const K = [
+    ["Entidades no filtro", fmt(n), `${fmt(est)} estabelecimentos ativos (matriz + filiais)`],
+    [`<span class="dot" style="background:var(--s1)"></span>Veicular (classes 1 e 2)`, fmt(c(1) + c(2)), `${fmt(c(1))} confirmadas · ${fmt(c(2))} prováveis`],
+    [`<span class="dot" style="background:var(--s2)"></span>Patrimonial (classe 3)`, fmt(c(3)), "Mutualistas sem segmento veicular explícito"],
+    [`<span class="dot" style="background:var(--neutral)"></span>Pendentes (classe 5)`, fmt(c(5)), "Clubes de benefícios e casos ambíguos"],
+    ["Com dirigentes públicos (QSA)", fmt(dir), `${pct(dir, n)} das entidades têm presidente/diretores na Receita`],
+    ["Contato validado no site", fmt(v), `${fmt(conf)} confirmados (site cita o CNPJ) · piloto GO/MT/TO`],
+    ["Referência SUSEP (Fase I)", fmt(M.susepRef), "Associações com cadastro concluído até 15/07/2025"],
+    ["Situação SUSEP verificada", "0", "Consulta oficial usa reCAPTCHA: conferência manual pendente"],
+  ];
+  document.getElementById("kpis").innerHTML = K.map(([k, v, d]) => `<div class="card kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join("");
+}
+function chartUF(rs) {
+  const by = {}; UFS.forEach(u => by[u] = {veic: 0, patr: 0, pend: 0});
+  rs.forEach(r => SER.forEach(s => { if (s.f(r)) by[r.uf][s.k]++; }));
+  const items = UFS.map(u => ({label: u, title: u, v: by[u], total: by[u].veic + by[u].patr + by[u].pend, dim: st.uf && st.uf !== u}))
+    .filter(d => d.total > 0).sort((a, b) => b.total - a.total);
+  document.getElementById("legUF").innerHTML = SER.map(s => `<span><span class="dot" style="background:var(${s.v})"></span>${s.n}</span>`).join("");
+  hbars(document.getElementById("chUF"), items, SER, {aria: "Entidades por UF", bh: 12, gap: 7, onClick: d => { st.uf = st.uf === d.label ? "" : d.label; fUF.value = st.uf; st.page = 0; render(); }});
+}
+function funil(rs) {
+  const n = rs.length, veic = rs.filter(r => r.classe <= 2).length, dom = rs.filter(r => r.emailTipo === "dominio_proprio").length,
+    site = rs.filter(r => r.site).length, conf = rs.filter(r => r.contato === "confirmado_site_cita_cnpj").length;
+  const steps = [["Entidades no filtro", n, "--o4"], ["Veicular (classes 1 e 2)", veic, "--o3"], ["E-mail com domínio próprio", dom, "--o3"], ["Site oficial lido", site, "--o2"], ["Contato confirmado (site cita CNPJ)", conf, "--o1"]];
+  const W = document.getElementById("chFunil").clientWidth || 360;
+  let s = `<svg width="${W}" height="${steps.length * 46}" role="img" aria-label="Funil de qualificação">`;
+  steps.forEach(([l, v, c], i) => { const y = i * 46, w = Math.max(3, (W - 70) * (n ? v / n : 0));
+    s += `<text class="lbl" x="0" y="${y + 13}">${l}</text><path d="${bar(0, y + 20, w, 14, 4)}" fill="var(${c})"/><text class="val" x="${w + 6}" y="${y + 31}">${fmt(v)}${i ? " · " + pct(v, n) : ""}</text>`; });
+  document.getElementById("chFunil").innerHTML = s + `</svg>`;
+  document.getElementById("insFunil").innerHTML = `<b>Gargalo:</b> só ${pct(dom, n)} das entidades declaram e-mail com domínio próprio; o restante usa Gmail/Hotmail ou e-mail do contador. Site validado ainda limitado ao piloto (${M.sitesLidos} sites lidos).`;
+}
+function contato(rs) {
+  const n = rs.length || 1, keys = Object.keys(CONT), cnt = Object.fromEntries(keys.map(k => [k, rs.filter(r => r.contato === k).length]));
+  document.getElementById("chContato").innerHTML = `<div class="seg" role="img" aria-label="Distribuição da qualidade do contato">${keys.filter(k => cnt[k]).map(k => `<div data-k="${k}" style="flex:${cnt[k]} 0 0;background:var(${CONT[k].v})"></div>`).join("")}</div>
+    <div class="segleg">${keys.map(k => `<div class="r"><span class="dot" style="background:var(${CONT[k].v})"></span><span>${CONT[k].n}</span><b>${fmt(cnt[k])}</b><small>${pct(cnt[k], rs.length)}</small></div>`).join("")}</div>`;
+  document.querySelectorAll("#chContato .seg div").forEach(d => { const k = d.dataset.k;
+    d.addEventListener("mousemove", e => tip(e, `<b>${CONT[k].n}</b>` + trow(CONT[k].v, "Entidades", `${fmt(cnt[k])} (${pct(cnt[k], rs.length)})`))); d.addEventListener("mouseleave", untip); });
+}
+function gestoras(rs) {
+  const m = {}; rs.forEach(r => { if (!r.email || !(r.emailTipo === "dominio_proprio" || r.emailTipo === "provavel_terceiro_contador")) return;
+    const d = r.email.split("@")[1]; (m[d] ||= {n: 0, ufs: new Set()}); m[d].n++; m[d].ufs.add(r.uf); });
+  const top = Object.entries(m).filter(([, v]) => v.n >= 3).sort((a, b) => b[1].n - a[1].n).slice(0, 10);
+  const el = document.getElementById("chGest");
+  if (!top.length) { el.innerHTML = `<p class="muted">Nenhum domínio compartilhado por 3 ou mais entidades neste filtro.</p>`; document.getElementById("insGest").innerHTML = ""; return; }
+  const items = top.map(([d, v]) => ({label: d.length > 26 ? d.slice(0, 25) + "…" : d, title: d, v: {g: v.n}, total: v.n, extra: `· ${v.ufs.size} UF${v.ufs.size > 1 ? "s" : ""}`, note: "UFs: " + [...v.ufs].sort().join(", ")}));
+  hbars(el, items, [{k: "g", n: "Entidades com este domínio", v: "--s1"}], {aria: "Domínios compartilhados", labelW: Math.min(190, (el.clientWidth || 600) * .42), bh: 12, gap: 8,
+    onClick: d => { const inp = document.getElementById("fBusca"); inp.value = d.title; st.q = norm(d.title); st.page = 0; render(); document.getElementById("tbl").scrollIntoView({behavior: "smooth"}); }});
+  const tot = top.reduce((a, [, v]) => a + v.n, 0);
+  document.getElementById("insGest").innerHTML = `<b>Oportunidade B2B:</b> os ${top.length} principais domínios somam ${fmt(tot)} associações. Um contrato com o back-office pode alcançar várias entidades. Clique para listar as associações de um domínio; confirme o vínculo antes da abordagem.`;
+}
+function municipios(rs) {
+  const m = {}; rs.forEach(r => { const k = (r.mun || "?") + " · " + r.uf; (m[k] ||= {veic: 0, patr: 0, pend: 0}); SER.forEach(s => { if (s.f(r)) m[k][s.k]++; }); });
+  const items = Object.entries(m).map(([k, v]) => ({label: k.length > 24 ? k.slice(0, 23) + "…" : k, title: k, v, total: v.veic + v.patr + v.pend})).sort((a, b) => b.total - a.total).slice(0, 12);
+  const el = document.getElementById("chMun");
+  hbars(el, items, SER, {aria: "Principais municípios", labelW: Math.min(170, (el.clientWidth || 500) * .4), bh: 12, gap: 8});
+}
+function anos(rs) {
+  const m = {}; rs.forEach(r => { if (r.abertura) { const y = +r.abertura.slice(0, 4); m[y] = (m[y] || 0) + 1; } });
+  const ys = Object.keys(m).map(Number); if (!ys.length) { document.getElementById("chAno").innerHTML = ""; return; }
+  const a = Math.max(Math.min(...ys), 1995), b = Math.max(...ys), items = [];
+  let antes = 0; ys.filter(y => y < a).forEach(y => antes += m[y]);
+  for (let y = a; y <= b; y++) items.push({label: String(y), v: (m[y] || 0) + (y === a ? antes : 0)});
+  if (antes) items[0].label = "≤" + a;
+  if (b === new Date().getFullYear() || String(b) === M.competencia.slice(0, 4)) items[items.length - 1].label = b + "*";
+  vcols(document.getElementById("chAno"), items, {aria: "Entidades por ano de abertura"});
+  const rec = rs.filter(r => r.abertura && +r.abertura.slice(0, 4) >= 2020).length;
+  document.getElementById("insAno").innerHTML = `<b>${pct(rec, rs.filter(r => r.abertura).length)}</b> das entidades do filtro foram abertas a partir de 2020: mercado jovem, com estrutura de gestão ainda em formação. <span class="muted">* ${M.competencia.slice(0, 4)} parcial (até a competência ${M.competencia}).</span>`;
+}
+function pilot(rs) {
+  const ps = rs.filter(r => r.site).sort((a, b) => (a.contato > b.contato ? 1 : -1) || b.prioScore - a.prioScore);
+  const el = document.getElementById("pilot");
+  if (!ps.length) { el.innerHTML = `<p class="muted">Nenhum site lido no filtro atual (o enriquecimento de sites rodou no piloto GO/MT/TO).</p>`; return; }
+  el.innerHTML = ps.map((r, i) => `<button class="pc" type="button" data-cnpj="${r.cnpj}">
+    <div class="n">${esc(r.fantasia || r.razao)}</div><div class="m">${esc(r.mun)} · ${r.uf} · Classe ${r.classe}</div>
+    ${r.contato === "confirmado_site_cita_cnpj" ? `<span class="tag ok">Site cita o CNPJ</span>` : `<span class="tag">Site do domínio cadastral</span>`}
+    ${r.wa ? `<span class="tag ok">WhatsApp ${esc(r.wa.split(",")[0])}</span>` : ""}
+    ${r.soft ? `<span class="tag">Software: ${esc(r.soft)}</span>` : ""}
+    ${r.s24h ? `<span class="tag">Assistência 24h</span>` : ""}${r.sSin ? `<span class="tag">Sinistro</span>` : ""}${r.sVist ? `<span class="tag">Vistoria</span>` : ""}
+  </button>`).join("");
+  el.querySelectorAll(".pc").forEach(b => b.onclick = () => ficha(R.find(r => r.cnpj === b.dataset.cnpj)));
+}
+
+// ---------------- tabela
+const PS = 25;
+function sorted(rs) { const k = st.ord; return [...rs].sort((a, b) => k === "razao" ? (a.razao || "").localeCompare(b.razao || "", "pt") : (b[k] - a[k]) || (b.score - a.score)); }
+function renderTable(rs) {
+  const s = sorted(rs), pages = Math.max(1, Math.ceil(s.length / PS)); st.page = Math.min(st.page, pages - 1);
+  const slice = s.slice(st.page * PS, st.page * PS + PS);
+  document.querySelector("#tbl tbody").innerHTML = slice.map(r => `<tr tabindex="0" data-cnpj="${r.cnpj}">
+    <td><div class="ename">${esc(r.razao)}</div>${r.fantasia && r.fantasia !== r.razao ? `<div class="efan">${esc(r.fantasia)}</div>` : ""}</td>
+    <td style="white-space:nowrap;font-variant-numeric:tabular-nums">${r.cnpj}${r.estab > 1 ? `<div class="efan">${r.estab} estabelecimentos</div>` : ""}</td>
+    <td>${r.uf} · ${esc(r.mun)}${r.ufs && r.ufs.includes(",") ? `<div class="efan">Atua em ${esc(r.ufs)}</div>` : ""}</td>
+    <td><span class="badge"><span class="dot" style="background:var(${CLS[r.classe].v})"></span>${r.classe} · ${CLS[r.classe].n}</span></td>
+    <td class="num">${r.score}</td>
+    <td>${CONT[r.contato] ? `<span class="badge"><span class="dot" style="background:var(${CONT[r.contato].v})"></span>${CONT[r.contato].s}</span>` : ""}</td>
+    <td style="white-space:nowrap">${esc(r.tel || "–")}${r.wa ? `<div class="efan">WA ${esc(r.wa)}</div>` : ""}</td>
+    <td>${r.nDir ? `<div class="dir1">${esc(r.dirig.split("; ")[0])}${r.nDir > 1 ? ` <span class="muted">+${r.nDir - 1}</span>` : ""}</div>` : `<span class="muted">Não publicado</span>`}</td>
+    <td>${r.prio} <span class="muted">(${r.prioScore})</span></td></tr>`).join("") || `<tr><td colspan="9" class="muted">Nenhuma entidade no filtro.</td></tr>`;
+  document.getElementById("pInfo").textContent = `Página ${st.page + 1} de ${pages} · ${fmt(s.length)} entidades`;
+  document.getElementById("pPrev").disabled = st.page === 0; document.getElementById("pNext").disabled = st.page >= pages - 1;
+  document.querySelectorAll("#tbl tbody tr[data-cnpj]").forEach(tr => { const open = () => ficha(R.find(r => r.cnpj === tr.dataset.cnpj));
+    tr.onclick = open; tr.onkeydown = e => { if (e.key === "Enter") open(); }; });
+}
+document.getElementById("pPrev").onclick = () => { st.page--; renderTable(cur); };
+document.getElementById("pNext").onclick = () => { st.page++; renderTable(cur); };
+
+// ---------------- ficha
+const dlg = document.getElementById("dlg");
+document.getElementById("dlgX").onclick = () => dlg.close();
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+function ficha(r) {
+  if (!r) return;
+  document.getElementById("dlgT").textContent = r.razao;
+  const L = [["Nome fantasia", r.fantasia], ["CNPJ (matriz)", r.cnpj], ["Classe", `${r.classe} · ${CLS[r.classe].d}`], ["Score de confiança", r.score + " / 100"],
+    ["Localização", `${r.mun} · ${r.uf}`], ["Estabelecimentos ativos", `${r.estab}${r.ufs ? " · UFs: " + r.ufs : ""}`], ["Data de abertura", r.abertura],
+    ["Dirigentes públicos (QSA)", r.dirig], ["Telefone (Receita)", r.tel], ["E-mail (Receita)", r.email ? `${r.email} (${r.emailTipo.replace(/_/g, " ")})` : null],
+    ["Site oficial", r.site ? `<a href="${esc(r.site)}" target="_blank" rel="noopener">${esc(r.site)}</a>` : null],
+    ["WhatsApp comercial confirmado", r.wa], ["Status do contato", CONT[r.contato]?.n], ["Indícios de software", r.soft],
+    ["Domínio de e-mail compartilhado", r.emailComp > 1 ? `${r.emailComp} entidades usam o mesmo domínio` : null],
+    ["Prioridade comercial", `${r.prio} (${r.prioScore}/100)`], ["Situação SUSEP", "Não verificada: conferir em www2.susep.gov.br (certidão)"],
+    ["Fonte", `Receita Federal, CNPJ dados abertos, competência ${M.competencia}${r.site ? "; site oficial" : ""}`]];
+  document.getElementById("dlgB").innerHTML = `<dl class="kv">${L.filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${k === "Site oficial" ? v : esc(v)}</dd>`).join("")}</dl>`;
+  dlg.showModal();
+}
+
+// ---------------- CSV
+document.getElementById("csvBtn").onclick = () => {
+  const cols = [["cnpj","CNPJ"],["razao","Razão social"],["fantasia","Nome fantasia"],["uf","UF"],["mun","Município"],["classe","Classe"],["score","Score"],["contato","Status contato"],["tel","Telefone Receita"],["email","E-mail Receita"],["emailTipo","Tipo e-mail"],["site","Site oficial"],["wa","WhatsApp confirmado"],["dirig","Dirigentes QSA"],["estab","Estabelecimentos"],["ufs","UFs de atuação"],["soft","Indícios software"],["prio","Prioridade"],["prioScore","Prioridade score"],["abertura","Abertura"]];
+  const q = v => v == null ? "" : /[";\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+  const csv = "﻿" + cols.map(c => c[1]).join(";") + "\n" + sorted(cur).map(r => cols.map(c => q(r[c[0]])).join(";")).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv;charset=utf-8"}));
+  a.download = `radar_protecao_veicular_${st.uf || "BR"}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+// ---------------- textos e tema
+document.getElementById("subtitle").textContent = `Base CNPJ da Receita Federal, competência ${M.competencia}. ${fmt(R.length)} entidades ativas classificadas por evidência, ${fmt(M.descartadas)} descartadas com justificativa. Atualizado em ${M.gerado}.`;
+document.getElementById("notes").innerHTML = [
+  `<b>Descoberta:</b> razão social, nome fantasia, CNAE principal e secundário (9499-5/00 é ponto de partida, não filtro), natureza jurídica e e-mail cadastral. Termos isolados como "proteção" ou "clube" não bastam.`,
+  `<b>Classes:</b> 1 confirmada (site que cita o CNPJ ou cadastro SUSEP), 2 provável, 3 patrimonial sem confirmação veicular, 5 pendente. Descartadas (classe 4): ${Object.entries(M.descSub).map(([k, v]) => `${fmt(v)} ${k.replace(/_/g, " ")}`).join(", ")}.`,
+  `<b>Precisão observada</b> em amostra rotulada de 80 entidades: classe 2 com 30/30 compatíveis; classe 3 entre 73% e 87%; ruído concentrado em "pendente", por desenho.`,
+  `<b>Cobertura:</b> ordem de grandeza compatível com as ${fmt(M.susepRef)} associações que concluíram o cadastro na SUSEP. Não há evidência de cobertura completa: entidades sem nenhum sinal no nome, CNAE ou e-mail podem não aparecer.`,
+  `<b>SUSEP:</b> cadastro não é regularidade. Nenhuma entidade é marcada como irregular por ausência de resultado. A consulta oficial exige reCAPTCHA e não foi automatizada.`,
+  `<b>Dirigentes:</b> nome e cargo do QSA público, com data de entrada; sem CPF. Associação civil não tem proprietário. O QSA pode estar desatualizado.`,
+  `<b>Contatos:</b> "só Receita" pode pertencer ao escritório contábil. Validação de sites rodou no piloto GO/MT/TO (${M.sitesLidos} sites lidos, respeitando robots.txt).`,
+  `<b>Uso:</b> prospecção B2B. Não redistribua os nomes de dirigentes publicamente; ofereça opt-out no primeiro contato (LGPD).`].map(x => `<li>${x}</li>`).join("");
+document.getElementById("foot").textContent = `Radar Proteção Veicular · Skill radar-protecao-veicular · Fontes: Receita Federal (CNPJ dados abertos, ${M.competencia}), SUSEP (página de PPM, LC 213/2025, Res. CNSP 491/2026), sites institucionais. Gerado em ${M.gerado}.`;
+const THEME_KEY = "radar-pv-theme";
+try { const t = localStorage.getItem(THEME_KEY); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+document.getElementById("themeBtn").onclick = () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.dataset.theme = dark ? "light" : "dark";
+  try { localStorage.setItem(THEME_KEY, document.documentElement.dataset.theme); } catch (e) {}
+};
+document.getElementById("printBtn").onclick = () => print();
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(render, 120); });
+render();
+</script>
+</body>
+</html>
