@@ -93,6 +93,29 @@ class TestUtilitarios(unittest.TestCase):
         self.assertEqual(status_de_texto("documento ilegivel"), "nao_foi_possivel")
 
 
+class TestExtratorVideo(unittest.TestCase):
+    def setUp(self):
+        try:
+            import extrair_video_susep as X  # noqa: F401
+        except SystemExit:
+            self.skipTest("opencv/rapidocr nao instalados")
+        self.X = X
+
+    def test_cnpj_com_confusoes_de_ocr(self):
+        X = self.X
+        lidos = {d for d, _ in X.candidatos("ASSOC X 19.32O.123/OOO1-38 Em regularizacao")}
+        self.assertIn("19320123000138", lidos)
+        lidos = {d for d, _ in X.candidatos("19.320.1230001-38")}  # barra perdida
+        self.assertTrue(any(X.cnpj_valido(d) for d in lidos))
+        self.assertFalse(X.cnpj_valido("19320123000139"))
+
+    def test_situacao_e_nome(self):
+        X = self.X
+        linha = "19.320.123/0001-38 MAXCAR PROTECAO Em regularizacao"
+        self.assertTrue(X.situacao_da_linha(linha).lower().startswith("em regulariza"))
+        self.assertEqual(X.nome_da_linha(linha, "19.320.123/0001-38"), "MAXCAR PROTECAO")
+
+
 class TestAmostraValidacao(unittest.TestCase):
     """Gabarito rotulado: nenhum 'positivo' pode cair em classe 4 e nenhum 'negativo' em classe 2."""
 

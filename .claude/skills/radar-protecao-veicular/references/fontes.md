@@ -12,6 +12,14 @@
 | Buscadores (DuckDuckGo, Google) | Descoberta de sites | **Não usados**: retornam desafio anti-robô | Pesquisa de sites fica manual (CSV `--sites`) |
 | APIs de terceiros (BrasilAPI, minhareceita.org, CNPJá, OpenCNPJ) | Consulta pontual de CNPJ | Possível, mas **desligado** | Enviaria a lista de CNPJs pesquisados a terceiros; a base local já contém os mesmos dados |
 
+## Lista SUSEP a partir de gravação de tela
+
+Quando o usuário grava a tela da consulta oficial (após resolver o reCAPTCHA manualmente), `extrair_video_susep.py`
+extrai os CNPJs por OCR local (sem internet) e só aceita CNPJ com dígito verificador válido. Testado em vídeo
+sintético de 35 linhas: 35/35 extraídos, 0 falsos. O nome lido pelo OCR pode perder espaços; o nome oficial vem da
+Receita pelo CNPJ. `cruzar_lista_susep.py` separa: já na lista, descartadas pela regra (com motivo), não capturadas
+(lacuna de cobertura: use para melhorar `regras.py`) e não encontradas (provável erro de leitura).
+
 ## Modelo de solicitação via LAI (Fala.BR) para a SUSEP
 
 > Com fundamento na Lei 12.527/2011, solicito a relação das associações de proteção patrimonial mutualista
