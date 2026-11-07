@@ -1,0 +1,7 @@
+duckdb>=1.1
+pandas>=2.0
+pyarrow>=15
+requests>=2.31
+openpyxl>=3.1
+tabulate>=0.9
+pypdf>=4.0  # opcional: leitura de certidoes SUSEP em PDF

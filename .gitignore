@@ -1,8 +1,9 @@
 # Pacote zip de backup
 Command execution.zip
 
-# Configuração local do Claude Code
-.claude/
+# Configuração local do Claude Code (skills do projeto são versionadas)
+.claude/*
+!.claude/skills/
 
 # Sistema
 Thumbs.db
