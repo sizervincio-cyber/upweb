@@ -6,7 +6,7 @@ Regras de interpretação:
 
 - **Associação civil não tem proprietário.** `dirigentes_publicos` traz presidente, diretores e demais registros do QSA publicados pela Receita. Não presuma que dirigente seja dono ou que fundador ainda atue.
 - **Dirigente pode estar desatualizado**: o QSA reflete o último registro na Receita (veja a data de entrada). Para decisões críticas, confira ata/estatuto ou o cadastro SUSEP.
-- **Capital social**: `informado` (valor > 0), `zero_informado` (a Receita registra 0,00, comum em associações) ou `ausente_na_base`. Não é faturamento.
+- **Capital social**: `informado` (valor > 0), `zero_informado` (a Receita registra 0,00) ou `ausente_na_base`. Não é faturamento. Na competência 2026-10, 99,6% das associações têm capital zero (associação civil não tem capital como empresa), então capital **não mede porte de associação**. Para empresas do setor (Ltda/S.A.: regionais, consultorias, possíveis administradoras de PPM) o campo é informado em 97% dos casos e é útil.
 - **Contatos da Receita** podem ser do escritório contábil. Só `confirmado_site_cita_cnpj` comprova vínculo com a entidade.
 - **Não coletado por desenho (LGPD)**: CPF (nem mascarado), faixa etária, representante legal de sócio menor, endereço residencial, telefone pessoal.
 
@@ -50,6 +50,8 @@ Campos não inventados: faturamento, número de associados e frota **não existe
 | `email_cadastral` | E-mail declarado a Receita |
 | `email_cadastral_tipo` | dominio_proprio | gratuito | provavel_terceiro_contador | ausente |
 | `site_institucional` | Site oficial lido (vinculo validado) |
+| `site_candidato` | Site candidato: dominio proprio do e-mail cadastral (nao verificado ate ser lido) |
+| `site_situacao` | validado_cita_cnpj, validado_dominio_cadastral, candidato_nao_verificado, inacessivel_na_coleta, bloqueia_robos, sem_site_identificado |
 | `contato_status` | confirmado_site_cita_cnpj | provavel_site_dominio_cadastral | somente_declarado_receita | sem_contato_publico |
 | `whatsapp_comercial_confirmado` | WhatsApp publicado no site que cita o CNPJ |
 | `whatsapp_site_nao_confirmado` | WhatsApp em site sem citacao do CNPJ (conferir) |

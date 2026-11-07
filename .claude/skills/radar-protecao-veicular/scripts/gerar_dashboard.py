@@ -23,7 +23,15 @@ from common import OUT_DIR, SKILL_DIR, WORK_DIR, get_logger  # noqa: E402
 log = get_logger("gerar_dashboard")
 COLS = ["cnpj", "razao", "fantasia", "uf", "mun", "classe", "score", "contato", "tel", "email", "emailTipo", "wa",
         "site", "dirig", "prio", "prioScore", "estab", "ufs", "emailComp", "soft", "abertura", "nDir", "s24h", "sSin",
-        "sVist", "mf"]
+        "sVist", "mf", "siteCand", "siteSit", "cap", "capSt", "susep"]
+EMP_COLS = ["cnpj", "razao", "fantasia", "uf", "mun", "tipo", "cap", "capSt", "nat", "site", "siteCand", "tel", "email",
+            "emailTipo", "dirig", "abertura", "estab"]
+# Tipo provavel das empresas (nao associacoes) do ecossistema, pelo nome. Holding patrimonial sai da lista.
+TIPOS = [("holding", r"HOLDING|PARTICIPACOES|ADMINISTRACAO DE BENS|IMOBILI|EMPREENDIMENTOS"),
+         ("Possível administradora/gestora de PPM", r"ADMINISTRADORA|GESTAO|GESTORA|ADMINISTRACAO|ADM\b"),
+         ("Corretora / seguros", r"CORRETOR|SEGUROS"),
+         ("Regional / consultoria de proteção veicular", r"VEICUL|AUTO|MOTO|CAR\b|TRUCK|CAMINH|FROTA"),
+         ("Outra empresa do setor", r".")]
 
 
 def s(v):
@@ -45,19 +53,36 @@ def main() -> None:
              None if pd.isna(r.email_compartilhado_qtd_entidades) else int(r.email_compartilhado_qtd_entidades),
              s(r.indicios_software_gestao), s(r.data_abertura),
              int(r.qtd_dirigentes_qsa) if pd.notna(r.qtd_dirigentes_qsa) else 0,
-             bool(r.sinal_assistencia_24h), bool(r.sinal_sinistro), bool(r.sinal_vistoria), r.matriz_filial]
+             bool(r.sinal_assistencia_24h), bool(r.sinal_sinistro), bool(r.sinal_vistoria), r.matriz_filial,
+             s(r.site_candidato), r.site_situacao,
+             None if pd.isna(r.capital_social_valor) else float(r.capital_social_valor), r.capital_social_status,
+             r.status_susep]
             for r in alvo.itertuples()]
+    import re
+    from common import norm_text
+    emp = []
+    for r in ent[ent["subtipo"].eq("empresa_ecossistema_pv")].itertuples():
+        nome = norm_text(f"{r.razao_social} {r.nome_fantasia or ''}")
+        tipo = next(t for t, rx in TIPOS if re.search(rx, nome))
+        if tipo == "holding":
+            continue
+        emp.append([r.cnpj_formatado, s(r.razao_social), s(r.nome_fantasia), r.uf, s(r.municipio), tipo,
+                    None if pd.isna(r.capital_social_valor) else float(r.capital_social_valor), r.capital_social_status,
+                    s(r.natureza_juridica_desc), s(r.site_institucional), s(r.site_candidato),
+                    s(r.telefone_institucional_receita), s(r.email_cadastral), r.email_cadastral_tipo,
+                    s(r.dirigentes_publicos) if pd.notna(r.qtd_dirigentes_qsa) else None, s(r.data_abertura),
+                    int(r.qtd_estabelecimentos_ativos)])
     meta = {"competencia": str(b["competencia_cnpj"].iloc[0]), "gerado": date.today().strftime("%d/%m/%Y"),
             "descartadas": int((ent["classe"] == 4).sum()),
             "descSub": {k: int(v) for k, v in ent[ent["classe"] == 4]["subtipo"].value_counts().items()},
             "estabTotal": int(b["classe"].isin([1, 2, 3, 5]).sum()), "susepRef": 2217,
             "sitesLidos": int(alvo["site_institucional"].notna().sum())}
-    data = json.dumps({"cols": COLS, "rows": rows, "meta": meta}, ensure_ascii=False, separators=(",", ":"))
+    data = json.dumps({"cols": COLS, "rows": rows, "empCols": EMP_COLS, "emp": emp, "meta": meta}, ensure_ascii=False, separators=(",", ":"))
     tpl = (SKILL_DIR / "assets" / "dashboard_template.html").read_text(encoding="utf-8")
     out = Path(a.saida)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(tpl.replace("__DATA__", data.replace("</", "<\\/")), encoding="utf-8")
-    log.info("dashboard: %s (%d entidades, %.1f MB)", out, len(rows), out.stat().st_size / 1e6)
+    log.info("dashboard: %s (%d entidades, %d empresas do setor, %.1f MB)", out, len(rows), len(emp), out.stat().st_size / 1e6)
 
 
 if __name__ == "__main__":

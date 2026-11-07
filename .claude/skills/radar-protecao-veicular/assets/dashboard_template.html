@@ -98,10 +98,11 @@ svg .grid line{stroke:var(--line)}
 .tag.ok::before{content:"✓";color:var(--good);font-weight:700}
 .tbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
 .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-table{border-collapse:collapse;width:100%;min-width:1080px;font-size:13px}
+table{border-collapse:collapse;width:100%;min-width:1300px;font-size:13px}
 th:nth-child(1),td:nth-child(1){min-width:260px}
 th:nth-child(3),td:nth-child(3){min-width:150px}
 th:nth-child(6),td:nth-child(6){min-width:120px}
+#tbl th:nth-child(7),#tbl td:nth-child(7){min-width:170px}
 .dir1{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:240px}
 th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{position:sticky;top:0;background:var(--surface-2);font-size:12px;color:var(--text-2);font-weight:600;cursor:pointer;user-select:none;white-space:nowrap}
@@ -157,6 +158,14 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
         <option value="somente_declarado_receita">Só declarado à Receita</option>
         <option value="sem_contato_publico">Sem contato público</option>
       </select></div>
+    <div class="fgroup"><label class="flabel" for="fSite">Site</label>
+      <select id="fSite">
+        <option value="">Todos</option>
+        <option value="algum">Com site identificado</option>
+        <option value="validado">Site validado</option>
+        <option value="candidato_nao_verificado">Site candidato (não verificado)</option>
+        <option value="sem_site_identificado">Sem site identificado</option>
+      </select></div>
     <div class="fgroup"><input type="search" id="fBusca" placeholder="Buscar nome, CNPJ, município, dirigente…" aria-label="Buscar"></div>
     <button class="btn" id="fReset" type="button">Limpar</button>
     <span class="count" id="fCount" aria-live="polite"></span>
@@ -178,12 +187,17 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
       <div class="insight" id="insFunil"></div>
     </div>
 
-    <div class="card panel c5">
+    <div class="card panel c6">
       <div class="ph"><div><h2>Qualidade do contato</h2><p class="hint">Origem e grau de validação do canal comercial.</p></div></div>
       <div id="chContato"></div>
       <div class="insight"><b>Atenção:</b> contato "só Receita" pode ser do escritório contábil. Use os validados para abordagem e o restante como pista.</div>
     </div>
-    <div class="card panel c7">
+    <div class="card panel c6">
+      <div class="ph"><div><h2>Presença digital: sites das associações</h2><p class="hint">Site validado foi lido; candidato é o domínio próprio do e-mail cadastral.</p></div></div>
+      <div id="chSite"></div>
+      <div class="insight" id="insSite"></div>
+    </div>
+    <div class="card panel c12">
       <div class="ph"><div><h2>Gestoras e escritórios por trás das associações</h2><p class="hint">Mesmo domínio de e-mail cadastral em várias entidades (indício de gestão comum).</p></div></div>
       <div id="chGest"></div>
       <div class="insight" id="insGest"></div>
@@ -205,16 +219,30 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
     </div>
 
     <div class="card panel c12">
+      <div class="ph"><div><h2>Empresas do setor (Ltda / S.A.) e capital social</h2><p class="hint">Regionais, consultorias e possíveis administradoras de proteção patrimonial. Não são associações; aqui o capital social é informado e indica porte declarado. Holdings patrimoniais excluídas. Respeita os filtros de UF e busca.</p></div>
+        <div class="legend" id="legEmp"></div></div>
+      <div class="grid" style="gap:16px">
+        <div class="c4" style="min-width:0"><div class="flabel" style="margin-bottom:6px">Empresas por faixa de capital social</div><div id="chCap"></div><div class="insight" id="insCap"></div></div>
+        <div class="c8" style="min-width:0">
+          <div class="tbar" style="margin-bottom:6px"><span class="flabel">Maiores capitais</span>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select id="eTipo" aria-label="Tipo de empresa"></select><button class="btn" id="csvEmp" type="button">CSV empresas</button></div></div>
+          <div class="tablewrap" style="max-height:430px;overflow:auto"><table id="tblEmp" style="min-width:620px"><caption class="sr">Empresas do setor</caption>
+            <thead><tr><th>Empresa</th><th>UF · Município</th><th>Tipo provável</th><th class="num">Capital social</th><th>Site</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card panel c12">
       <div class="tbar">
         <div><h2 style="margin:0;font-size:15px">Base de entidades</h2><p class="hint" style="margin:2px 0 0">Uma linha por entidade (raiz do CNPJ). Clique na linha para a ficha completa com dirigentes e fontes.</p></div>
         <div style="display:flex;gap:8px;align-items:center">
           <label class="flabel" for="tOrd">Ordenar</label>
-          <select id="tOrd"><option value="prioScore">Prioridade comercial</option><option value="score">Score de confiança</option><option value="estab">Nº de estabelecimentos</option><option value="razao">Nome (A-Z)</option></select>
+          <select id="tOrd"><option value="prioScore">Prioridade comercial</option><option value="score">Score de confiança</option><option value="estab">Nº de estabelecimentos</option><option value="cap">Capital social</option><option value="razao">Nome (A-Z)</option></select>
           <button class="btn" id="csvBtn" type="button">Exportar CSV filtrado</button>
         </div>
       </div>
       <div class="tablewrap"><table id="tbl"><caption class="sr">Entidades filtradas</caption>
-        <thead><tr><th>Entidade</th><th>CNPJ</th><th>UF · Município</th><th>Classe</th><th class="num">Score</th><th>Contato</th><th>Telefone / WhatsApp</th><th>Dirigentes (QSA)</th><th>Prioridade</th></tr></thead>
+        <thead><tr><th>Entidade</th><th>CNPJ</th><th>UF · Município</th><th>Classe</th><th class="num">Score</th><th>Contato</th><th>Site</th><th>Telefone / WhatsApp</th><th>Dirigentes (QSA)</th><th class="num">Capital</th><th>Prioridade</th></tr></thead>
         <tbody></tbody></table></div>
       <div class="pager"><button class="btn" id="pPrev" type="button">← Anterior</button><span id="pInfo"></span><button class="btn" id="pNext" type="button">Próxima →</button></div>
     </div>
@@ -244,10 +272,17 @@ const fmt = n => n.toLocaleString("pt-BR");
 const pct = (a, b) => b ? (100 * a / b).toLocaleString("pt-BR", {maximumFractionDigits: 1}) + "%" : "–";
 const esc = s => s == null ? "" : String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const norm = s => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase();
-R.forEach(r => r._q = norm([r.razao, r.fantasia, r.cnpj, r.mun, r.dirig, r.email, r.site].join(" ")));
+R.forEach(r => r._q = norm([r.razao, r.fantasia, r.cnpj, r.mun, r.dirig, r.email, r.site, r.siteCand].join(" ")));
+const E = (DATA.emp || []).map(r => Object.fromEntries(DATA.empCols.map((c, i) => [c, r[i]])));
+E.forEach(r => r._q = norm([r.razao, r.fantasia, r.cnpj, r.mun, r.dirig, r.email, r.siteCand, r.tipo].join(" ")));
 
 // ---------------- estado e filtros
-const st = {uf: "", cls: new Set([1, 2, 3, 5]), cont: "", q: "", ord: "prioScore", page: 0};
+const st = {uf: "", cls: new Set([1, 2, 3, 5]), cont: "", site: "", q: "", ord: "prioScore", page: 0};
+const SITE = {validado_cita_cnpj:{n:"Validado (site cita o CNPJ)",s:"Validado",v:"--o1"},validado_dominio_cadastral:{n:"Validado (domínio do e-mail cadastral)",s:"Validado (domínio)",v:"--o2"},candidato_nao_verificado:{n:"Candidato, não verificado",s:"Candidato",v:"--o3"},inacessivel_na_coleta:{n:"Inacessível na coleta (reverificar)",s:"Inacessível",v:"--o4"},bloqueia_robos:{n:"Site bloqueia robôs (ver manualmente)",s:"Bloqueia robôs",v:"--o4"},sem_site_identificado:{n:"Sem site identificado",s:"Sem site",v:"--neutral"}};
+const siteURL = r => r.site || (r.siteSit !== "sem_site_identificado" ? r.siteCand : null);
+const temSite = r => r.siteSit !== "sem_site_identificado";
+const SUSEP_URL = "https://www2.susep.gov.br/safe/certidoes/app/certidao/emitir";
+const brl = v => v == null ? "–" : v.toLocaleString("pt-BR", {style: "currency", currency: "BRL", maximumFractionDigits: 0});
 const fUF = document.getElementById("fUF");
 fUF.innerHTML = `<option value="">Brasil (todas)</option>` + UFS.map(u => `<option>${u}</option>`).join("");
 const fClasse = document.getElementById("fClasse");
@@ -257,13 +292,15 @@ fClasse.addEventListener("click", e => { const b = e.target.closest(".chip"); if
   b.setAttribute("aria-pressed", st.cls.has(c)); st.page = 0; render(); });
 fUF.onchange = () => { st.uf = fUF.value; st.page = 0; render(); };
 document.getElementById("fContato").onchange = e => { st.cont = e.target.value; st.page = 0; render(); };
+document.getElementById("fSite").onchange = e => { st.site = e.target.value; st.page = 0; render(); };
 let qt; document.getElementById("fBusca").oninput = e => { clearTimeout(qt); qt = setTimeout(() => { st.q = norm(e.target.value.trim()); st.page = 0; render(); }, 150); };
 document.getElementById("tOrd").onchange = e => { st.ord = e.target.value; st.page = 0; renderTable(cur); };
-document.getElementById("fReset").onclick = () => { Object.assign(st, {uf: "", cls: new Set([1, 2, 3, 5]), cont: "", q: "", page: 0}); fUF.value = ""; document.getElementById("fContato").value = ""; document.getElementById("fBusca").value = ""; fClasse.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", "true")); render(); };
+document.getElementById("fReset").onclick = () => { Object.assign(st, {uf: "", cls: new Set([1, 2, 3, 5]), cont: "", site: "", q: "", page: 0}); fUF.value = ""; document.getElementById("fSite").value = ""; document.getElementById("fContato").value = ""; document.getElementById("fBusca").value = ""; fClasse.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", "true")); render(); };
 const validado = r => r.contato === "confirmado_site_cita_cnpj" || r.contato === "provavel_site_dominio_cadastral";
 function filt(ignoreUF) {
   return R.filter(r => (ignoreUF || !st.uf || r.uf === st.uf) && st.cls.has(r.classe) &&
-    (!st.cont || (st.cont === "validado" ? validado(r) : r.contato === st.cont)) && (!st.q || r._q.includes(st.q)));
+    (!st.cont || (st.cont === "validado" ? validado(r) : r.contato === st.cont)) && (!st.q || r._q.includes(st.q)) &&
+    (!st.site || (st.site === "algum" ? temSite(r) : st.site === "validado" ? r.siteSit.startsWith("validado") : r.siteSit === st.site)));
 }
 
 // ---------------- tooltip
@@ -331,7 +368,7 @@ function render() {
   cur = filt(false);
   const all = filt(true);
   document.getElementById("fCount").textContent = `${fmt(cur.length)} entidades no filtro`;
-  kpis(cur); chartUF(all); funil(cur); contato(cur); gestoras(cur); municipios(cur); anos(cur); pilot(cur);
+  kpis(cur); chartUF(all); funil(cur); contato(cur); sites(cur); gestoras(cur); municipios(cur); anos(cur); pilot(cur); empresas();
   renderTable(cur);
 }
 function kpis(rs) {
@@ -342,10 +379,10 @@ function kpis(rs) {
     [`<span class="dot" style="background:var(--s1)"></span>Veicular (classes 1 e 2)`, fmt(c(1) + c(2)), `${fmt(c(1))} confirmadas · ${fmt(c(2))} prováveis`],
     [`<span class="dot" style="background:var(--s2)"></span>Patrimonial (classe 3)`, fmt(c(3)), "Mutualistas sem segmento veicular explícito"],
     [`<span class="dot" style="background:var(--neutral)"></span>Pendentes (classe 5)`, fmt(c(5)), "Clubes de benefícios e casos ambíguos"],
+    ["Com site identificado", fmt(rs.filter(temSite).length), `${pct(rs.filter(temSite).length, n)} · ${fmt(rs.filter(r => r.siteSit.startsWith("validado")).length)} validados, demais candidatos`],
     ["Com dirigentes públicos (QSA)", fmt(dir), `${pct(dir, n)} das entidades têm presidente/diretores na Receita`],
-    ["Contato validado no site", fmt(v), `${fmt(conf)} confirmados (site cita o CNPJ) · piloto GO/MT/TO`],
-    ["Referência SUSEP (Fase I)", fmt(M.susepRef), "Associações com cadastro concluído até 15/07/2025"],
-    ["Situação SUSEP verificada", "0", "Consulta oficial usa reCAPTCHA: conferência manual pendente"],
+    ["Capital social zero", pct(rs.filter(r => !r.cap).length, n), `Associação civil não tem capital: não mede porte. ${fmt(rs.filter(r => r.cap > 0).length)} com capital informado`],
+    ["Confirmadas na SUSEP", fmt(rs.filter(r => r.susep === "cadastrada_em_regularizacao" || r.susep === "regular").length), `Referência: ${fmt(M.susepRef)} cadastradas (Fase I). Consulta oficial exige reCAPTCHA`],
   ];
   document.getElementById("kpis").innerHTML = K.map(([k, v, d]) => `<div class="card kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join("");
 }
@@ -375,6 +412,57 @@ function contato(rs) {
   document.querySelectorAll("#chContato .seg div").forEach(d => { const k = d.dataset.k;
     d.addEventListener("mousemove", e => tip(e, `<b>${CONT[k].n}</b>` + trow(CONT[k].v, "Entidades", `${fmt(cnt[k])} (${pct(cnt[k], rs.length)})`))); d.addEventListener("mouseleave", untip); });
 }
+function sites(rs) {
+  const keys = Object.keys(SITE), cnt = Object.fromEntries(keys.map(k => [k, rs.filter(r => r.siteSit === k).length]));
+  document.getElementById("chSite").innerHTML = `<div class="seg" role="img" aria-label="Situação dos sites">${keys.filter(k => cnt[k]).map(k => `<div data-k="${k}" style="flex:${cnt[k]} 0 0;background:var(${SITE[k].v})"></div>`).join("")}</div>
+    <div class="segleg">${keys.filter(k => cnt[k] || k.startsWith("validado")).map(k => `<div class="r"><span class="dot" style="background:var(${SITE[k].v})"></span><span>${SITE[k].n}</span><b>${fmt(cnt[k])}</b><small>${pct(cnt[k], rs.length)}</small></div>`).join("")}</div>`;
+  document.querySelectorAll("#chSite .seg div").forEach(d => { const k = d.dataset.k;
+    d.addEventListener("mousemove", e => tip(e, `<b>${SITE[k].n}</b>` + trow(SITE[k].v, "Entidades", `${fmt(cnt[k])} (${pct(cnt[k], rs.length)})`))); d.addEventListener("mouseleave", untip); });
+  const cand = cnt.candidato_nao_verificado, val = cnt.validado_cita_cnpj + cnt.validado_dominio_cadastral;
+  document.getElementById("insSite").innerHTML = `<b>${fmt(cand)} sites candidatos</b> aguardam leitura (${fmt(val)} já validados). Rode <code>enriquecer_contatos.py</code> na sua máquina para validar todos e liberar WhatsApp, sinais de sinistro e software de gestão. Use o filtro "Site" para trabalhar só com quem tem presença digital.`;
+}
+const FAIXAS = [["Zero", 0, 0], ["Até R$ 10 mil", 0.01, 10000], ["R$ 10-50 mil", 10000.01, 50000], ["R$ 50-100 mil", 50000.01, 100000], ["R$ 100-500 mil", 100000.01, 500000], ["Acima de R$ 500 mil", 500000.01, 1e15]];
+const TIPOS_CURTO = {"Possível administradora/gestora de PPM": "Administradora (provável)", "Regional / consultoria de proteção veicular": "Regional / consultoria", "Corretora / seguros": "Corretora / seguros", "Outra empresa do setor": "Outra"};
+const TIPOC = {"Possível administradora/gestora de PPM": "--s1", "Regional / consultoria de proteção veicular": "--s2", "Corretora / seguros": "--s3", "Outra empresa do setor": "--neutral"};
+const eTipo = document.getElementById("eTipo");
+eTipo.innerHTML = `<option value="">Todos os tipos</option>` + Object.keys(TIPOC).map(t => `<option>${t}</option>`).join("");
+eTipo.onchange = () => empresas();
+function empFilt() { return E.filter(r => (!st.uf || r.uf === st.uf) && (!st.q || r._q.includes(st.q)) && (!eTipo.value || r.tipo === eTipo.value)); }
+function empresas() {
+  const es = empFilt(), tipos = Object.keys(TIPOC);
+  document.getElementById("legEmp").innerHTML = tipos.map(t => `<span><span class="dot" style="background:var(${TIPOC[t]})"></span>${t}</span>`).join("");
+  const ser = tipos.map((t, i) => ({k: "t" + i, n: t, v: TIPOC[t]}));
+  const items = FAIXAS.map(([l, a, b]) => { const v = {}; let tot = 0; tipos.forEach((t, i) => { const c = es.filter(r => r.tipo === t && (r.cap || 0) >= a && (r.cap || 0) <= b).length; v["t" + i] = c; tot += c; }); return {label: l, title: "Capital " + l.toLowerCase(), v, total: tot}; });
+  const el = document.getElementById("chCap");
+  hbars(el, items, ser, {aria: "Empresas por faixa de capital", labelW: Math.min(140, (el.clientWidth || 400) * .38), bh: 14, gap: 10});
+  const caps = es.map(r => r.cap || 0).sort((a, b) => a - b), med = caps.length ? caps[Math.floor(caps.length / 2)] : 0;
+  const adm = es.filter(r => r.tipo.startsWith("Possível administradora"));
+  document.getElementById("insCap").innerHTML = es.length ? `<b>${fmt(es.length)} empresas</b>, capital mediano ${brl(med)}. <b>${fmt(adm.length)}</b> têm nome de administradora/gestora: alvo B2B de alto valor, porque uma administradora autorizada pela SUSEP pode atender várias associações (Res. CNSP 491/2026).` : `Nenhuma empresa do setor neste filtro.`;
+  const top = [...es].sort((a, b) => (b.cap || 0) - (a.cap || 0)).slice(0, 60);
+  document.querySelector("#tblEmp tbody").innerHTML = top.map(r => `<tr tabindex="0" data-cnpj="${r.cnpj}">
+    <td><div class="ename">${esc(r.razao)}</div><div class="efan">${r.cnpj}${r.fantasia && r.fantasia !== r.razao ? " · " + esc(r.fantasia) : ""}</div></td>
+    <td>${r.uf} · ${esc(r.mun)}</td>
+    <td><span class="badge"><span class="dot" style="background:var(${TIPOC[r.tipo]})"></span>${esc(TIPOS_CURTO[r.tipo] || r.tipo)}</span></td>
+    <td class="num" style="white-space:nowrap">${r.cap > 0 ? brl(r.cap) : `<span class="muted">zero</span>`}</td>
+    <td>${(r.site || r.siteCand) ? `<a href="${esc(r.site || r.siteCand)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(hostOf(r.site || r.siteCand))}</a><div class="efan">${r.site ? "Validado" : "Candidato"}</div>` : `<span class="muted">–</span>`}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">Nenhuma empresa neste filtro.</td></tr>`;
+  document.querySelectorAll("#tblEmp tbody tr[data-cnpj]").forEach(tr => { const open = () => fichaEmp(E.find(r => r.cnpj === tr.dataset.cnpj)); tr.onclick = open; tr.onkeydown = e => { if (e.key === "Enter") open(); }; });
+}
+function fichaEmp(r) {
+  if (!r) return;
+  document.getElementById("dlgT").textContent = r.razao;
+  const L = [["Nome fantasia", r.fantasia], ["CNPJ (matriz)", r.cnpj], ["Tipo provável", r.tipo + " (inferido pelo nome; confirmar)"], ["Natureza jurídica", r.nat],
+    ["Capital social", r.cap > 0 ? brl(r.cap) : "Zero informado"], ["Localização", `${r.mun} · ${r.uf}`], ["Estabelecimentos ativos", r.estab], ["Data de abertura", r.abertura],
+    ["Sócios / administradores (QSA)", r.dirig], ["Telefone (Receita)", r.tel], ["E-mail (Receita)", r.email ? `${r.email} (${r.emailTipo.replace(/_/g, " ")})` : null],
+    ["Site", (r.site || r.siteCand) ? `<a href="${esc(r.site || r.siteCand)}" target="_blank" rel="noopener">${esc(r.site || r.siteCand)}</a> (${r.site ? "validado" : "candidato, não verificado"})` : null],
+    ["Autorização SUSEP como administradora", "Não verificada: conferir lista de administradoras autorizadas na SUSEP"],
+    ["Fonte", `Receita Federal, CNPJ dados abertos, competência ${M.competencia}`]];
+  document.getElementById("dlgB").innerHTML = `<dl class="kv">${L.filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${k === "Site" ? v : esc(v)}</dd>`).join("")}</dl>`;
+  dlg.showModal();
+}
+document.getElementById("csvEmp").onclick = () => {
+  const cols = [["cnpj","CNPJ"],["razao","Razão social"],["fantasia","Nome fantasia"],["uf","UF"],["mun","Município"],["tipo","Tipo provável"],["nat","Natureza jurídica"],["cap","Capital social (R$)"],["capSt","Status capital"],["site","Site validado"],["siteCand","Site candidato"],["tel","Telefone Receita"],["email","E-mail Receita"],["dirig","Sócios/administradores QSA"],["abertura","Abertura"],["estab","Estabelecimentos"]];
+  baixarCSV(cols, [...empFilt()].sort((a, b) => (b.cap || 0) - (a.cap || 0)), `empresas_setor_${st.uf || "BR"}.csv`);
+};
 function gestoras(rs) {
   const m = {}; rs.forEach(r => { if (!r.email || !(r.emailTipo === "dominio_proprio" || r.emailTipo === "provavel_terceiro_contador")) return;
     const d = r.email.split("@")[1]; (m[d] ||= {n: 0, ufs: new Set()}); m[d].n++; m[d].ufs.add(r.uf); });
@@ -421,7 +509,11 @@ function pilot(rs) {
 
 // ---------------- tabela
 const PS = 25;
-function sorted(rs) { const k = st.ord; return [...rs].sort((a, b) => k === "razao" ? (a.razao || "").localeCompare(b.razao || "", "pt") : (b[k] - a[k]) || (b.score - a.score)); }
+function sorted(rs) { const k = st.ord; return [...rs].sort((a, b) => k === "razao" ? (a.razao || "").localeCompare(b.razao || "", "pt") : ((b[k] || 0) - (a[k] || 0)) || (b.score - a.score)); }
+function hostOf(u) { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return u; } }
+function siteCell(r) { const u = siteURL(r); if (!u) return `<span class="muted">–</span>`;
+  const sv = SITE[r.siteSit] || SITE.candidato_nao_verificado;
+  return `<a href="${esc(u)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(hostOf(u))}</a><div class="efan"><span class="dot" style="background:var(${sv.v});width:7px;height:7px"></span> ${sv.s}</div>`; }
 function renderTable(rs) {
   const s = sorted(rs), pages = Math.max(1, Math.ceil(s.length / PS)); st.page = Math.min(st.page, pages - 1);
   const slice = s.slice(st.page * PS, st.page * PS + PS);
@@ -432,9 +524,11 @@ function renderTable(rs) {
     <td><span class="badge"><span class="dot" style="background:var(${CLS[r.classe].v})"></span>${r.classe} · ${CLS[r.classe].n}</span></td>
     <td class="num">${r.score}</td>
     <td>${CONT[r.contato] ? `<span class="badge"><span class="dot" style="background:var(${CONT[r.contato].v})"></span>${CONT[r.contato].s}</span>` : ""}</td>
+    <td>${siteCell(r)}</td>
     <td style="white-space:nowrap">${esc(r.tel || "–")}${r.wa ? `<div class="efan">WA ${esc(r.wa)}</div>` : ""}</td>
     <td>${r.nDir ? `<div class="dir1">${esc(r.dirig.split("; ")[0])}${r.nDir > 1 ? ` <span class="muted">+${r.nDir - 1}</span>` : ""}</div>` : `<span class="muted">Não publicado</span>`}</td>
-    <td>${r.prio} <span class="muted">(${r.prioScore})</span></td></tr>`).join("") || `<tr><td colspan="9" class="muted">Nenhuma entidade no filtro.</td></tr>`;
+    <td class="num">${r.cap > 0 ? brl(r.cap) : `<span class="muted">zero</span>`}</td>
+    <td>${r.prio} <span class="muted">(${r.prioScore})</span></td></tr>`).join("") || `<tr><td colspan="11" class="muted">Nenhuma entidade no filtro.</td></tr>`;
   document.getElementById("pInfo").textContent = `Página ${st.page + 1} de ${pages} · ${fmt(s.length)} entidades`;
   document.getElementById("pPrev").disabled = st.page === 0; document.getElementById("pNext").disabled = st.page >= pages - 1;
   document.querySelectorAll("#tbl tbody tr[data-cnpj]").forEach(tr => { const open = () => ficha(R.find(r => r.cnpj === tr.dataset.cnpj));
@@ -453,23 +547,27 @@ function ficha(r) {
   const L = [["Nome fantasia", r.fantasia], ["CNPJ (matriz)", r.cnpj], ["Classe", `${r.classe} · ${CLS[r.classe].d}`], ["Score de confiança", r.score + " / 100"],
     ["Localização", `${r.mun} · ${r.uf}`], ["Estabelecimentos ativos", `${r.estab}${r.ufs ? " · UFs: " + r.ufs : ""}`], ["Data de abertura", r.abertura],
     ["Dirigentes públicos (QSA)", r.dirig], ["Telefone (Receita)", r.tel], ["E-mail (Receita)", r.email ? `${r.email} (${r.emailTipo.replace(/_/g, " ")})` : null],
-    ["Site oficial", r.site ? `<a href="${esc(r.site)}" target="_blank" rel="noopener">${esc(r.site)}</a>` : null],
+    ["Site", siteURL(r) ? `<a href="${esc(siteURL(r))}" target="_blank" rel="noopener">${esc(siteURL(r))}</a> · ${SITE[r.siteSit].n}` : "Sem site identificado"],
+    ["Capital social", r.cap > 0 ? brl(r.cap) : "Zero informado na Receita (comum em associação civil; não indica porte)"],
     ["WhatsApp comercial confirmado", r.wa], ["Status do contato", CONT[r.contato]?.n], ["Indícios de software", r.soft],
     ["Domínio de e-mail compartilhado", r.emailComp > 1 ? `${r.emailComp} entidades usam o mesmo domínio` : null],
-    ["Prioridade comercial", `${r.prio} (${r.prioScore}/100)`], ["Situação SUSEP", "Não verificada: conferir em www2.susep.gov.br (certidão)"],
+    ["Prioridade comercial", `${r.prio} (${r.prioScore}/100)`], ["Situação SUSEP", (r.susep === "nao_verificado" ? "Não verificada. " : esc(r.susep.replace(/_/g, " ")) + ". ") + `<a href="${SUSEP_URL}" target="_blank" rel="noopener">Conferir na SUSEP (certidão)</a> <button class="btn" type="button" style="padding:2px 8px;font-size:12px" onclick="navigator.clipboard&&navigator.clipboard.writeText('${r.cnpj}');this.textContent='CNPJ copiado'">Copiar CNPJ</button><div class="efan">"Em regularização" = cadastrada, ainda não regular. Ausência de cadastro não deve ser concluída sem documento oficial.</div>`],
     ["Fonte", `Receita Federal, CNPJ dados abertos, competência ${M.competencia}${r.site ? "; site oficial" : ""}`]];
-  document.getElementById("dlgB").innerHTML = `<dl class="kv">${L.filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${k === "Site oficial" ? v : esc(v)}</dd>`).join("")}</dl>`;
+  document.getElementById("dlgB").innerHTML = `<dl class="kv">${L.filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${k === "Site" || k === "Situação SUSEP" ? v : esc(v)}</dd>`).join("")}</dl>`;
   dlg.showModal();
 }
 
 // ---------------- CSV
 document.getElementById("csvBtn").onclick = () => {
-  const cols = [["cnpj","CNPJ"],["razao","Razão social"],["fantasia","Nome fantasia"],["uf","UF"],["mun","Município"],["classe","Classe"],["score","Score"],["contato","Status contato"],["tel","Telefone Receita"],["email","E-mail Receita"],["emailTipo","Tipo e-mail"],["site","Site oficial"],["wa","WhatsApp confirmado"],["dirig","Dirigentes QSA"],["estab","Estabelecimentos"],["ufs","UFs de atuação"],["soft","Indícios software"],["prio","Prioridade"],["prioScore","Prioridade score"],["abertura","Abertura"]];
-  const q = v => v == null ? "" : /[";\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
-  const csv = "﻿" + cols.map(c => c[1]).join(";") + "\n" + sorted(cur).map(r => cols.map(c => q(r[c[0]])).join(";")).join("\n");
-  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv;charset=utf-8"}));
-  a.download = `radar_protecao_veicular_${st.uf || "BR"}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  const cols = [["cnpj","CNPJ"],["razao","Razão social"],["fantasia","Nome fantasia"],["uf","UF"],["mun","Município"],["classe","Classe"],["score","Score"],["contato","Status contato"],["tel","Telefone Receita"],["email","E-mail Receita"],["emailTipo","Tipo e-mail"],["site","Site oficial"],["wa","WhatsApp confirmado"],["dirig","Dirigentes QSA"],["estab","Estabelecimentos"],["ufs","UFs de atuação"],["soft","Indícios software"],["prio","Prioridade"],["prioScore","Prioridade score"],["abertura","Abertura"],["siteSit","Situação do site"],["siteCand","Site candidato"],["cap","Capital social (R$)"],["capSt","Status capital"],["susep","Status SUSEP"]];
+  baixarCSV(cols, sorted(cur), `radar_protecao_veicular_${st.uf || "BR"}.csv`);
 };
+function baixarCSV(cols, rows, nome) {
+  const q = v => v == null ? "" : /[";\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+  const csv = "\ufeff" + cols.map(c => c[1]).join(";") + "\n" + rows.map(r => cols.map(c => q(r[c[0]])).join(";")).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv;charset=utf-8"}));
+  a.download = nome; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
 
 // ---------------- textos e tema
 document.getElementById("subtitle").textContent = `Base CNPJ da Receita Federal, competência ${M.competencia}. ${fmt(R.length)} entidades ativas classificadas por evidência, ${fmt(M.descartadas)} descartadas com justificativa. Atualizado em ${M.gerado}.`;
@@ -478,9 +576,11 @@ document.getElementById("notes").innerHTML = [
   `<b>Classes:</b> 1 confirmada (site que cita o CNPJ ou cadastro SUSEP), 2 provável, 3 patrimonial sem confirmação veicular, 5 pendente. Descartadas (classe 4): ${Object.entries(M.descSub).map(([k, v]) => `${fmt(v)} ${k.replace(/_/g, " ")}`).join(", ")}.`,
   `<b>Precisão observada</b> em amostra rotulada de 80 entidades: classe 2 com 30/30 compatíveis; classe 3 entre 73% e 87%; ruído concentrado em "pendente", por desenho.`,
   `<b>Cobertura:</b> ordem de grandeza compatível com as ${fmt(M.susepRef)} associações que concluíram o cadastro na SUSEP. Não há evidência de cobertura completa: entidades sem nenhum sinal no nome, CNAE ou e-mail podem não aparecer.`,
-  `<b>SUSEP:</b> cadastro não é regularidade. Nenhuma entidade é marcada como irregular por ausência de resultado. A consulta oficial exige reCAPTCHA e não foi automatizada.`,
+  `<b>SUSEP:</b> conferência manual em <a href="https://www2.susep.gov.br/safe/certidoes/app/certidao/emitir" target="_blank" rel="noopener">emissão de certidão</a> (por CNPJ, com reCAPTCHA). Cadastro não é regularidade. Nenhuma entidade é marcada como irregular por ausência de resultado. A consulta oficial exige reCAPTCHA e não foi automatizada.`,
   `<b>Dirigentes:</b> nome e cargo do QSA público, com data de entrada; sem CPF. Associação civil não tem proprietário. O QSA pode estar desatualizado.`,
   `<b>Contatos:</b> "só Receita" pode pertencer ao escritório contábil. Validação de sites rodou no piloto GO/MT/TO (${M.sitesLidos} sites lidos, respeitando robots.txt).`,
+  `<b>Sites:</b> "validado" foi lido (robots.txt respeitado); "candidato" é o domínio próprio do e-mail cadastral, ainda não verificado; "inacessível na coleta" pode ser site fora do ar ou bloqueio de rede do ambiente de coleta: reverifique.`,
+  `<b>Capital social:</b> campo oficial da Receita. Associação civil normalmente registra zero (não tem capital como empresa), então não mede porte de associação. Nas empresas do setor (Ltda/S.A.) o valor é informado e indica porte declarado, não faturamento.`,
   `<b>Uso:</b> prospecção B2B. Não redistribua os nomes de dirigentes publicamente; ofereça opt-out no primeiro contato (LGPD).`].map(x => `<li>${x}</li>`).join("");
 document.getElementById("foot").textContent = `Radar Proteção Veicular · Skill radar-protecao-veicular · Fontes: Receita Federal (CNPJ dados abertos, ${M.competencia}), SUSEP (página de PPM, LC 213/2025, Res. CNSP 491/2026), sites institucionais. Gerado em ${M.gerado}.`;
 const THEME_KEY = "radar-pv-theme";

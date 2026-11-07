@@ -17,7 +17,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import regras as R  # noqa: E402
 from common import WORK_DIR, fmt_cnpj, get_logger, now_iso  # noqa: E402
-from enriquecer_contatos import DOMINIO_TERCEIRO  # noqa: E402
+from enriquecer_contatos import DOMINIO_TERCEIRO, dominio_email  # noqa: E402
 
 log = get_logger("normalizar_dados")
 
@@ -111,6 +111,16 @@ def main() -> None:
     df["indicios_software_gestao"] = df.get("indicios_software", pd.Series([None] * len(df))).map(
         lambda v: ", ".join(x for x in _j(v) if x not in ("wordpress", "wix", "rd_station")) or None)
     df["site_institucional"] = df["site"].where(site_ok)
+    # Site candidato: dominio proprio do e-mail cadastral (nao gratuito, nao do contador). Nao verificado ate ser lido.
+    dom_site = df["correio_eletronico"].map(dominio_email)
+    df["site_candidato"] = ("https://" + dom_site).where(dom_site.notna())
+    tentou = df["site_status"].notna() & ~site_ok
+    df["site_situacao"] = "sem_site_identificado"
+    df.loc[df["site_candidato"].notna(), "site_situacao"] = "candidato_nao_verificado"
+    df.loc[tentou & df["site_status"].astype(str).str.startswith("bloqueado"), "site_situacao"] = "bloqueia_robos"
+    df.loc[tentou & ~df["site_status"].astype(str).str.startswith("bloqueado"), "site_situacao"] = "inacessivel_na_coleta"
+    df.loc[prov, "site_situacao"] = "validado_dominio_cadastral"
+    df.loc[conf, "site_situacao"] = "validado_cita_cnpj"
     # e-mail compartilhado por varias associacoes = indicio de gestao centralizada (grupo/administradora)
     dom = df["email_cadastral"].str.split("@").str[-1]
     comp = df[df["email_cadastral_tipo"].eq("dominio_proprio")].groupby(dom)["cnpj_basico"].nunique()
