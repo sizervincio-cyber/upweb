@@ -16,7 +16,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import regras as R  # noqa: E402
-from common import WORK_DIR, fmt_cnpj, get_logger, now_iso  # noqa: E402
+from common import WORK_DIR, fmt_cnpj, get_logger, norm_text, now_iso  # noqa: E402
 from enriquecer_contatos import DOMINIO_TERCEIRO, dominio_email  # noqa: E402
 
 log = get_logger("normalizar_dados")
@@ -142,6 +142,18 @@ def main() -> None:
     cl[elegivel & pre.isin([3, 5]) & conf & site_veic] = 1
     cl[elegivel & pre.eq(5) & ~(conf & site_veic) & (site_veic | sus_cad)] = 2
     cl[elegivel & pre.eq(5) & ~site_veic & ~sus_cad & site_patr] = 3
+    # Segmento veicular (carro/caminhao/moto) por nome, fantasia e dominio do e-mail
+    txt = (df["razao_social"].fillna("") + " " + df["nome_fantasia"].fillna("") + " " +
+           df["correio_eletronico"].fillna("").str.split("@").str[-1]).map(norm_text)
+    segs = txt.map(R.segmento_veicular)
+    df["segmento_veicular"] = segs.map(lambda x: ", ".join(x) if x else None)
+    tem_seg = segs.map(bool) | site_veic
+    outro = txt.str.contains(R.OUTRO_RAMO, regex=True) & ~tem_seg
+    # Evidencia SUSEP (cadastro oficial) em ASSOCIACAO: PPM confirmada; veicular se ha segmento
+    assoc = df["natureza_juridica"].eq("3999")
+    cl[assoc & sus_cad & tem_seg] = 1
+    cl[assoc & sus_cad & ~tem_seg & ~outro] = 3
+    df["outro_ramo"] = outro
     # Classificacao e da ENTIDADE (raiz do CNPJ): filiais herdam a melhor evidencia do grupo
     rank = {1: 0, 2: 1, 3: 2, 5: 3, 4: 4}
     inv = {v: k for k, v in rank.items()}

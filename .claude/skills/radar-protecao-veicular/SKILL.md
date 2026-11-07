@@ -36,6 +36,7 @@ competência mais nova (o download avisa), atualize antes de responder sobre "si
 | "Gere XLSX das verificadas, separadas por UF, com dicionário" | `python scripts/exportar_resultados.py --classes 1 2 --nome verificadas` |
 | "Crie um dashboard / painel HTML com os dados" | `python scripts/gerar_dashboard.py` → `out/radar_dashboard.html` (arquivo único, offline) |
 | "Tenho um vídeo/print/lista da SUSEP: quais já estão na minha lista?" | No PC do usuário: `python scripts/extrair_video_susep.py "video.mp4"` → CSV. Depois: `python scripts/cruzar_lista_susep.py --lista video_cnpjs_susep.csv [--importar-susep --fonte "..."]` e `normalizar_dados.py` |
+| "Painel da lista SUSEP / quais são realmente veiculares (carro, caminhão, moto)" | `python scripts/gerar_dashboard_susep.py --bruta lista_bruta.csv` → painel HTML responsivo + `susep_verificada.xlsx` (abas por segmento) |
 | Pergunta analítica livre | `python scripts/consultar.py --sql "select ... from base ..."` (colunas em `references/dicionario-dados.md`) |
 
 ## 3. Enriquecer contatos (antes de falar em "contato confirmado")

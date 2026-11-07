@@ -31,12 +31,14 @@ INDICIO_PROTECAO = [
     r"CLUBE DE BENEFICIOS", r"CLUBE DO ASSOCIADO", r"ASSOCIACAO DE BENEFICIOS", r"BENEFICIOS AO ASSOCIADO",
     r"\bBENEFICIOS\b", r"PROTECAO\b", r"\bPROTEGE", r"\bPROTEC\b", r"SEGURANCA VEICULAR", r"RASTREAMENTO",
     r"ASSISTENCIA 24", r"\bAPV\b", r"SEGUROS? (AUTO|VEICULAR|DE VEICULOS)",
+    r"\bASSOCIADOS\b", r"CLUBE DE (ASSISTENCIA|VANTAGENS)", r"RATEAMENTO", r"\bRATEIO\b", r"\bGARANTE\b", r"\bMUTUA\b",
 ]
 # Termos de CONTEXTO veicular (so reforcam)
 CONTEXTO_VEICULAR = [
     r"CAMINHONEIROS?", r"TRANSPORTADORES", r"MOTORISTAS", r"MOTOCICLISTAS", r"MOTOTAXISTAS?",
     r"MOTOBOYS?", r"TAXISTAS?", r"CONDUTORES", r"FROTISTAS?", r"\bVEICULOS?\b", r"AUTOMOTIV",
-    r"\bAUTOMOVEIS\b", r"\bAUTO\b", r"\bCAR\b", r"\bMOTOS?\b",
+    r"\bAUTOMOVEIS\b", r"\bAUTO\b", r"\bCAR\b", r"\bMOTOS?\b", r"\bTRUCK", r"CARRETEIR", r"CEGONHEIR",
+    r"GRANELEIR", r"\bFROTA\b", r"\bCARRO\b",
 ]
 MEDIO = INDICIO_PROTECAO + CONTEXTO_VEICULAR
 COMBO_PROTECAO = [r"\bPROT", r"PROTEC", r"PROTEG", r"\bBENEFICIOS?\b", r"MUTU"]
@@ -62,7 +64,7 @@ NEGATIVO = [
     r"JIPEIROS", r"OFF ?ROAD", r"\bRALLY\b", r"ORFAOS", r"\bSAUDE\b", r"HOSPITAL", r"DEFICIENTES?",
     r"DEPENDENTES QUIMICOS", r"CONDENADOS", r"\bAPAC\b", r"ADOLESCENTE", r"FLORESTA", r"PATRIMONIO PUBLICO",
     r"CRISTA", r"RECUPERANDOS", r"VULNERAVE", r"INFANCIA", r"AMBIENTAL", r"LOTEAMENTO", r"\bVALE DO\b",
-    r"FUNCIONARIOS", r"HABITACIONA", r"\bRURAL\b", r"\bRIO\b", r"\bAGUAS\b", r"BIODIVERSIDADE", r"\bPETS\b", r"PROPRIEDADE INTELECTUAL",
+    r"FUNCIONARIOS", r"HABITACIONA", r"\bRURAL\b", r"PROTECAO (DO|AO|DOS|AOS) RIOS?\b", r"\bAGUAS\b", r"BIODIVERSIDADE", r"\bPETS\b", r"PROPRIEDADE INTELECTUAL",
     r"CRIMES", r"PLANETA VERDE", r"INCENDIO", r"SUSTENTAV", r"\bRIO [A-Z]+\b$", r"\bDRONES?\b", r"\bENERGIA\b", r"PRESOS", r"EGRESSOS", r"PATRIMONIO (HISTORICO|CULTURAL)", r"MANANCIA", r"NASCENTES", r"\bRIOS?\b DE ",
 ]
 
@@ -151,3 +153,33 @@ SUSEP_STATUS = {
 
 def regex_any(termos: list[str]) -> str:
     return "(" + "|".join(termos) + ")"
+
+# Categorias que, com CNAE associativo, frequentemente operam protecao (evidencia: lista SUSEP 2026-11).
+# Associacao com estes termos e sem outro indicio vira PENDENTE (5), nao descarte (4).
+CATEGORIA_PPM = [r"VEICUL", r"TRANSPORTADOR", r"TRANSPORTE", r"CAMINHONEIR", r"CARRETEIR", r"CEGONHEIR", r"GRANELEIR",
+                 r"\bAUTO\b", r"\bCAR\b", r"\bCARRO\b", r"\bMOTOS?\b", r"\bTRUCK", r"\bFROTA\b", r"AUTOMOTOR", r"PROPRIETARIOS"]
+# Negativos que valem MESMO com contexto veicular (hobby, colecionismo, transporte de passageiros, ensino)
+NEGATIVO_DURO = [r"MOTO ?CLUBE", r"MOTOCLUBE", r"MOTOGRUPO", r"MOTOCICLISMO", r"TRILHEIROS", r"JIPEIROS", r"OFF ?ROAD",
+                 r"\bRALLY\b", r"(VEICULOS|CARROS|AUTOMOVEIS) ANTIGOS", r"FORMACAO DE CONDUTORES", r"AUTO ?ESCOLA",
+                 r"TRANSPORTE (ALTERNATIVO|ESCOLAR|COMPLEMENTAR)", r"ESCOLARES", r"\bTAXIS?\b", r"TAXISTAS", r"MOTOTAXI",
+                 r"\bANIMA(L|IS)\b", r"SINDICATO"]
+
+# ----------------------------------------------------------------------------------------------
+# Segmento veicular (carro / caminhao / moto) a partir de texto normalizado (nome, fantasia, dominio)
+SEG_CAMINHAO = r"CAMINH|\bTRUCKS?|TRUCK\b|CARRETEIR|CEGONH|GRANELEIR|TRANSPORTADOR|TRANSPORTE|\bCARGAS?\b|PESADOS?\b|FRETE|RODOVI|LOGIST|BITREM|\bFROTAS?\b"
+SEG_MOTO = r"\bMOTOS?\b|\bMOTO(?!R)|MOTOCICL|MOTOQ|MOTOBOY|MOTOCAR"
+SEG_CARRO = r"\bCARROS?\b|\bCAR\b|[A-Z]CAR\b|AUTOMOVE|AUTOMOVI|\bAUTO(?!GEST|NOM|R\b|RIDADE|RREGUL)|\bLEVES\b|MOTORISTA|CONDUTOR|APLICATIVO|KAR\b"
+SEG_GERAL = r"VEICUL|AUTOMOTOR|AUTOMOTIV|\bAPV\b|\bPV\b|PROTECAOVEICULAR|VEICULAR"
+OUTRO_RAMO = r"PREVID|PECULIO|MONTEPIO|FUNERA|SAUDE SUPLEMENTAR|CAPITALIZA"
+
+
+def segmento_veicular(texto: str) -> list[str]:
+    """Retorna ['caminhao','moto','carro'] presentes; ['geral'] se so ha termo veicular generico; [] se nenhum."""
+    import re as _re
+    t = texto or ""
+    if any(_re.search(x, t) for x in NEGATIVO_DURO):
+        return []
+    seg = [n for n, rx in (("carro", SEG_CARRO), ("caminhao", SEG_CAMINHAO), ("moto", SEG_MOTO)) if _re.search(rx, t)]
+    if not seg and _re.search(SEG_GERAL, t):
+        seg = ["geral"]
+    return seg

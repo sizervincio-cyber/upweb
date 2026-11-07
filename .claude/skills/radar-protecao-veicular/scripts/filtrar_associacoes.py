@@ -67,7 +67,12 @@ def build(con: duckdb.DuckDBPyConnection, base: Path, ufs: list[str] | None, ina
     """)
     log.info("  %s empresas por fantasia/CNAE/e-mail", con.execute("select count(*) from est_hit").fetchone()[0])
 
-    con.execute("CREATE OR REPLACE TEMP TABLE alvo AS SELECT cnpj_basico FROM emp_hit UNION SELECT cnpj_basico FROM est_hit")
+    extra = ""
+    sus = WORK_DIR / "susep.parquet"
+    if sus.exists():  # associacoes com evidencia SUSEP entram no universo mesmo com nome neutro
+        extra = f" UNION SELECT DISTINCT cnpj_basico FROM read_parquet('{sus.as_posix()}')"
+        log.info("  + raizes com evidencia SUSEP (%s)", sus.name)
+    con.execute(f"CREATE OR REPLACE TEMP TABLE alvo AS SELECT cnpj_basico FROM emp_hit UNION SELECT cnpj_basico FROM est_hit{extra}")
 
     log.info("passo 3/3: juntando todos os estabelecimentos das candidatas")
     filtro_sit = "" if inativas else "AND e.situacao_cadastral = '02'"
@@ -140,7 +145,14 @@ def score_row(r: pd.Series) -> tuple[int, list[str], dict]:
     mail = str(r.correio_eletronico or "").upper()
     if re.search(r"PROTEC|VEICULAR|MUTU|AUTOPRO|MOTOPRO|PROTEG", mail):
         s += R.PESOS["email_termo_setor"]; ev.append("e-mail cadastral com termo do setor")
-    if ng and not fv:
+    veic_ctx = bool(hits(R.COMBO_VEICULO))
+    duro = hits(R.NEGATIVO_DURO)
+    if duro and not fv:
+        veic_ctx = False  # moto clube, veiculos antigos, transporte de passageiros: negativo mesmo com palavra de veiculo
+        ng = sorted(set(ng) | set(duro))
+    flags["negativo"] = bool(ng) and not fv and not veic_ctx  # "saude de veiculos" nao e negativo
+    flags["categoria_ppm"] = bool(hits(R.CATEGORIA_PPM))
+    if ng and not fv and not veic_ctx:
         s += R.PESOS["negativo"]; ev.append("termo negativo " + "/".join(ng[:3]))
     flags["associacao"] = nat in R.NATUREZA_ASSOCIACAO
     flags["cnae_seguro"] = bool(set(rel) & {"6520100", "6629100", "5229002", "8020001"})
@@ -157,7 +169,7 @@ def classificar_base(score: int, f: dict) -> int:
         return 4
     # associacao de categoria (taxistas, caminhoneiros...) sem nenhum indicio de protecao/beneficio
     if not f["indicio_protecao"] and not f["forte_categoria"] and not f["cnae_seguro"]:
-        return 4
+        return 5 if f.get("categoria_ppm") else 4
     if (f["forte_veicular"] or f["combo"]) and f["associacao"] and score >= 60:
         return 2
     if f["forte_patrimonial"] and not f["forte_veicular"] and f["associacao"]:

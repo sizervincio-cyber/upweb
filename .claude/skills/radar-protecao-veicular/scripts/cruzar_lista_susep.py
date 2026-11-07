@@ -169,7 +169,8 @@ def main() -> None:
             "evidencia_susep": a.fonte, "data_consulta_susep": date.today().isoformat(),
             "obs_susep": "CNPJ consta na lista da consulta oficial SUSEP (extraido por OCR com digito verificador valido)",
             "base_legal_susep": BASE_LEGAL, "importado_em": now_iso()})
-        reg = reg[df["cnpj_valido"].values]
+        # So associacoes (natureza 399-9): seguradoras/resseguradoras da lista nao sao PPM
+        reg = reg[(df["cnpj_valido"] & df["natureza_juridica"].eq("3999")).values]
         p = WORK_DIR / "susep.parquet"
         if p.exists():
             old = pd.read_parquet(p)

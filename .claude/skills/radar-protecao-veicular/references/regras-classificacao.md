@@ -91,3 +91,17 @@ sem consulta externa: `tests/amostra_validacao.csv`.
 As regras foram ajustadas com base nesses erros; o resultado pós-ajuste (classe 2: 30/30; classe 3: 12 positivos
 e 2 ambíguos; classe 4: 27 negativos e 1 ambíguo) é otimista porque a mesma amostra orientou o ajuste.
 Para medir de novo sem viés, sorteie outra amostra com outra seed.
+
+## 8. Validação com a lista oficial SUSEP (2026-11-07)
+
+Lista de entidades da SUSEP (gravação de tela): 2.572 linhas → 2.472 CNPJs válidos e únicos (92 zerados, 1 inválido,
+7 duplicados SANDBOX) → 2.193 associações privadas (279 seguradoras e afins fora) → 2.097 ativas na Receita.
+
+- Cobertura das regras antigas: 82,9% das associações ativas. Após os ajustes abaixo: 92,7% (sem usar a lista).
+- Ajustes: negativo "RIO" virou "proteção do rio" ("Rio de Janeiro" era descartado); negativos deixam de valer com
+  contexto veicular ("saúde de veículos"), exceto os duros (moto clube, veículos antigos, táxi, escolar, animal);
+  associações de categoria (transportadores, caminhoneiros, proprietários de veículos) viram pendente, não descarte;
+  "associados", "clube de assistência/vantagens", "rateio" e "garante" viram indício.
+- Associações com evidência SUSEP entram no universo e são classe 1 (com segmento veicular) ou 3 (sem segmento).
+- Segmento veicular (`regras.segmento_veicular`): carro/leves, caminhão/pesados (inclui transportadores, carreteiros,
+  cegonheiros, graneleiros), moto, ou "geral" quando só há termo veicular genérico.
